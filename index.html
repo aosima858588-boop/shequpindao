@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>海豚社区 | OKX Boost增益活动</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap">
+    <style>
+        /* 高级设计系统 - 惊艳交互版 */
+        :root {
+            /* 霓虹海洋主题 */
+            --neon-blue: #00F3FF;
+            --neon-purple: #9D4EDD;
+            --neon-pink: #FF2E93;
+            --neon-cyan: #00FFC6;
+            --deep-ocean: #0A0F1C;
+            --mid-ocean: #13182B;
+            --light-ocean: #1E233C;
+            --glass-bg: rgba(30, 35, 60, 0.3);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            
+            /* 动态渐变 */
+            --gradient-primary: linear-gradient(45deg, var(--neon-blue), var(--neon-cyan));
+            --gradient-secondary: linear-gradient(45deg, var(--neon-purple), var(--neon-pink));
+            --gradient-ocean: linear-gradient(180deg, var(--deep-ocean) 0%, var(--mid-ocean) 100%);
+            --gradient-card: linear-gradient(145deg, rgba(0, 243, 255, 0.1), rgba(157, 78, 221, 0.05));
+            
+            /* 字体系统 */
+            --font-heading: 'Poppins', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            
+            /* 高级阴影 */
+            --shadow-neon: 0 0 20px rgba(0, 243, 255, 0.4);
+            --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --shadow-glow: 0 0 40px rgba(0, 243, 255, 0.2);
+            
+            /* 高级圆角 */
+            --radius-card: 24px;
+            --radius-button: 50px;
+            --radius-full: 1000px;
+            
+            /* 高级过渡 */
+            --transition-smooth: 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+            --transition-bounce: 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        
+        /* 基础重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            background: var(--gradient-ocean);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* 高级粒子背景 */
+        .particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -2;
+            background: radial-gradient(circle at 20% 50%, rgba(0, 243, 255, 0.05) 0%, transparent 50%),
+                      radial-gradient(circle at 80% 20%, rgba(157, 78, 221, 0.05) 0%, transparent 50%);
+        }
+        
+        /* 3D波浪效果 */
+        .wave-container {
+            position: fixed;
+            width: 200%;
+            height: 200px;
+            bottom: 0;
+            left: -50%;
+            z-index: -1;
+            opacity: 0.15;
+            animation: waveMove 20s linear infinite;
+        }
+        
+        .wave {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-cyan), var(--neon-purple));
+            opacity: 0.1;
+            border-radius: 50%;
+            animation: wavePulse 8s ease-in-out infinite;
+        }
+        
+        /* 主容器 */
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* 惊艳头部 */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* 3D海豚标志 */
+        .dolphin-3d {
+            width: 120px;
+            height: 120px;
+            position: relative;
+            margin-bottom: 40px;
+            animation: float3D 6s ease-in-out infinite;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+        
+        .dolphin-3d-inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: rotate3D 20s linear infinite;
+        }
+        
+        .dolphin-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backface-visibility: hidden;
+            box-shadow: var(--shadow-neon);
+        }
+        
+        .dolphin-face i {
+            font-size: 60px;
+            color: white;
+            filter: drop-shadow(0 0 10px rgba(0, 243, 255, 0.8));
+        }
+        
+        /* 霓虹标题 */
+        .neon-title {
+            font-family: var(--font-heading);
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-cyan), var(--neon-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+            animation: textGlow 2s ease-in-out infinite alternate;
+        }
+        
+        .neon-title::after {
+            content: '🚀';
+            position: absolute;
+            top: -10px;
+            right: -40px;
+            font-size: 2rem;
+            animation: rocketLaunch 3s ease-in-out infinite;
+        }
+        
+        /* 交互式导航 */
+        .nav-dots {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 1000;
+        }
+        
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all var(--transition-smooth);
+            position: relative;
+        }
+        
+        .nav-dot.active {
+            background: var(--neon-cyan);
+            transform: scale(1.5);
+            box-shadow: 0 0 20px var(--neon-cyan);
+        }
+        
+        .nav-dot:hover::before {
+            content: attr(data-label);
+            position: absolute;
+            right: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+        
+        /* 玻璃态卡片 */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius-card);
+            border: 1px solid var(--glass-border);
+            padding: 30px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: all var(--transition-smooth);
+            box-shadow: var(--shadow-card);
+        }
+        
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: 0.5s;
+        }
+        
+        .glass-card:hover::before {
+            left: 100%;
+        }
+        
+        .glass-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: var(--shadow-glow), var(--shadow-card);
+            border-color: rgba(0, 243, 255, 0.3);
+        }
+        
+        /* 交互式步骤 */
+        .interactive-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .step-card {
+            position: relative;
+            text-align: center;
+            padding: 40px 20px;
+            border-radius: var(--radius-card);
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid transparent;
+            transition: all var(--transition-bounce);
+            cursor: pointer;
+        }
+        
+        .step-card:hover {
+            background: rgba(0, 243, 255, 0.1);
+            border-color: var(--neon-blue);
+            transform: translateY(-20px) scale(1.05);
+        }
+        
+        .step-number {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 24px;
+            color: white;
+            box-shadow: var(--shadow-neon);
+        }
+        
+        .step-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            filter: drop-shadow(0 0 10px rgba(0, 243, 255, 0.5));
+        }
+        
+        /* 3D翻转卡片 */
+        .flip-card-container {
+            perspective: 1000px;
+            margin: 30px 0;
+            height: 300px;
+        }
+        
+        .flip-card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+        }
+        
+        .flip-card:hover {
+            transform: rotateY(180deg);
+        }
+        
+        .flip-front, .flip-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: var(--radius-card);
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .flip-front {
+            background: var(--gradient-card);
+            border: 2px solid rgba(0, 243, 255, 0.3);
+        }
+        
+        .flip-back {
+            background: linear-gradient(45deg, rgba(157, 78, 221, 0.2), rgba(255, 46, 147, 0.2));
+            border: 2px solid rgba(157, 78, 221, 0.3);
+            transform: rotateY(180deg);
+        }
+        
+        /* 动态进度条 */
+        .dynamic-progress {
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-full);
+            margin: 30px 0;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            width: 0;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-full);
+            position: relative;
+            animation: progressFlow 3s ease-in-out infinite alternate;
+        }
+        
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 30px;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.5);
+            animation: progressShine 2s ease-in-out infinite;
+        }
+        
+        /* 交互式链接网格 */
+        .link-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+        
+        .link-cell {
+            padding: 20px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            transition: all var(--transition-smooth);
+            text-decoration: none;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .link-cell::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-primary);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: -1;
+        }
+        
+        .link-cell:hover {
+            transform: translateY(-10px) scale(1.1);
+            border-color: var(--neon-blue);
+            box-shadow: var(--shadow-neon);
+        }
+        
+        .link-cell:hover::before {
+            opacity: 0.2;
+        }
+        
+        /* 高级按钮 */
+        .neon-button {
+            padding: 18px 40px;
+            background: transparent;
+            border: 2px solid var(--neon-cyan);
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            border-radius: var(--radius-button);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all var(--transition-smooth);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .neon-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 198, 0.4), transparent);
+            transition: 0.5s;
+        }
+        
+        .neon-button:hover::before {
+            left: 100%;
+        }
+        
+        .neon-button:hover {
+            background: rgba(0, 255, 198, 0.1);
+            box-shadow: 0 0 30px rgba(0, 255, 198, 0.5);
+            transform: translateY(-5px);
+        }
+        
+        /* 动画定义 */
+        @keyframes float3D {
+            0%, 100% { transform: translateY(0px) rotateX(0deg); }
+            50% { transform: translateY(-30px) rotateX(10deg); }
+        }
+        
+        @keyframes rotate3D {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(360deg); }
+        }
+        
+        @keyframes textGlow {
+            0% { text-shadow: 0 0 10px rgba(0, 243, 255, 0.5); }
+            100% { text-shadow: 0 0 30px rgba(0, 243, 255, 0.8), 0 0 60px rgba(157, 78, 221, 0.6); }
+        }
+        
+        @keyframes rocketLaunch {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(10px, -10px) rotate(10deg); }
+            75% { transform: translate(-10px, 10px) rotate(-10deg); }
+        }
+        
+        @keyframes waveMove {
+            0% { transform: translateX(0) rotate(0deg); }
+            100% { transform: translateX(-50%) rotate(1deg); }
+        }
+        
+        @keyframes wavePulse {
+            0%, 100% { transform: scale(1); opacity: 0.1; }
+            50% { transform: scale(1.2); opacity: 0.2; }
+        }
+        
+        @keyframes progressFlow {
+            0% { width: 30%; }
+            100% { width: 90%; }
+        }
+        
+        @keyframes progressShine {
+            0% { left: -30px; }
+            100% { left: calc(100% + 30px); }
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .neon-title {
+                font-size: 2.5rem;
+            }
+            
+            .interactive-steps {
+                grid-template-columns: 1fr;
+            }
+            
+            .link-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .nav-dots {
+                display: none;
+            }
+            
+            .dolphin-3d {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .dolphin-face i {
+                font-size: 50px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .neon-title {
+                font-size: 2rem;
+            }
+            
+            .link-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .glass-card {
+                padding: 20px;
+            }
+            
+            .step-card {
+                padding: 30px 15px;
+            }
+        }
+        
+        /* 自定义滚动条 */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--deep-ocean);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--gradient-primary);
+            border-radius: var(--radius-full);
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gradient-secondary);
+        }
+    </style>
+</head>
+<body>
+    <!-- 高级背景效果 -->
+    <div class="particles"></div>
+    <div class="wave-container">
+        <div class="wave"></div>
+    </div>
+    
+    <!-- 导航点 -->
+    <div class="nav-dots">
+        <div class="nav-dot active" data-label="首页" onclick="scrollToSection('hero')"></div>
+        <div class="nav-dot" data-label="核心机制" onclick="scrollToSection('mechanism')"></div>
+        <div class="nav-dot" data-label="四步参与" onclick="scrollToSection('steps')"></div>
+        <div class="nav-dot" data-label="奖励规则" onclick="scrollToSection('rewards')"></div>
+        <div class="nav-dot" data-label="链接入口" onclick="scrollToSection('links')"></div>
+    </div>
+    
+    <!-- 惊艳首页 -->
+    <section id="hero" class="hero-section">
+        <div class="dolphin-3d">
+            <div class="dolphin-3d-inner">
+                <div class="dolphin-face">
+                    <i class="fas fa-dolphin"></i>
+                </div>
+            </div>
+        </div>
+        
+        <h1 class="neon-title">海豚社区</h1>
+        <h2 class="neon-title" style="font-size: 2.5rem; animation-delay: 0.5s;">OKX BOOST 增益活动</h2>
+        
+        <p style="font-size: 1.2rem; max-width: 600px; margin: 30px 0; line-height: 1.6; opacity: 0.9;">
+            通过创新的阶梯式模型与社区协同策略，参与OKX Boost活动，实现稳定收益与超额价值回报
+        </p>
+        
+        <button class="neon-button" onclick="scrollToSection('mechanism')">
+            探索活动 <i class="fas fa-arrow-down" style="margin-left: 10px;"></i>
+        </button>
+    </section>
+    
+    <div class="container">
+        <!-- 核心机制 - 玻璃态卡片 -->
+        <section id="mechanism" class="section">
+            <div class="glass-card">
+                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px;">
+                    <div class="step-number">✨</div>
+                    <h2 style="font-family: var(--font-heading); font-size: 2rem;">一句话了解活动</h2>
+                </div>
+                <p style="font-size: 1.3rem; line-height: 1.6;">
+                    通过参与活动，您不仅能为社区创造关键数据，更能稳定获取OKX官方新币空投奖励。
+                </p>
+            </div>
+            
+            <div class="glass-card">
+                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px;">
+                    <div class="step-number">📊</div>
+                    <h2 style="font-family: var(--font-heading); font-size: 2rem;">活动核心机制</h2>
+                </div>
+                
+                <div style="display: grid; gap: 20px; margin-top: 20px;">
+                    <div class="glass-card" style="background: rgba(0, 243, 255, 0.05);">
+                        <h3 style="color: var(--neon-cyan); margin-bottom: 10px;">原理</h3>
+                        <p>在OKX Wallet使用 H代币 进行兑换交易，积累交易量（Boost数据）。</p>
+                    </div>
+                    
+                    <div class="glass-card" style="background: rgba(157, 78, 221, 0.05);">
+                        <h3 style="color: var(--neon-purple); margin-bottom: 10px;">奖励</h3>
+                        <p>交易量将转化为积分，直接决定您瓜分每期官方新币空投的份额。</p>
+                    </div>
+                    
+                    <div class="glass-card" style="background: rgba(255, 46, 147, 0.05);">
+                        <h3 style="color: var(--neon-pink); margin-bottom: 10px;">节奏</h3>
+                        <p>Boost数据每10天更新一次。这意味着，必须提前拥有交易量记录，才能参与下一期的奖励分配。</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 动态进度条 -->
+            <div class="glass-card">
+                <h3 style="margin-bottom: 20px;">距离下一期数据更新</h3>
+                <div class="dynamic-progress">
+                    <div class="progress-fill"></div>
+                </div>
+                <p style="text-align: center; margin-top: 10px; color: var(--neon-cyan);">3天 12小时 45分钟</p>
+            </div>
+        </section>
+        
+        <!-- 四步参与法 - 交互式步骤 -->
+        <section id="steps" class="section">
+            <div class="glass-card">
+                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px;">
+                    <div class="step-number">🛡</div>
+                    <h2 style="font-family: var(--font-heading); font-size: 2rem;">社区协同策略：更高收益，更低风险</h2>
+                </div>
+                
+                <div class="interactive-steps">
+                    <div class="step-card" onclick="toggleStepDetail(1)">
+                        <div class="step-number">1</div>
+                        <div class="step-icon"><i class="fas fa-coins"></i></div>
+                        <h3>质押获取弹药</h3>
+                        <p>在社区平台质押USDT，每日20:00稳定领取H代币收益</p>
+                    </div>
+                    
+                    <div class="step-card" onclick="toggleStepDetail(2)">
+                        <div class="step-number">2</div>
+                        <div class="step-icon"><i class="fas fa-exchange-alt"></i></div>
+                        <h3>择时兑换</h3>
+                        <p>根据群内流动性提示，将H兑换为USDT或OKB</p>
+                    </div>
+                    
+                    <div class="step-card" onclick="toggleStepDetail(3)">
+                        <div class="step-number">3</div>
+                        <div class="step-icon"><i class="fas fa-chart-line"></i></div>
+                        <h3>执行交易</h3>
+                        <p>完成每日2-5次兑换交易，积累Boost数据</p>
+                    </div>
+                    
+                    <div class="step-card" onclick="toggleStepDetail(4)">
+                        <div class="step-number">4</div>
+                        <div class="step-icon"><i class="fas fa-sync-alt"></i></div>
+                        <h3>循环滚动</h3>
+                        <p>每日重复，形成飞轮增长效应</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 3D翻转卡片 -->
+            <div class="flip-card-container">
+                <div class="flip-card">
+                    <div class="flip-front">
+                        <i class="fas fa-shield-alt" style="font-size: 48px; margin-bottom: 20px; color: var(--neon-cyan);"></i>
+                        <h3>🎯 社区支持与保障</h3>
+                        <p style="margin-top: 10px;">点击查看详情</p>
+                    </div>
+                    <div class="flip-back">
+                        <h3 style="margin-bottom: 15px;">双重保障机制</h3>
+                        <p><strong>风险缓冲：</strong>因遵循社区策略产生的合理滑点损耗大于所获奖励价值，社区将评估后进行补偿。</p>
+                        <p style="margin-top: 10px;"><strong>长期红利：</strong>持续参与，积累持续的官方空投收益。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 行动呼吁 -->
+        <div class="glass-card" style="text-align: center; background: rgba(0, 243, 255, 0.1); border-color: var(--neon-blue);">
+            <h2 style="font-size: 2rem; margin-bottom: 20px; color: var(--neon-cyan);">📢 立即行动，锁定明日收益！</h2>
+            <p style="font-size: 1.2rem; margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                立即完成质押，锁定明日H收益，等待我们的流动性提示！
+            </p>
+            <button class="neon-button" onclick="showActionModal()">
+                <i class="fas fa-rocket"></i> 立即开始
+            </button>
+        </div>
+        
+        <!-- 奖励规则 -->
+        <section id="rewards" class="section">
+            <div class="glass-card">
+                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px;">
+                    <div class="step-number">💰</div>
+                    <h2 style="font-family: var(--font-heading); font-size: 2rem;">奖励与规则说明</h2>
+                </div>
+                
+                <div style="display: grid; gap: 25px;">
+                    <div class="glass-card" style="background: rgba(255, 214, 102, 0.05); border-color: rgba(255, 214, 102, 0.3);">
+                        <h3 style="color: #FFD666; margin-bottom: 15px;">【一】规则说明</h3>
+                        <div style="display: grid; gap: 10px;">
+                            <p>✅ 参与Boost交易的 H 代币必须来自质押的收益</p>
+                            <p>✅ 根据群通知策略进行【兑换】交易</p>
+                            <p>✅ 所有参与交易的地址均要填写表单提交报备</p>
+                            <p>✅ 如磨损不明，则按照质押本金产生的USDT价值来评判</p>
+                            <p>✅ H 代币可以随时【兑换】USDT不参与Boost</p>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-card" style="background: rgba(157, 78, 221, 0.05); border-color: rgba(157, 78, 221, 0.3);">
+                        <h3 style="color: var(--neon-purple); margin-bottom: 15px;">【二】邀请奖励</h3>
+                        <div style="display: grid; gap: 15px;">
+                            <div class="glass-card" style="background: rgba(255, 255, 255, 0.05); padding: 15px;">
+                                <h4 style="color: var(--neon-cyan); margin-bottom: 5px;">邀请3人 · 质押2000U</h4>
+                                <p>奖励：价值188U的H币 + 500U瓜分额度</p>
+                            </div>
+                            
+                            <div class="glass-card" style="background: rgba(255, 255, 255, 0.05); padding: 15px;">
+                                <h4 style="color: var(--neon-cyan); margin-bottom: 5px;">邀请5人 · 质押5000U</h4>
+                                <p>奖励：价值388U的H币 + 1000U瓜分额度</p>
+                            </div>
+                            
+                            <div class="glass-card" style="background: rgba(255, 255, 255, 0.05); padding: 15px;">
+                                <h4 style="color: var(--neon-cyan); margin-bottom: 5px;">邀请10人 · 质押10000U</h4>
+                                <p>奖励：价值888U的H币 + 3000U瓜分额度</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 链接入口 -->
+        <section id="links" class="section">
+            <div class="glass-card">
+                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px;">
+                    <div class="step-number">🚪</div>
+                    <h2 style="font-family: var(--font-heading); font-size: 2rem;">便捷访问入口</h2>
+                </div>
+                
+                <div class="link-grid">
+                    <a href="https://hstaking.space" target="_blank" class="link-cell">
+                        <i class="fas fa-link" style="font-size: 24px; margin-bottom: 10px;"></i>
+                        <h4>进入链上赚币</h4>
+                        <p style="font-size: 12px; opacity: 0.8;">hstaking.space</p>
+                    </a>
+                    
+                    <a href="https://web3.okx.com/ul/3yFdiPq" target="_blank" class="link-cell">
+                        <i class="fas fa-shopping-cart" style="font-size: 24px; margin-bottom: 10px;"></i>
+                        <h4>立即购买 H</h4>
+                        <p style="font-size: 12px; opacity: 0.8;">web3.okx.com</p>
+                    </a>
+                    
+                    <a href="https://oyidl.me/ul/S1ycxF8" target="_blank" class="link-cell">
+                        <i class="fas fa-users" style="font-size: 24px; margin-bottom: 10px;"></i>
+                        <h4>欧易社区红包群</h4>
+                        <p style="font-size: 12px; opacity: 0.8;">oyidl.me</p>
+                    </a>
+                    
+                    <a href="https://web3.okx.com/zh-hans/boost/records" target="_blank" class="link-cell">
+                        <i class="fas fa-info-circle" style="font-size: 24px; margin-bottom: 10px;"></i>
+                        <h4>OKX Boost 介绍</h4>
+                        <p style="font-size: 12px; opacity: 0.8;">官方介绍</p>
+                    </a>
+                    
+                    <a href="https://f.wps.cn/ksform/w/write/5rJjd9vy/" target="_blank" class="link-cell">
+                        <i class="fas fa-edit" style="font-size: 24px; margin-bottom: 10px;"></i>
+                        <h4>填写质押表单</h4>
+                        <p style="font-size: 12px; opacity: 0.8;">f.wps.cn</p>
+                    </a>
+                    
+                    <a href="http://www.sfw.vc/DPH_OKX" target="_blank" class="link-cell">
+                        <i class="fas fa-bolt" style="font-size: 24px; margin-bottom: 10px;"></i>
+                        <h4>进入Boost频道</h4>
+                        <p style="font-size: 12px; opacity: 0.8;">sfw.vc</p>
+                    </a>
+                    
+                    <a href="https://aosima858588-boop.github.io/-/" target="_blank" class="link-cell">
+                        <i class="fas fa-calculator" style="font-size: 24px; margin-bottom: 10px;"></i>
+                        <h4>收益计算器</h4>
+                        <p style="font-size: 12px; opacity: 0.8;">计算工具</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 页脚 -->
+        <div class="glass-card" style="text-align: center; margin-top: 50px; background: rgba(0, 0, 0, 0.3);">
+            <div style="display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 20px;">
+                <div class="step-number" style="width: 40px; height: 40px; font-size: 20px;">🐬</div>
+                <h3 style="font-family: var(--font-heading);">海豚社区</h3>
+            </div>
+            <p style="opacity: 0.8; margin-bottom: 20px;">
+                © 2026 海豚社区 | OKX Boost增益活动<br>
+                重新定义资产增值体验
+            </p>
+            <button class="neon-button" onclick="scrollToSection('hero')" style="padding: 12px 25px; font-size: 14px;">
+                <i class="fas fa-arrow-up"></i> 返回顶部
+            </button>
+        </div>
+    </div>
+    
+    <!-- 交互式模态框 -->
+    <div id="actionModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 10000; align-items: center; justify-content: center;">
+        <div class="glass-card" style="max-width: 500px; margin: 20px; position: relative;">
+            <button onclick="closeActionModal()" style="position: absolute; top: 15px; right: 15px; background: none; border: none; color: white; font-size: 24px; cursor: pointer;">×</button>
+            <h2 style="margin-bottom: 20px; color: var(--neon-cyan);">🚀 准备开始！</h2>
+            <p style="margin-bottom: 25px;">请选择您的第一步行动：</p>
+            
+            <div style="display: grid; gap: 15px;">
+                <a href="https://hstaking.space" target="_blank" class="link-cell" style="text-align: left; display: flex; align-items: center; gap: 15px;">
+                    <i class="fas fa-coins" style="font-size: 24px;"></i>
+                    <div>
+                        <h4>立即质押</h4>
+                        <p style="font-size: 12px; opacity: 0.8;">开始赚取H代币</p>
+                    </div>
+                </a>
+                
+                <a href="https://f.wps.cn/ksform/w/write/5rJjd9vy/" target="_blank" class="link-cell" style="text-align: left; display: flex; align-items: center; gap: 15px;">
+                    <i class="fas fa-edit" style="font-size: 24px;"></i>
+                    <div>
+                        <h4>填写表单</h4>
+                        <p style="font-size: 12px; opacity: 0.8;">提交参与信息</p>
+                    </div>
+                </a>
+                
+                <a href="https://oyidl.me/ul/S1ycxF8" target="_blank" class="link-cell" style="text-align: left; display: flex; align-items: center; gap: 15px;">
+                    <i class="fas fa-users" style="font-size: 24px;"></i>
+                    <div>
+                        <h4>加入社区</h4>
+                        <p style="font-size: 12px; opacity: 0.8;">获取实时策略</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 惊艳的交互脚本
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化3D效果
+            init3DEffects();
+            
+            // 初始化滚动监听
+            initScrollObserver();
+            
+            // 初始化粒子背景
+            createParticles();
+            
+            // 初始化导航点
+            initNavDots();
+        });
+        
+        // 3D效果初始化
+        function init3DEffects() {
+            // 为卡片添加鼠标跟随效果
+            const cards = document.querySelectorAll('.glass-card');
+            cards.forEach(card => {
+                card.addEventListener('mousemove', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const rotateY = (x - centerX) / 25;
+                    const rotateX = (centerY - y) / 25;
+                    
+                    this.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)';
+                });
+            });
+        }
+        
+        // 创建动态粒子背景
+        function createParticles() {
+            const particlesContainer = document.querySelector('.particles');
+            const particleCount = window.innerWidth < 768 ? 30 : 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.style.position = 'absolute';
+                particle.style.width = Math.random() * 5 + 2 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.background = getRandomGradient();
+                particle.style.borderRadius = '50%';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.opacity = Math.random() * 0.5 + 0.1;
+                particle.style.filter = 'blur(1px)';
+                particle.style.animation = `particleFloat ${Math.random() * 10 + 10}s infinite ease-in-out`;
+                
+                particlesContainer.appendChild(particle);
+                
+                // 添加CSS动画
+                const style = document.createElement('style');
+                style.textContent = `
+                    @keyframes particleFloat {
+                        0%, 100% { transform: translate(0, 0) scale(1); }
+                        25% { transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px) scale(1.2); }
+                        50% { transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px) scale(0.8); }
+                        75% { transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px) scale(1.1); }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        }
+        
+        function getRandomGradient() {
+            const gradients = [
+                'radial-gradient(circle, var(--neon-blue), transparent)',
+                'radial-gradient(circle, var(--neon-cyan), transparent)',
+                'radial-gradient(circle, var(--neon-purple), transparent)',
+                'radial-gradient(circle, var(--neon-pink), transparent)'
+            ];
+            return gradients[Math.floor(Math.random() * gradients.length)];
+        }
+        
+        // 滚动观察器
+        function initScrollObserver() {
+            const sections = document.querySelectorAll('.section, .hero-section');
+            const navDots = document.querySelectorAll('.nav-dot');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.id;
+                        navDots.forEach(dot => {
+                            dot.classList.remove('active');
+                            if (dot.getAttribute('data-label') === getLabelFromId(id)) {
+                                dot.classList.add('active');
+                            }
+                        });
+                        
+                        // 添加进入动画
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.3 });
+            
+            sections.forEach(section => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(50px)';
+                section.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                observer.observe(section);
+            });
+        }
+        
+        function getLabelFromId(id) {
+            const labels = {
+                'hero': '首页',
+                'mechanism': '核心机制',
+                'steps': '四步参与',
+                'rewards': '奖励规则',
+                'links': '链接入口'
+            };
+            return labels[id] || '';
+        }
+        
+        // 导航点初始化
+        function initNavDots() {
+            const dots = document.querySelectorAll('.nav-dot');
+            dots.forEach(dot => {
+                dot.addEventListener('click', function() {
+                    dots.forEach(d => d.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        }
+        
+        // 滚动到指定区域
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+        
+        // 显示步骤详情
+        function toggleStepDetail(stepNumber) {
+            const details = [
+                "在社区平台质押USDT，每日20:00 (UTC+8) 稳定领取 H 代币收益。（这是您'零成本'参与活动的核心本金）",
+                "次日，根据群内流动性提示，将领取的H代币兑换为USDT或OKB。（社区将协调资金入场支撑价格，旨在让您换得更多！）",
+                "使用兑换到的资金，完成每日 2-5次 的兑换交易。关键技巧：可使用 '限价单' ，设置与市场价接近的报价，以几乎零成本的方式完成交易量（后期有教程）",
+                "每日重复此过程。您的交易量将持续积累，奖励随之增长，形成 '收益越多 → 交易量越大 → 奖励更多' 的飞轮效应。"
+            ];
+            
+            alert(`第${stepNumber}步详情：\n\n${details[stepNumber-1]}`);
+        }
+        
+        // 显示行动模态框
+        function showActionModal() {
+            document.getElementById('actionModal').style.display = 'flex';
+        }
+        
+        // 关闭行动模态框
+        function closeActionModal() {
+            document.getElementById('actionModal').style.display = 'none';
+        }
+        
+        // 键盘快捷键
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeActionModal();
+            }
+        });
+        
+        // 触摸设备优化
+        if ('ontouchstart' in window) {
+            // 为触摸设备添加特殊处理
+            document.querySelectorAll('.glass-card').forEach(card => {
+                card.style.cursor = 'pointer';
+            });
+        }
+    </script>
+</body>
+</html>
