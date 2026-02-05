@@ -336,13 +336,38 @@
             margin-bottom: 16px;
         }
         
-        .card-content ul, .card-content ol {
-            padding-left: 20px;
-            margin-bottom: 16px;
+        /* 修复列表显示问题 */
+        .card-content ol, .card-content ul {
+            list-style-position: outside;
+            margin-left: 1.2em;
+            margin-bottom: 20px;
+        }
+        
+        .card-content ol {
+            list-style-type: decimal;
+        }
+        
+        .card-content ul {
+            list-style-type: disc;
         }
         
         .card-content li {
             margin-bottom: 8px;
+            padding-left: 4px;
+            line-height: 1.5;
+        }
+        
+        .card-content li:last-child {
+            margin-bottom: 0;
+        }
+        
+        .card-content ol li::marker {
+            color: var(--accent);
+            font-weight: 600;
+        }
+        
+        .card-content ul li::marker {
+            color: var(--secondary);
         }
         
         /* 重点突出卡片 */
@@ -520,7 +545,7 @@
             text-align: center;
         }
         
-        /* 折叠内容区域 */
+        /* 修复折叠内容区域 - 关键修复 */
         .collapsible-section {
             margin-bottom: 20px;
         }
@@ -536,6 +561,7 @@
             align-items: center;
             cursor: pointer;
             transition: var(--transition);
+            position: relative;
         }
         
         .collapsible-header:hover {
@@ -552,17 +578,58 @@
         }
         
         .collapsible-content {
-            max-height: 0;
             overflow: hidden;
-            transition: max-height 0.3s ease-out;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+            max-height: 0;
+            opacity: 0;
         }
         
         .collapsible-content.active {
-            max-height: 2000px;
+            max-height: 5000px; /* 足够大的值容纳内容 */
+            opacity: 1;
         }
         
         .collapsible-content .content-card {
             margin-top: 10px;
+        }
+        
+        /* 规则奖励样式优化 */
+        .rules-list {
+            background: rgba(0, 163, 255, 0.05);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .rewards-list {
+            background: rgba(100, 255, 218, 0.05);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .reward-item {
+            margin-bottom: 16px;
+            padding: 12px;
+            background: rgba(17, 34, 64, 0.5);
+            border-radius: 10px;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .reward-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .reward-condition {
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 6px;
+            font-size: 1rem;
+        }
+        
+        .reward-details {
+            color: var(--secondary);
+            font-weight: 500;
         }
         
         /* 动画效果 */
@@ -592,6 +659,10 @@
             .footer-links {
                 grid-template-columns: repeat(3, 1fr);
             }
+            
+            .collapsible-content.active {
+                max-height: 3000px;
+            }
         }
         
         /* 自定义滚动条 */
@@ -610,6 +681,16 @@
         
         ::-webkit-scrollbar-thumb:hover {
             background: var(--accent);
+        }
+        
+        @media (max-width: 480px) {
+            .card-content ol, .card-content ul {
+                margin-left: 1em;
+            }
+            
+            .card-content li {
+                margin-bottom: 10px;
+            }
         }
     </style>
 </head>
@@ -684,7 +765,7 @@
                 <span>OKX Boost活动</span>
             </div>
             
-            <h1 class="hero-title">链上赚币|OKX Boost</h1>
+            <h1 class="hero-title">链上赚币</h1>
             
             <p class="hero-subtitle">
                 通过创新的阶梯式模型与社区协同策略，参与OKX Boost的活动，实现稳定收益与超额价值回报，重新定义资产增值体验
@@ -789,41 +870,51 @@
                     </div>
                 </div>
                 
-                <!-- 规则与奖励 -->
+                <!-- 规则与奖励 - 优化后的版本 -->
                 <div class="content-card">
                     <div class="card-header">
                         <div class="card-icon">
                             <i class="fas fa-award"></i>
-                       <div class="card-content">
-  <h4 style="margin-bottom: 12px; color: var(--text-light); font-size: 1.1rem; border-left: 3px solid var(--accent); padding-left: 12px;">规则说明</h4>
-  <ol style="margin-bottom: 24px; background: rgba(0, 163, 255, 0.05); padding: 16px; border-radius: 12px;">
-    <li style="margin-bottom: 10px; padding-left: 4px;">参与Boost交易的 H 代币必须来自质押的收益（如果是购买，转账等其他方式来源，则取消各种权益）</li>
-    <li style="margin-bottom: 10px; padding-left: 4px;">根据算法策略进行【兑换】交易，如频繁交易产生的磨损自行承担，且取消社区奖励</li>
-    <li style="margin-bottom: 10px; padding-left: 4px;">所有参与交易的地址均要填写表单提交报备</li>
-    <li style="margin-bottom: 10px; padding-left: 4px;">如磨损不明，则按照质押本金产生的USDT价值来评判与实际代币的价值是否符合</li>
-    <li style="padding-left: 4px;">H 代币可以随时【兑换】USDT，也可以自己购买自己独立参与，但是自己承担磨损费用。</li>
-  </ol>
+                        </div>
+                        <h3 class="card-title">规则与奖励说明</h3>
+                    </div>
+                    
+                    <div class="card-content">
+                        <h4 style="margin-bottom: 12px; color: var(--text-light); font-size: 1.1rem; border-left: 3px solid var(--accent); padding-left: 12px;">规则说明</h4>
+                        
+                        <div class="rules-list">
+                            <ol>
+                                <li>参与Boost交易的 H 代币必须来自质押的收益（如果是购买，转账等其他方式来源，则取消各种权益）</li>
+                                <li>根据算法策略进行【兑换】交易，如频繁交易产生的磨损自行承担，且取消社区奖励</li>
+                                <li>所有参与交易的地址均要填写表单提交报备</li>
+                                <li>如磨损不明，则按照质押本金产生的USDT价值来评判与实际代币的价值是否符合</li>
+                                <li>H 代币可以随时【兑换】USDT，也可以自己购买自己独立参与，但是自己承担磨损费用。</li>
+                            </ol>
+                        </div>
 
-  <h4 style="margin-bottom: 12px; color: var(--text-light); font-size: 1.1rem; border-left: 3px solid var(--secondary); padding-left: 12px;">奖励介绍</h4>
-  <ul style="margin-bottom: 20px; background: rgba(100, 255, 218, 0.05); padding: 16px; border-radius: 12px;">
-    <li style="margin-bottom: 12px; padding-left: 4px;">
-      <span style="color: var(--accent); font-weight: 600;">累计邀请3位新人</span>参与质押总额达2000U：
-      <span style="color: var(--secondary);">奖励价值188U的H币 | 500U瓜分额度</span>
-    </li>
-    <li style="margin-bottom: 12px; padding-left: 4px;">
-      <span style="color: var(--accent); font-weight: 600;">累计邀请5位新人</span>参与质押总额达5000U：
-      <span style="color: var(--secondary);">奖励价值388U的H币 | 1000U瓜分额度</span>
-    </li>
-    <li style="margin-bottom: 12px; padding-left: 4px;">
-      <span style="color: var(--accent); font-weight: 600;">累计邀请10位新人</span>参与质押总额达10000U：
-      <span style="color: var(--secondary);">奖励价值888U的H币 | 3000U瓜分额度</span>
-    </li>
-    <li style="padding-left: 4px;">
-      <span style="color: var(--accent); font-weight: 600;">达到了邀请奖励条件的被邀请人</span>
-      奖励价值58U的H币
-    </li>
-  </ul>
-</div>
+                        <h4 style="margin: 24px 0 12px; color: var(--text-light); font-size: 1.1rem; border-left: 3px solid var(--secondary); padding-left: 12px;">奖励介绍</h4>
+                        
+                        <div class="rewards-list">
+                            <div class="reward-item">
+                                <div class="reward-condition">累计邀请3位新人参与质押总额达2000U</div>
+                                <div class="reward-details">奖励价值188U的H币 | 500U瓜分额度</div>
+                            </div>
+                            
+                            <div class="reward-item">
+                                <div class="reward-condition">累计邀请5位新人参与质押总额达5000U</div>
+                                <div class="reward-details">奖励价值388U的H币 | 1000U瓜分额度</div>
+                            </div>
+                            
+                            <div class="reward-item">
+                                <div class="reward-condition">累计邀请10位新人参与质押总额达10000U</div>
+                                <div class="reward-details">奖励价值888U的H币 | 3000U瓜分额度</div>
+                            </div>
+                            
+                            <div class="reward-item">
+                                <div class="reward-condition">达到了邀请奖励条件的被邀请人</div>
+                                <div class="reward-details">奖励价值58U的H币</div>
+                            </div>
+                        </div>
                         
                         <div class="links-grid">
                             <a href="https://f.wps.cn/ksform/w/write/5rJjd9vy/" class="link-card" target="_blank">
@@ -1002,7 +1093,7 @@
             </div>
             
             <div class="footer-bottom">
-                <p>© 2024 海豚社区. 保留所有权利.</p>
+                <p>© 2026 海豚社区. 保留所有权利.</p>
                 <p style="margin-top: 8px;">链上赚币，重新定义资产增值体验</p>
             </div>
             
@@ -1041,28 +1132,32 @@
                 });
             });
             
-            // 折叠内容功能
+            // 修复的折叠内容功能 - 不会跳转到页面底部
             const collapsibleHeaders = document.querySelectorAll('.collapsible-header');
             
             collapsibleHeaders.forEach(header => {
-                header.addEventListener('click', function() {
+                header.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
                     const targetId = this.id.replace('Header', 'Content');
                     const content = document.getElementById(targetId);
                     const isActive = this.classList.contains('active');
                     
-                    // 关闭所有其他折叠内容
-                    collapsibleHeaders.forEach(h => {
-                        if (h !== this) {
-                            h.classList.remove('active');
-                            const otherTargetId = h.id.replace('Header', 'Content');
-                            const otherContent = document.getElementById(otherTargetId);
-                            otherContent.classList.remove('active');
-                        }
-                    });
-                    
                     // 切换当前内容
                     this.classList.toggle('active');
                     content.classList.toggle('active');
+                    
+                    // 保持当前滚动位置
+                    const currentScrollPosition = window.pageYOffset;
+                    
+                    // 使用requestAnimationFrame确保DOM更新后保持滚动位置
+                    requestAnimationFrame(() => {
+                        window.scrollTo({
+                            top: currentScrollPosition,
+                            behavior: 'auto'
+                        });
+                    });
                 });
             });
             
@@ -1175,4 +1270,3 @@
     </script>
 </body>
 </html>
-
