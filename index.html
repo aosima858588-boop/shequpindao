@@ -96,11 +96,14 @@
             opacity: 0;
             transform: translateY(30px);
             transition: opacity 0.8s ease, transform 0.8s ease;
+            display: none;
+            width: 100%;
         }
 
         #main-content.show {
             opacity: 1;
             transform: translateY(0);
+            display: block;
         }
 
         /* ==================== 简约入口卡片 ==================== */
@@ -358,6 +361,244 @@
             transform: scale(3);
         }
 
+        /* ==================== 主页面样式 ==================== */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .main-section {
+            margin-bottom: 60px;
+        }
+
+        .main-section-title {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: white;
+            text-align: center;
+        }
+
+        .main-section-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 800px;
+            margin: 0 auto 40px;
+            text-align: center;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .content-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-card);
+            padding: 30px;
+            transition: all var(--transition-smooth);
+        }
+
+        .content-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-blue);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .content-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            font-size: 30px;
+        }
+
+        .content-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: white;
+        }
+
+        .content-text {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+        }
+
+        .step-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: white;
+        }
+
+        .step-desc {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .reward-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .reward-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-card);
+            padding: 25px;
+            text-align: center;
+        }
+
+        .reward-amount {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-cyan);
+            margin-bottom: 10px;
+        }
+
+        .reward-condition {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: white;
+        }
+
+        .reward-desc {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .link-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .link-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-button);
+            text-decoration: none;
+            color: white;
+            transition: all var(--transition-smooth);
+        }
+
+        .link-item:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary-blue);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .link-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(0, 102, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: var(--primary-blue);
+        }
+
+        .link-info {
+            flex: 1;
+        }
+
+        .link-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .link-url {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .main-footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .footer-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+        }
+
+        .footer-logo-text {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .footer-text {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 20px;
+        }
+
         /* ==================== 响应式调整 ==================== */
         @media (max-width: 1200px) {
             .access-grid {
@@ -377,6 +618,10 @@
             .access-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 15px;
+            }
+            
+            .main-section-title {
+                font-size: 2rem;
             }
         }
 
@@ -427,6 +672,23 @@
                 bottom: 20px;
                 padding: 0 20px;
             }
+            
+            .main-container {
+                padding: 30px 15px;
+            }
+            
+            .main-section {
+                margin-bottom: 50px;
+            }
+            
+            .main-section-title {
+                font-size: 1.8rem;
+            }
+            
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -463,6 +725,25 @@
             .entry-hint {
                 font-size: 0.8rem;
                 bottom: 20px;
+            }
+            
+            .content-card {
+                padding: 20px;
+            }
+            
+            .content-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 24px;
+            }
+            
+            .content-title {
+                font-size: 1.2rem;
+            }
+            
+            .step-item {
+                flex-direction: column;
+                gap: 10px;
             }
         }
 
@@ -623,9 +904,238 @@
     
     <!-- ==================== 主内容 ==================== -->
     <div id="main-content">
-        <!-- 这里将放置完整的主页面内容 -->
-        <!-- 由于主页面内容较长，这里暂时省略 -->
-        <!-- 如果需要，可以将之前的主页面代码复制到这里 -->
+        <div class="main-container">
+            <!-- 欢迎部分 -->
+            <section class="main-section">
+                <h2 class="main-section-title">欢迎来到海豚社区</h2>
+                <p class="main-section-subtitle">
+                    我们致力于通过创新的阶梯式模型与社区协同策略，帮助您在OKX Boost活动中实现稳定收益与超额价值回报
+                </p>
+                
+                <div class="content-grid">
+                    <div class="content-card">
+                        <div class="content-icon" style="background: rgba(0, 102, 255, 0.1); color: var(--primary-blue);">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3 class="content-title">稳定收益保障</h3>
+                        <p class="content-text">
+                            通过创新的阶梯式模型，确保您在参与OKX Boost活动时能够获得稳定的收益，同时降低市场波动风险。
+                        </p>
+                    </div>
+                    
+                    <div class="content-card">
+                        <div class="content-icon" style="background: rgba(123, 97, 255, 0.1); color: var(--primary-purple);">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3 class="content-title">社区协同策略</h3>
+                        <p class="content-text">
+                            加入我们的社区，获取实时策略指导，与其他成员协同作战，共同创造更高的收益回报。
+                        </p>
+                    </div>
+                    
+                    <div class="content-card">
+                        <div class="content-icon" style="background: rgba(0, 194, 255, 0.1); color: var(--primary-cyan);">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3 class="content-title">风险缓冲机制</h3>
+                        <p class="content-text">
+                            我们提供风险缓冲机制，确保在遵循社区策略的情况下，您的合理损失能够得到适当补偿。
+                        </p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 参与步骤 -->
+            <section class="main-section">
+                <h2 class="main-section-title">四步参与法</h2>
+                <p class="main-section-subtitle">
+                    按照以下四个简单步骤，开始您的OKX Boost增益之旅
+                </p>
+                
+                <div class="step-list">
+                    <div class="step-item">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3 class="step-title">质押获取弹药</h3>
+                            <p class="step-desc">
+                                在社区平台质押USDT，每日20:00稳定领取H代币收益。这是您"零成本"参与活动的核心本金。
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="step-item">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3 class="step-title">择时兑换</h3>
+                            <p class="step-desc">
+                                根据群内流动性提示，将领取的H代币兑换为USDT或OKB。社区将协调资金入场支撑价格，旨在让您换得更多！
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="step-item">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3 class="step-title">执行交易</h3>
+                            <p class="step-desc">
+                                完成每日2-5次兑换交易，积累Boost数据。可使用"限价单"设置与市场价接近的报价，以几乎零成本的方式完成交易量。
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="step-item">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h3 class="step-title">循环滚动</h3>
+                            <p class="step-desc">
+                                每日重复此过程。您的交易量将持续积累，奖励随之增长，形成"收益越多 → 交易量越大 → 奖励更多"的飞轮效应。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 奖励规则 -->
+            <section class="main-section">
+                <h2 class="main-section-title">奖励规则说明</h2>
+                
+                <div class="content-grid">
+                    <div class="content-card">
+                        <h3 class="content-title">规则说明</h3>
+                        <ul style="list-style: none; padding-left: 0;">
+                            <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">
+                                <i class="fas fa-check-circle" style="position: absolute; left: 0; color: var(--primary-cyan);"></i>
+                                <span>参与Boost交易的H代币必须来自质押的收益</span>
+                            </li>
+                            <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">
+                                <i class="fas fa-check-circle" style="position: absolute; left: 0; color: var(--primary-cyan);"></i>
+                                <span>根据群通知策略进行【兑换】交易</span>
+                            </li>
+                            <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">
+                                <i class="fas fa-check-circle" style="position: absolute; left: 0; color: var(--primary-cyan);"></i>
+                                <span>所有参与交易的地址均要填写表单提交报备</span>
+                            </li>
+                            <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">
+                                <i class="fas fa-check-circle" style="position: absolute; left: 0; color: var(--primary-cyan);"></i>
+                                <span>如磨损不明，则按照质押本金产生的USDT价值来评判</span>
+                            </li>
+                            <li style="padding-left: 20px; position: relative;">
+                                <i class="fas fa-check-circle" style="position: absolute; left: 0; color: var(--primary-cyan);"></i>
+                                <span>H代币可以随时【兑换】USDT不参与Boost</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h3 class="content-title">邀请奖励</h3>
+                        <div class="reward-grid">
+                            <div class="reward-card">
+                                <div class="reward-condition">邀请3人 · 质押2000U</div>
+                                <div class="reward-amount">188U + 500U</div>
+                                <div class="reward-desc">价值188U的H币 + 500U瓜分额度</div>
+                            </div>
+                            
+                            <div class="reward-card">
+                                <div class="reward-condition">邀请5人 · 质押5000U</div>
+                                <div class="reward-amount">388U + 1000U</div>
+                                <div class="reward-desc">价值388U的H币 + 1000U瓜分额度</div>
+                            </div>
+                            
+                            <div class="reward-card">
+                                <div class="reward-condition">邀请10人 · 质押10000U</div>
+                                <div class="reward-amount">888U + 3000U</div>
+                                <div class="reward-desc">价值888U的H币 + 3000U瓜分额度</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 链接入口 -->
+            <section class="main-section">
+                <h2 class="main-section-title">便捷访问入口</h2>
+                
+                <div class="link-list">
+                    <a href="https://hstaking.space" target="_blank" class="link-item">
+                        <div class="link-icon">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                        <div class="link-info">
+                            <div class="link-title">进入链上赚币</div>
+                            <div class="link-url">hstaking.space</div>
+                        </div>
+                    </a>
+                    
+                    <a href="https://web3.okx.com/ul/3yFdiPq" target="_blank" class="link-item">
+                        <div class="link-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="link-info">
+                            <div class="link-title">立即购买H币</div>
+                            <div class="link-url">web3.okx.com</div>
+                        </div>
+                    </a>
+                    
+                    <a href="https://oyidl.me/ul/S1ycxF8" target="_blank" class="link-item">
+                        <div class="link-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="link-info">
+                            <div class="link-title">欧易社区红包群</div>
+                            <div class="link-url">oyidl.me</div>
+                        </div>
+                    </a>
+                    
+                    <a href="https://web3.okx.com/zh-hans/boost/records" target="_blank" class="link-item">
+                        <div class="link-icon">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                        <div class="link-info">
+                            <div class="link-title">OKX Boost介绍</div>
+                            <div class="link-url">官方介绍</div>
+                        </div>
+                    </a>
+                    
+                    <a href="https://f.wps.cn/ksform/w/write/5rJjd9vy/" target="_blank" class="link-item">
+                        <div class="link-icon">
+                            <i class="fas fa-edit"></i>
+                        </div>
+                        <div class="link-info">
+                            <div class="link-title">填写质押表单</div>
+                            <div class="link-url">f.wps.cn</div>
+                        </div>
+                    </a>
+                    
+                    <a href="http://www.sfw.vc/DPH_OKX" target="_blank" class="link-item">
+                        <div class="link-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <div class="link-info">
+                            <div class="link-title">进入Boost频道</div>
+                            <div class="link-url">sfw.vc</div>
+                        </div>
+                    </a>
+                </div>
+            </section>
+            
+            <!-- 页脚 -->
+            <footer class="main-footer">
+                <div class="footer-logo">
+                    <div class="footer-logo-icon">
+                        <i class="fas fa-dolphin"></i>
+                    </div>
+                    <div class="footer-logo-text">海豚社区</div>
+                </div>
+                <p class="footer-text">
+                    © 2024 海豚社区 | OKX Boost增益活动<br>
+                    重新定义资产增值体验
+                </p>
+                <button class="secondary-button" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                    <i class="fas fa-arrow-up"></i>
+                    返回顶部
+                </button>
+            </footer>
+        </div>
     </div>
 
     <script>
@@ -665,11 +1175,6 @@
                 dot.style.height = `${size}px`;
                 dot.style.opacity = Math.random() * 0.3 + 0.1;
                 
-                // 随机动画
-                const duration = Math.random() * 20 + 10;
-                const delay = Math.random() * 5;
-                dot.style.animation = `floatDot ${duration}s ${delay}s infinite ease-in-out`;
-                
                 container.appendChild(dot);
             }
             
@@ -680,9 +1185,12 @@
                 style.textContent = `
                     @keyframes floatDot {
                         0%, 100% { transform: translate(0, 0); }
-                        25% { transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px); }
-                        50% { transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px); }
-                        75% { transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px); }
+                        33% { transform: translate(${Math.random() * 50 - 25}px, ${Math.random() * 50 - 25}px); }
+                        66% { transform: translate(${Math.random() * 50 - 25}px, ${Math.random() * 50 - 25}px); }
+                    }
+                    
+                    .dot {
+                        animation: floatDot 20s infinite ease-in-out;
                     }
                 `;
                 document.head.appendChild(style);
@@ -782,7 +1290,7 @@
         
         // ==================== 触摸设备优化 ====================
         if ('ontouchstart' in window) {
-            document.querySelectorAll('.access-item').forEach(item => {
+            document.querySelectorAll('.access-item, .link-item').forEach(item => {
                 item.style.cursor = 'pointer';
             });
         }
