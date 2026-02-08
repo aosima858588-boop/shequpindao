@@ -7,11 +7,11 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* 首页特定样式 */
+        /* 首页特定样式优化 */
         .hero-section {
             position: relative;
             padding: 40px 0 30px;
-            margin-bottom: 30px;
+            margin-bottom: 0;
         }
         
         .hero-content {
@@ -33,34 +33,14 @@
         .hero-subtitle {
             font-size: 16px;
             color: var(--text-secondary);
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             opacity: 0.9;
+            line-height: 1.6;
         }
         
-        .stats-row {
-            display: flex;
-            gap: 16px;
-            margin-top: 24px;
-        }
+        /* 移除原stats-row，替换为质押总览 */
         
-        .stat-item {
-            flex: 1;
-            text-align: center;
-        }
-        
-        .stat-number {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-        
-        .stat-label {
-            font-size: 12px;
-            color: var(--text-secondary);
-            margin-top: 4px;
-        }
-        
-        /* 活动卡片 */
+        /* 活动卡片优化 */
         .activity-card {
             background: linear-gradient(135deg, rgba(255, 152, 0, 0.1), rgba(239, 108, 0, 0.1));
             border: 1px solid rgba(255, 152, 0, 0.2);
@@ -113,7 +93,7 @@
             color: #ff5722;
         }
         
-        /* 公告条 */
+        /* 公告条优化 */
         .announcement-bar {
             background: linear-gradient(90deg, rgba(156, 39, 176, 0.1), rgba(106, 27, 154, 0.1));
             border: 1px solid rgba(156, 39, 176, 0.2);
@@ -157,7 +137,7 @@
             color: var(--text-primary);
         }
         
-        /* 收益展示 */
+        /* 收益展示优化 */
         .earnings-preview {
             background: linear-gradient(135deg, rgba(0, 200, 83, 0.1), rgba(46, 125, 50, 0.1));
             border: 1px solid rgba(0, 200, 83, 0.2);
@@ -190,36 +170,58 @@
             color: var(--text-secondary);
         }
         
-        /* 浮动水波纹 */
-        .ripple {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(26, 115, 232, 0.1);
-            transform: scale(0);
-            animation: ripple-animation 1.5s linear infinite;
+        /* 策略提示优化 */
+        .strategy-hint {
+            background: linear-gradient(135deg, rgba(33, 150, 243, 0.1), rgba(13, 71, 161, 0.1));
+            border: 1px solid rgba(33, 150, 243, 0.2);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 24px;
         }
         
-        @keyframes ripple-animation {
-            to {
-                transform: scale(4);
-                opacity: 0;
-            }
+        .strategy-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
         }
         
-        /* 微交互反馈 */
-        .tap-feedback {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.5);
-            transform: scale(0);
-            pointer-events: none;
-            animation: tap-feedback 0.4s ease-out;
+        .strategy-header i {
+            color: #2196f3;
+            font-size: 24px;
         }
         
-        @keyframes tap-feedback {
-            to {
-                transform: scale(2);
-                opacity: 0;
+        .strategy-title {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .strategy-content {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        /* 网格布局优化 */
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin: 20px 0;
+        }
+        
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin: 20px 0;
+        }
+        
+        @media (max-width: 360px) {
+            .grid-4,
+            .grid-3 {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -252,26 +254,105 @@
                         <i class="fas fa-rocket" style="margin-right: 10px;"></i>
                         立即开始赚币
                     </a>
-                    
-                    <div class="stats-row">
-                        <div class="stat-item">
-                            <div class="stat-number">$1.24M</div>
-                            <div class="stat-label">社区总质押</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-number">856K+</div>
-                            <div class="stat-label">总交易量</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-number">42K+</div>
-                            <div class="stat-label">日活用户</div>
-                        </div>
-                    </div>
                 </div>
             </section>
             
+            <!-- 社区总质押展示 -->
+            <div class="stake-overview animate-slide-in" style="animation-delay: 0.1s;">
+                <div class="stake-title">
+                    <i class="fas fa-layer-group"></i>
+                    <span>社区总质押</span>
+                </div>
+                
+                <div class="stake-main">
+                    <div class="stake-amount" id="totalStake">$1,245,680</div>
+                    <div class="stake-label">总质押金额 | 实时更新</div>
+                    
+                    <!-- 社区活跃度 -->
+                    <div class="community-health">
+                        <div class="health-indicator">
+                            <div class="health-dot"></div>
+                            <span class="health-text">社区活跃度：极高</span>
+                        </div>
+                        <div style="margin-left: auto; font-size: 12px; color: var(--text-secondary);">
+                            24h增长：+3.2%
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 质押详情 -->
+                <div class="stake-details">
+                    <div class="stake-detail-item">
+                        <div class="detail-value">856,420</div>
+                        <div class="detail-label">总交易量</div>
+                    </div>
+                    <div class="stake-detail-item">
+                        <div class="detail-value">42,350</div>
+                        <div class="detail-label">日交易量</div>
+                    </div>
+                    <div class="stake-detail-item">
+                        <div class="detail-value">2,148</div>
+                        <div class="detail-label">活跃地址</div>
+                    </div>
+                    <div class="stake-detail-item">
+                        <div class="detail-value">#1,248</div>
+                        <div class="detail-label">你的排名</div>
+                    </div>
+                </div>
+                
+                <!-- 质押进度 -->
+                <div class="stake-progress">
+                    <div class="progress-label">
+                        <span>本月目标进度</span>
+                        <span>75%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-fill" style="width: 75%;"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 实时数据流 -->
+            <div class="realtime-data animate-slide-in" style="animation-delay: 0.2s;">
+                <div class="realtime-item">
+                    <div class="realtime-icon" style="background: linear-gradient(135deg, #1a73e8, #0d47a1);">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <div class="realtime-label">当前交易量</div>
+                    <div class="realtime-value">$42,350</div>
+                    <span class="realtime-change positive">+12.5%</span>
+                </div>
+                
+                <div class="realtime-item">
+                    <div class="realtime-icon" style="background: linear-gradient(135deg, #00bcd4, #00838f);">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="realtime-label">今日参与</div>
+                    <div class="realtime-value">324人</div>
+                    <span class="realtime-change positive">+8.3%</span>
+                </div>
+                
+                <div class="realtime-item">
+                    <div class="realtime-icon" style="background: linear-gradient(135deg, #00c853, #2e7d32);">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <div class="realtime-label">平均收益</div>
+                    <div class="realtime-value">$124.68</div>
+                    <span class="realtime-change positive">+5.7%</span>
+                </div>
+                
+                <div class="realtime-item">
+                    <div class="realtime-icon" style="background: linear-gradient(135deg, #ff9800, #ef6c00);">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="realtime-label">奖励池</div>
+                    <div class="realtime-value">$50,000</div>
+                    <span class="realtime-change positive">+20.0%</span>
+                </div>
+            </div>
+            
             <!-- 活动卡片 -->
-            <div class="activity-card animate-slide-in" style="animation-delay: 0.1s;">
+            <div class="activity-card animate-slide-in" style="animation-delay: 0.3s;">
                 <h3 class="activity-title">🚀 Boost活动进行中</h3>
                 <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 16px;">
                     本期活动奖励池：$50,000+，参与瓜分新币空投
@@ -287,7 +368,7 @@
             </div>
             
             <!-- 公告条 -->
-            <div class="announcement-bar animate-slide-in" style="animation-delay: 0.2s;">
+            <div class="announcement-bar animate-slide-in" style="animation-delay: 0.4s;">
                 <div class="announcement-icon">
                     <i class="fas fa-gift"></i>
                 </div>
@@ -298,25 +379,30 @@
             </div>
             
             <!-- 收益预览 -->
-            <div class="earnings-preview animate-slide-in" style="animation-delay: 0.3s;">
+            <div class="earnings-preview animate-slide-in" style="animation-delay: 0.5s;">
                 <div class="earnings-title">📈 您昨日收益</div>
                 <div class="earnings-amount">$124.68</div>
                 <div class="earnings-period">H代币收益 + Boost奖励</div>
-                
-                <div style="margin-top: 20px;">
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 75%;"></div>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; font-size: 13px; color: var(--text-secondary);">
-                        <span>本月目标进度</span>
-                        <span>75%</span>
-                    </div>
+            </div>
+            
+            <!-- 策略提示 -->
+            <div class="strategy-hint animate-slide-in" style="animation-delay: 0.6s;">
+                <div class="strategy-header">
+                    <i class="fas fa-lightbulb"></i>
+                    <div class="strategy-title">今日策略提示</div>
+                </div>
+                <div class="strategy-content">
+                    建议在UTC+8的10:00-12:00时间段进行H代币兑换，此时流动性最佳，滑点最低。
+                    关注社区通知，获取实时流动性提示。
                 </div>
             </div>
             
             <!-- 快捷入口 -->
-            <div class="glass-card animate-slide-in" style="animation-delay: 0.4s;">
-                <h3 style="font-size: 18px; margin-bottom: 20px; color: var(--text-primary);">🚪 快速入口</h3>
+            <div class="glass-card animate-slide-in" style="animation-delay: 0.7s;">
+                <h3 style="font-size: 18px; margin-bottom: 20px; color: var(--text-primary); display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-bolt" style="color: #1a73e8;"></i>
+                    <span>快速入口</span>
+                </h3>
                 <div class="grid-4">
                     <a href="boost-detail.html" class="quick-entry">
                         <div class="entry-icon" style="background: var(--primary-gradient);">
@@ -348,35 +434,12 @@
                 </div>
             </div>
             
-            <!-- 数据总览 -->
-            <div class="glass-card animate-slide-in" style="animation-delay: 0.5s;">
-                <h3 style="font-size: 18px; margin-bottom: 20px; color: var(--text-primary);">📊 数据总览</h3>
-                <div class="grid-2">
-                    <div class="data-card">
-                        <div class="data-value">$1,245,680</div>
-                        <div class="data-label">质押总量</div>
-                    </div>
-                    
-                    <div class="data-card">
-                        <div class="data-value">$856,420</div>
-                        <div class="data-label">总交易量</div>
-                    </div>
-                    
-                    <div class="data-card">
-                        <div class="data-value">$42,350</div>
-                        <div class="data-label">日交易量</div>
-                    </div>
-                    
-                    <div class="data-card">
-                        <div class="data-value">#1,248</div>
-                        <div class="data-label">你的排名</div>
-                    </div>
-                </div>
-            </div>
-            
             <!-- 常用工具 -->
-            <div class="glass-card animate-slide-in" style="animation-delay: 0.6s;">
-                <h3 style="font-size: 18px; margin-bottom: 20px; color: var(--text-primary);">🛠️ 常用工具</h3>
+            <div class="glass-card animate-slide-in" style="animation-delay: 0.8s;">
+                <h3 style="font-size: 18px; margin-bottom: 20px; color: var(--text-primary); display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-tools" style="color: #00bcd4;"></i>
+                    <span>常用工具</span>
+                </h3>
                 <div class="grid-3">
                     <a href="sign.html" class="tool-card">
                         <div class="tool-icon" style="background: linear-gradient(135deg, #ff9800, #ef6c00);">
@@ -422,15 +485,39 @@
                 </div>
             </div>
             
-            <!-- 策略提示 -->
-            <div class="glass-card animate-slide-in" style="animation-delay: 0.7s; background: linear-gradient(135deg, rgba(26, 115, 232, 0.05), rgba(0, 188, 212, 0.05));">
-                <h3 style="font-size: 18px; margin-bottom: 12px; color: var(--text-primary); display: flex; align-items: center; gap: 10px;">
-                    <i class="fas fa-lightbulb" style="color: #ff9800;"></i>
-                    今日策略提示
-                </h3>
-                <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.6;">
-                    建议在UTC+8的10:00-12:00时间段进行H代币兑换，此时流动性最佳，滑点最低。
-                </p>
+            <!-- 质押排行榜（选看） -->
+            <div class="stake-leaderboard animate-slide-in" style="animation-delay: 0.9s;">
+                <div class="leaderboard-header">
+                    <div class="leaderboard-title">
+                        <i class="fas fa-crown" style="color: #ff9800; margin-right: 8px;"></i>
+                        质押排行榜
+                    </div>
+                    <a href="#" style="font-size: 14px; color: var(--primary-color); text-decoration: none;">查看全部 ></a>
+                </div>
+                <div class="leaderboard-list">
+                    <div class="leaderboard-item">
+                        <div class="rank-badge rank-1">1</div>
+                        <div class="user-info">
+                            <div class="user-name">@加密猎人</div>
+                            <div class="user-amount">质押 $245,680</div>
+                        </div>
+                        <i class="fas fa-crown" style="color: #ffd700;"></i>
+                    </div>
+                    <div class="leaderboard-item">
+                        <div class="rank-badge rank-2">2</div>
+                        <div class="user-info">
+                            <div class="user-name">@链上探索者</div>
+                            <div class="user-amount">质押 $182,450</div>
+                        </div>
+                    </div>
+                    <div class="leaderboard-item">
+                        <div class="rank-badge rank-3">3</div>
+                        <div class="user-info">
+                            <div class="user-name">@数字海豚</div>
+                            <div class="user-amount">质押 $156,320</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
@@ -500,50 +587,29 @@
         // 每秒更新
         setInterval(updateCountdown, 1000);
         
-        // 点击反馈效果
-        document.addEventListener('click', function(e) {
-            const target = e.target.closest('.glass-card, .quick-entry, .tool-card, .data-card, .btn');
-            if (target && target.classList.contains('btn')) {
-                return; // 按钮已有自己的动画
-            }
+        // 模拟质押数据更新
+        function updateStakeData() {
+            const totalStakeEl = document.getElementById('totalStake');
+            let currentValue = parseFloat(totalStakeEl.textContent.replace('$', '').replace(',', ''));
             
-            if (target) {
-                const rect = target.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                
-                const ripple = document.createElement('div');
-                ripple.style.position = 'absolute';
-                ripple.style.left = x + 'px';
-                ripple.style.top = y + 'px';
-                ripple.style.width = '0px';
-                ripple.style.height = '0px';
-                ripple.style.borderRadius = '50%';
-                ripple.style.background = 'rgba(26, 115, 232, 0.2)';
-                ripple.style.transform = 'scale(0)';
-                ripple.style.transition = 'all 0.4s ease-out';
-                ripple.style.pointerEvents = 'none';
-                
-                target.style.position = 'relative';
-                target.style.overflow = 'hidden';
-                target.appendChild(ripple);
-                
-                setTimeout(() => {
-                    ripple.style.width = '200px';
-                    ripple.style.height = '200px';
-                    ripple.style.left = (x - 100) + 'px';
-                    ripple.style.top = (y - 100) + 'px';
-                    ripple.style.transform = 'scale(1)';
-                    ripple.style.opacity = '0';
-                }, 10);
-                
-                setTimeout(() => {
-                    if (ripple.parentNode === target) {
-                        target.removeChild(ripple);
-                    }
-                }, 410);
-            }
-        });
+            // 随机增长
+            const growth = Math.random() * 1000;
+            currentValue += growth;
+            
+            // 格式化显示
+            totalStakeEl.textContent = '$' + Math.round(currentValue).toLocaleString('en-US');
+            
+            // 添加增长动画
+            totalStakeEl.style.transform = 'scale(1.05)';
+            totalStakeEl.style.transition = 'transform 0.3s ease';
+            
+            setTimeout(() => {
+                totalStakeEl.style.transform = 'scale(1)';
+            }, 300);
+        }
+        
+        // 每30秒更新一次质押数据
+        setInterval(updateStakeData, 30000);
         
         // 模拟余额变化
         function updateBalance() {
@@ -566,11 +632,57 @@
         // 每10秒更新一次余额
         setInterval(updateBalance, 10000);
         
+        // 点击反馈效果
+        document.addEventListener('click', function(e) {
+            const target = e.target.closest('.glass-card, .quick-entry, .tool-card, .stake-overview, .realtime-item, .leaderboard-item, .btn');
+            if (target && target.classList.contains('btn')) {
+                return;
+            }
+            
+            if (target) {
+                const rect = target.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const ripple = document.createElement('div');
+                ripple.style.position = 'absolute';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.style.width = '0px';
+                ripple.style.height = '0px';
+                ripple.style.borderRadius = '50%';
+                ripple.style.background = 'rgba(26, 115, 232, 0.2)';
+                ripple.style.transform = 'scale(0)';
+                ripple.style.transition = 'all 0.4s ease-out';
+                ripple.style.pointerEvents = 'none';
+                ripple.style.zIndex = '1';
+                
+                target.style.position = 'relative';
+                target.style.overflow = 'hidden';
+                target.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.style.width = '200px';
+                    ripple.style.height = '200px';
+                    ripple.style.left = (x - 100) + 'px';
+                    ripple.style.top = (y - 100) + 'px';
+                    ripple.style.transform = 'scale(1)';
+                    ripple.style.opacity = '0';
+                }, 10);
+                
+                setTimeout(() => {
+                    if (ripple.parentNode === target) {
+                        target.removeChild(ripple);
+                    }
+                }, 410);
+            }
+        });
+        
         // 页面加载动画
         document.addEventListener('DOMContentLoaded', function() {
             const cards = document.querySelectorAll('.animate-slide-in');
             cards.forEach((card, index) => {
-                card.style.animationDelay = (0.4 + index * 0.1) + 's';
+                card.style.animationDelay = (0.1 + index * 0.1) + 's';
             });
             
             // 创建浮动水波纹
@@ -587,23 +699,6 @@
                     ripple.remove();
                 }, 1500);
             }, 3000);
-        });
-        
-        // 滚动时更新导航栏
-        let lastScrollTop = 0;
-        window.addEventListener('scroll', function() {
-            const statusBar = document.querySelector('.status-bar');
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            
-            if (scrollTop > lastScrollTop && scrollTop > 100) {
-                // 向下滚动
-                statusBar.style.transform = 'translateY(-100%)';
-            } else {
-                // 向上滚动
-                statusBar.style.transform = 'translateY(0)';
-            }
-            
-            lastScrollTop = scrollTop;
         });
     </script>
 </body>
