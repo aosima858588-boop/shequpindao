@@ -2,287 +2,441 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>海豚社区 - 首页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>海豚社区 | 链上赚币工具</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* 首页特定样式 */
         .hero-section {
-            background: var(--gradient-ocean);
-            color: white;
-            padding: 20px 15px;
-            border-radius: 0 0 20px 20px;
-            margin-bottom: 20px;
+            position: relative;
+            padding: 40px 0 30px;
+            margin-bottom: 30px;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero-title {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1a73e8, #00bcd4);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+        
+        .hero-subtitle {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            opacity: 0.9;
+        }
+        
+        .stats-row {
+            display: flex;
+            gap: 16px;
+            margin-top: 24px;
+        }
+        
+        .stat-item {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+        
+        /* 活动卡片 */
+        .activity-card {
+            background: linear-gradient(135deg, rgba(255, 152, 0, 0.1), rgba(239, 108, 0, 0.1));
+            border: 1px solid rgba(255, 152, 0, 0.2);
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 24px;
             position: relative;
             overflow: hidden;
         }
         
-        .hero-section::before {
-            content: "";
+        .activity-card::before {
+            content: '';
             position: absolute;
-            top: -50%;
-            right: -30%;
-            width: 200px;
-            height: 200px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, rgba(255, 152, 0, 0.2), transparent);
+            border-radius: 0 20px 0 100px;
         }
         
-        .hero-section::after {
-            content: "";
-            position: absolute;
-            bottom: -80px;
-            left: -50px;
-            width: 200px;
-            height: 200px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 50%;
-        }
-        
-        .hero-title {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .hero-subtitle {
-            font-size: 14px;
-            opacity: 0.9;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        
-        .section-title {
+        .activity-title {
             font-size: 18px;
-            font-weight: 600;
-        }
-        
-        .section-link {
-            color: var(--primary-color);
-            font-size: 13px;
-            text-decoration: none;
-        }
-        
-        .announcement {
-            background: linear-gradient(135deg, #ffeb3b, #ff9800);
-            color: #333;
-            padding: 12px 15px;
-            border-radius: 12px;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-        }
-        
-        .announcement-icon {
-            font-size: 20px;
-            margin-right: 10px;
-        }
-        
-        .announcement-text {
-            flex: 1;
-            font-size: 13px;
-            font-weight: 500;
+            font-weight: 700;
+            color: #ff9800;
+            margin-bottom: 8px;
         }
         
         .activity-timer {
-            background: rgba(255, 87, 34, 0.1);
-            border-left: 4px solid #ff5722;
-            padding: 10px 15px;
-            margin-bottom: 15px;
-            border-radius: 0 8px 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 12px;
         }
         
-        .timer-title {
-            font-weight: 500;
-            margin-bottom: 5px;
-            color: #ff5722;
+        .timer-icon {
+            color: #ff9800;
+            font-size: 20px;
+        }
+        
+        .timer-text {
+            flex: 1;
+            font-size: 14px;
+            color: var(--text-secondary);
         }
         
         .timer-value {
             font-size: 18px;
             font-weight: 700;
+            color: #ff5722;
+        }
+        
+        /* 公告条 */
+        .announcement-bar {
+            background: linear-gradient(90deg, rgba(156, 39, 176, 0.1), rgba(106, 27, 154, 0.1));
+            border: 1px solid rgba(156, 39, 176, 0.2);
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .announcement-bar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, #9c27b0, #6a1b9a);
+        }
+        
+        .announcement-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #9c27b0, #6a1b9a);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        
+        .announcement-text {
+            flex: 1;
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        /* 收益展示 */
+        .earnings-preview {
+            background: linear-gradient(135deg, rgba(0, 200, 83, 0.1), rgba(46, 125, 50, 0.1));
+            border: 1px solid rgba(0, 200, 83, 0.2);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .earnings-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #00c853;
+            margin-bottom: 16px;
+        }
+        
+        .earnings-amount {
+            font-size: 40px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #00c853, #2e7d32);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 8px;
+        }
+        
+        .earnings-period {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        /* 浮动水波纹 */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(26, 115, 232, 0.1);
+            transform: scale(0);
+            animation: ripple-animation 1.5s linear infinite;
+        }
+        
+        @keyframes ripple-animation {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+        
+        /* 微交互反馈 */
+        .tap-feedback {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: scale(0);
+            pointer-events: none;
+            animation: tap-feedback 0.4s ease-out;
+        }
+        
+        @keyframes tap-feedback {
+            to {
+                transform: scale(2);
+                opacity: 0;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- 动态波浪背景 -->
+    <div class="wave-bg"></div>
+    
     <!-- 状态栏 -->
     <div class="status-bar">
-        <i class="fas fa-dolphin" style="margin-right: 8px;"></i>
-        海豚社区
-    </div>
-    
-    <!-- 主内容 -->
-    <div class="container">
-        <div class="main-content">
-            <!-- 顶部横幅 -->
-            <div class="hero-section">
-                <h1 class="hero-title">海豚社区辅助工具</h1>
-                <p class="hero-subtitle">链上赚币 | OKX Boost活动辅助平台</p>
-            </div>
-            
-            <!-- 公告 -->
-            <div class="announcement">
-                <div class="announcement-icon">
-                    <i class="fas fa-bullhorn"></i>
-                </div>
-                <div class="announcement-text">
-                    新人专享：邀请好友参与质押，最高可得888U奖励！
-                </div>
-            </div>
-            
-            <!-- 活动倒计时 -->
-            <div class="activity-timer">
-                <div class="timer-title">本期Boost活动结束还有</div>
-                <div class="timer-value" id="countdown">8天12小时</div>
-            </div>
-            
-            <!-- 快捷入口 -->
-            <div class="section-header">
-                <h2 class="section-title">快捷入口</h2>
-                <a href="boost-detail.html" class="section-link">查看详情</a>
-            </div>
-            
-            <div class="quick-grid">
-                <a href="boost-detail.html" class="quick-item">
-                    <div class="quick-icon" style="background: var(--gradient-blue);">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <div class="quick-title">链上赚币</div>
-                </a>
-                
-                <a href="#" class="quick-item">
-                    <div class="quick-icon" style="background: linear-gradient(135deg, #00c853, #64dd17);">
-                        <i class="fas fa-shopping-cart"></i>
-                    </div>
-                    <div class="quick-title">立即购买 H</div>
-                </a>
-                
-                <a href="#" class="quick-item">
-                    <div class="quick-icon" style="background: linear-gradient(135deg, #ff9800, #ff5722);">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <div class="quick-title">社区红包群</div>
-                </a>
-                
-                <a href="#" class="quick-item">
-                    <div class="quick-icon" style="background: linear-gradient(135deg, #9c27b0, #673ab7);">
-                        <i class="fas fa-file-alt"></i>
-                    </div>
-                    <div class="quick-title">社区表单</div>
-                </a>
-            </div>
-            
-            <!-- 数据总览 -->
-            <div class="section-header">
-                <h2 class="section-title">数据总览</h2>
-                <a href="#" class="section-link">刷新</a>
-            </div>
-            
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-value">$1,245,680</div>
-                    <div class="stat-label">质押总量</div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-value">$856,420</div>
-                    <div class="stat-label">总交易量</div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-value">$42,350</div>
-                    <div class="stat-label">日交易量</div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-value">#1,248</div>
-                    <div class="stat-label">你的排名</div>
-                </div>
-            </div>
-            
-            <!-- 常用工具 -->
-            <div class="section-header">
-                <h2 class="section-title">常用工具</h2>
-                <a href="#" class="section-link">全部</a>
-            </div>
-            
-            <div class="tools-grid">
-                <a href="sign.html" class="tool-item">
-                    <div class="tool-icon" style="background: linear-gradient(135deg, #ff9800, #ff5722);">
-                        <i class="fas fa-calendar-check"></i>
-                    </div>
-                    <div class="tool-title">签到</div>
-                </a>
-                
-                <a href="lottery.html" class="tool-item">
-                    <div class="tool-icon" style="background: linear-gradient(135deg, #9c27b0, #673ab7);">
-                        <i class="fas fa-gift"></i>
-                    </div>
-                    <div class="tool-title">抽奖</div>
-                </a>
-                
-                <a href="ai-assistant.html" class="tool-item">
-                    <div class="tool-icon" style="background: linear-gradient(135deg, #00bcd4, #0097a7);">
-                        <i class="fas fa-robot"></i>
-                    </div>
-                    <div class="tool-title">AI助手</div>
-                </a>
-                
-                <a href="calculator.html" class="tool-item">
-                    <div class="tool-icon" style="background: linear-gradient(135deg, #4caf50, #2e7d32);">
-                        <i class="fas fa-calculator"></i>
-                    </div>
-                    <div class="tool-title">收益计算</div>
-                </a>
-                
-                <a href="query.html" class="tool-item">
-                    <div class="tool-icon" style="background: linear-gradient(135deg, #2196f3, #0d47a1);">
-                        <i class="fas fa-search"></i>
-                    </div>
-                    <div class="tool-title">查询系统</div>
-                </a>
-                
-                <a href="download.html" class="tool-item">
-                    <div class="tool-icon" style="background: linear-gradient(135deg, #ff5722, #c62828);">
-                        <i class="fas fa-download"></i>
-                    </div>
-                    <div class="tool-title">下载中心</div>
-                </a>
-            </div>
-            
-            <!-- 活动简介 -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-icon">
-                        <i class="fas fa-bolt"></i>
-                    </div>
-                    <h3 class="card-title">Boost活动简介</h3>
-                </div>
-                <p style="margin-bottom: 15px; color: var(--text-secondary);">
-                    通过创新的阶梯式模型与社区协同策略，参与OKX Boost的活动，实现稳定收益与超额价值回报，重新定义资产增值体验。
-                </p>
-                <a href="boost-detail.html" class="btn">查看活动详情</a>
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <i class="fas fa-dolphin animate-float" style="color: #1a73e8;"></i>
+            <span>海豚社区</span>
+            <div style="margin-left: auto; font-size: 14px; font-weight: 500; opacity: 0.8;">
+                <i class="fas fa-wallet" style="margin-right: 6px;"></i>
+                <span id="walletBalance">$2,458.32</span>
             </div>
         </div>
     </div>
     
-    <!-- 返回顶部按钮 -->
-    <a href="#" class="back-to-top" id="backToTop">
-        <i class="fas fa-arrow-up"></i>
-    </a>
+    <!-- 主容器 -->
+    <div class="container">
+        <main class="main-content">
+            <!-- 英雄区域 -->
+            <section class="hero-section">
+                <div class="hero-content animate-slide-in">
+                    <h1 class="hero-title">链上赚币<br>智能辅助工具</h1>
+                    <p class="hero-subtitle">参与OKX Boost活动 · 最大化收益 · 专业策略支持</p>
+                    <a href="boost-detail.html" class="btn glow">
+                        <i class="fas fa-rocket" style="margin-right: 10px;"></i>
+                        立即开始赚币
+                    </a>
+                    
+                    <div class="stats-row">
+                        <div class="stat-item">
+                            <div class="stat-number">$1.24M</div>
+                            <div class="stat-label">社区总质押</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">856K+</div>
+                            <div class="stat-label">总交易量</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">42K+</div>
+                            <div class="stat-label">日活用户</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 活动卡片 -->
+            <div class="activity-card animate-slide-in" style="animation-delay: 0.1s;">
+                <h3 class="activity-title">🚀 Boost活动进行中</h3>
+                <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 16px;">
+                    本期活动奖励池：$50,000+，参与瓜分新币空投
+                </p>
+                
+                <div class="activity-timer">
+                    <div class="timer-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="timer-text">剩余时间</div>
+                    <div class="timer-value" id="countdown">8天 12:34:56</div>
+                </div>
+            </div>
+            
+            <!-- 公告条 -->
+            <div class="announcement-bar animate-slide-in" style="animation-delay: 0.2s;">
+                <div class="announcement-icon">
+                    <i class="fas fa-gift"></i>
+                </div>
+                <div class="announcement-text">
+                    新人专享：邀请好友参与质押，最高可获888U奖励！
+                </div>
+                <i class="fas fa-chevron-right" style="color: #9c27b0;"></i>
+            </div>
+            
+            <!-- 收益预览 -->
+            <div class="earnings-preview animate-slide-in" style="animation-delay: 0.3s;">
+                <div class="earnings-title">📈 您昨日收益</div>
+                <div class="earnings-amount">$124.68</div>
+                <div class="earnings-period">H代币收益 + Boost奖励</div>
+                
+                <div style="margin-top: 20px;">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 75%;"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 13px; color: var(--text-secondary);">
+                        <span>本月目标进度</span>
+                        <span>75%</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 快捷入口 -->
+            <div class="glass-card animate-slide-in" style="animation-delay: 0.4s;">
+                <h3 style="font-size: 18px; margin-bottom: 20px; color: var(--text-primary);">🚪 快速入口</h3>
+                <div class="grid-4">
+                    <a href="boost-detail.html" class="quick-entry">
+                        <div class="entry-icon" style="background: var(--primary-gradient);">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="entry-title">链上赚币</div>
+                    </a>
+                    
+                    <a href="#" class="quick-entry">
+                        <div class="entry-icon" style="background: var(--accent-gradient);">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="entry-title">购买H币</div>
+                    </a>
+                    
+                    <a href="#" class="quick-entry">
+                        <div class="entry-icon" style="background: var(--premium-gradient);">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="entry-title">红包群</div>
+                    </a>
+                    
+                    <a href="#" class="quick-entry">
+                        <div class="entry-icon" style="background: linear-gradient(135deg, #2196f3, #0d47a1);">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="entry-title">社区表单</div>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 数据总览 -->
+            <div class="glass-card animate-slide-in" style="animation-delay: 0.5s;">
+                <h3 style="font-size: 18px; margin-bottom: 20px; color: var(--text-primary);">📊 数据总览</h3>
+                <div class="grid-2">
+                    <div class="data-card">
+                        <div class="data-value">$1,245,680</div>
+                        <div class="data-label">质押总量</div>
+                    </div>
+                    
+                    <div class="data-card">
+                        <div class="data-value">$856,420</div>
+                        <div class="data-label">总交易量</div>
+                    </div>
+                    
+                    <div class="data-card">
+                        <div class="data-value">$42,350</div>
+                        <div class="data-label">日交易量</div>
+                    </div>
+                    
+                    <div class="data-card">
+                        <div class="data-value">#1,248</div>
+                        <div class="data-label">你的排名</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 常用工具 -->
+            <div class="glass-card animate-slide-in" style="animation-delay: 0.6s;">
+                <h3 style="font-size: 18px; margin-bottom: 20px; color: var(--text-primary);">🛠️ 常用工具</h3>
+                <div class="grid-3">
+                    <a href="sign.html" class="tool-card">
+                        <div class="tool-icon" style="background: linear-gradient(135deg, #ff9800, #ef6c00);">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="tool-title">每日签到</div>
+                    </a>
+                    
+                    <a href="lottery.html" class="tool-card">
+                        <div class="tool-icon" style="background: var(--premium-gradient);">
+                            <i class="fas fa-gift"></i>
+                        </div>
+                        <div class="tool-title">幸运抽奖</div>
+                    </a>
+                    
+                    <a href="ai-assistant.html" class="tool-card">
+                        <div class="tool-icon" style="background: var(--secondary-gradient);">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="tool-title">AI助手</div>
+                    </a>
+                    
+                    <a href="calculator.html" class="tool-card">
+                        <div class="tool-icon" style="background: var(--accent-gradient);">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        <div class="tool-title">收益计算</div>
+                    </a>
+                    
+                    <a href="query.html" class="tool-card">
+                        <div class="tool-icon" style="background: linear-gradient(135deg, #2196f3, #0d47a1);">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <div class="tool-title">查询系统</div>
+                    </a>
+                    
+                    <a href="download.html" class="tool-card">
+                        <div class="tool-icon" style="background: linear-gradient(135deg, #ff5722, #c62828);">
+                            <i class="fas fa-download"></i>
+                        </div>
+                        <div class="tool-title">下载中心</div>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 策略提示 -->
+            <div class="glass-card animate-slide-in" style="animation-delay: 0.7s; background: linear-gradient(135deg, rgba(26, 115, 232, 0.05), rgba(0, 188, 212, 0.05));">
+                <h3 style="font-size: 18px; margin-bottom: 12px; color: var(--text-primary); display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-lightbulb" style="color: #ff9800;"></i>
+                    今日策略提示
+                </h3>
+                <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.6;">
+                    建议在UTC+8的10:00-12:00时间段进行H代币兑换，此时流动性最佳，滑点最低。
+                </p>
+            </div>
+        </main>
+    </div>
     
     <!-- 底部导航 -->
-    <div class="bottom-nav">
+    <nav class="bottom-nav">
         <a href="index.html" class="nav-item active">
             <div class="nav-icon">
                 <i class="fas fa-home"></i>
@@ -294,7 +448,7 @@
             <div class="nav-icon">
                 <i class="fas fa-chart-bar"></i>
             </div>
-            <div>海豚模型</div>
+            <div>模型</div>
         </a>
         
         <a href="ai-assistant.html" class="nav-item">
@@ -310,48 +464,147 @@
             </div>
             <div>钱包</div>
         </a>
+    </nav>
+    
+    <!-- 浮动操作按钮 -->
+    <div style="position: fixed; bottom: 100px; right: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 999;">
+        <a href="#" class="icon-btn shadow-neon" style="background: var(--primary-gradient); color: white;">
+            <i class="fas fa-question"></i>
+        </a>
+        <a href="#" class="icon-btn" style="background: var(--accent-gradient); color: white;">
+            <i class="fas fa-bell"></i>
+        </a>
     </div>
     
     <script>
-        // 返回顶部功能
-        document.getElementById('backToTop').addEventListener('click', function(e) {
-            e.preventDefault();
-            window.scrollTo({top: 0, behavior: 'smooth'});
-        });
-        
-        // 模拟倒计时
+        // 动态倒计时
         function updateCountdown() {
-            const days = Math.floor(Math.random() * 10);
-            const hours = Math.floor(Math.random() * 24);
-            document.getElementById('countdown').textContent = `${days}天${hours}小时`;
+            const now = new Date();
+            const target = new Date(now);
+            target.setDate(target.getDate() + 8);
+            target.setHours(12, 34, 56, 0);
+            
+            const diff = target - now;
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.getElementById('countdown').textContent = 
+                `${days}天 ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         }
         
-        // 页面加载时更新
+        // 初始更新
         updateCountdown();
+        // 每秒更新
+        setInterval(updateCountdown, 1000);
         
-        // 点击卡片效果
-        document.querySelectorAll('.card, .quick-item, .tool-item').forEach(item => {
-            item.addEventListener('click', function() {
-                this.style.transform = 'scale(0.98)';
+        // 点击反馈效果
+        document.addEventListener('click', function(e) {
+            const target = e.target.closest('.glass-card, .quick-entry, .tool-card, .data-card, .btn');
+            if (target && target.classList.contains('btn')) {
+                return; // 按钮已有自己的动画
+            }
+            
+            if (target) {
+                const rect = target.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const ripple = document.createElement('div');
+                ripple.style.position = 'absolute';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.style.width = '0px';
+                ripple.style.height = '0px';
+                ripple.style.borderRadius = '50%';
+                ripple.style.background = 'rgba(26, 115, 232, 0.2)';
+                ripple.style.transform = 'scale(0)';
+                ripple.style.transition = 'all 0.4s ease-out';
+                ripple.style.pointerEvents = 'none';
+                
+                target.style.position = 'relative';
+                target.style.overflow = 'hidden';
+                target.appendChild(ripple);
+                
                 setTimeout(() => {
-                    this.style.transform = '';
-                }, 150);
-            });
+                    ripple.style.width = '200px';
+                    ripple.style.height = '200px';
+                    ripple.style.left = (x - 100) + 'px';
+                    ripple.style.top = (y - 100) + 'px';
+                    ripple.style.transform = 'scale(1)';
+                    ripple.style.opacity = '0';
+                }, 10);
+                
+                setTimeout(() => {
+                    if (ripple.parentNode === target) {
+                        target.removeChild(ripple);
+                    }
+                }, 410);
+            }
         });
         
-        // 显示当前时间
-        function updateTime() {
-            const now = new Date();
-            const hours = now.getHours().toString().padStart(2, '0');
-            const minutes = now.getMinutes().toString().padStart(2, '0');
-            document.querySelector('.status-bar').innerHTML = 
-                `<i class="fas fa-dolphin" style="margin-right: 8px;"></i>
-                 海豚社区 | ${hours}:${minutes}`;
+        // 模拟余额变化
+        function updateBalance() {
+            const balanceEl = document.getElementById('walletBalance');
+            const balance = parseFloat(balanceEl.textContent.replace('$', '').replace(',', ''));
+            const change = (Math.random() - 0.5) * 20;
+            const newBalance = Math.max(0, balance + change).toFixed(2);
+            
+            balanceEl.style.color = change >= 0 ? '#00c853' : '#ff5722';
+            balanceEl.textContent = '$' + parseFloat(newBalance).toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+            
+            setTimeout(() => {
+                balanceEl.style.color = '';
+            }, 1000);
         }
         
-        // 每分钟更新时间
-        updateTime();
-        setInterval(updateTime, 60000);
+        // 每10秒更新一次余额
+        setInterval(updateBalance, 10000);
+        
+        // 页面加载动画
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.animate-slide-in');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = (0.4 + index * 0.1) + 's';
+            });
+            
+            // 创建浮动水波纹
+            setInterval(() => {
+                const ripple = document.createElement('div');
+                ripple.className = 'ripple';
+                ripple.style.width = '20px';
+                ripple.style.height = '20px';
+                ripple.style.left = Math.random() * 100 + '%';
+                ripple.style.top = '300px';
+                document.querySelector('.wave-bg').appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 1500);
+            }, 3000);
+        });
+        
+        // 滚动时更新导航栏
+        let lastScrollTop = 0;
+        window.addEventListener('scroll', function() {
+            const statusBar = document.querySelector('.status-bar');
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (scrollTop > lastScrollTop && scrollTop > 100) {
+                // 向下滚动
+                statusBar.style.transform = 'translateY(-100%)';
+            } else {
+                // 向上滚动
+                statusBar.style.transform = 'translateY(0)';
+            }
+            
+            lastScrollTop = scrollTop;
+        });
     </script>
 </body>
 </html>
