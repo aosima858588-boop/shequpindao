@@ -1,341 +1,232 @@
-/* style.css - 优化版（移除了数据总览相关样式，新增质押展示组件） */
+/* style.css - 简化实用版 */
 
-/* 移除的数据总览相关样式 */
-/* .stats-grid, .data-card, .stat-card 等已移除 */
-
-/* 新增：质押总览组件 */
-.stake-overview {
-    background: linear-gradient(135deg, rgba(26, 115, 232, 0.1), rgba(0, 188, 212, 0.1));
-    border: 1px solid rgba(26, 115, 232, 0.2);
-    border-radius: 24px;
-    padding: 24px;
-    margin: 24px 0;
-    position: relative;
-    overflow: hidden;
-    backdrop-filter: blur(10px);
+:root {
+    /* 主色调 - 海豚主题 */
+    --primary-color: #1a73e8;      /* 主蓝 */
+    --secondary-color: #00bcd4;    /* 青色 */
+    --accent-color: #00c853;       /* 绿色 */
+    --warning-color: #ff9800;      /* 橙色 */
+    --bg-color: #f5f7fa;           /* 背景色 */
+    --card-bg: #ffffff;            /* 卡片背景 */
+    --text-primary: #1a237e;       /* 主文字 */
+    --text-secondary: #5f6368;     /* 副文字 */
 }
 
-.stake-overview::before {
-    content: '';
-    position: absolute;
+/* 移动端基础 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg-color);
+    color: var(--text-primary);
+    font-size: 14px;
+    line-height: 1.6;
+    max-width: 100vw;
+    overflow-x: hidden;
+}
+
+/* 移动端容器 */
+.app-container {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    min-height: 100vh;
+    padding-bottom: 60px; /* 给底部导航留空间 */
+}
+
+/* 顶部导航栏 */
+.app-header {
+    background: var(--primary-color);
+    color: white;
+    padding: 15px;
+    position: sticky;
     top: 0;
-    right: 0;
-    width: 100px;
-    height: 100px;
-    background: linear-gradient(135deg, rgba(26, 115, 232, 0.2), transparent);
-    border-radius: 0 24px 0 100px;
+    z-index: 100;
 }
 
-.stake-title {
+.header-content {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 20px;
+    justify-content: space-between;
+}
+
+.back-btn {
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.app-title {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* 内容区域 */
+.content {
+    padding: 15px;
+}
+
+/* 卡片样式 */
+.card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.section-title {
     font-size: 16px;
     font-weight: 600;
     color: var(--text-primary);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eee;
 }
 
-.stake-title i {
-    color: var(--primary-color);
-    font-size: 20px;
-}
-
-.stake-main {
+/* 列表项 */
+.list-item {
     display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.stake-amount {
-    font-size: 42px;
-    font-weight: 800;
-    background: linear-gradient(135deg, #1a73e8, #0d47a1);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    line-height: 1;
-}
-
-.stake-label {
-    font-size: 14px;
-    color: var(--text-secondary);
-}
-
-.stake-details {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-    margin-top: 20px;
-}
-
-.stake-detail-item {
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: 16px;
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
     align-items: center;
-    text-align: center;
-    border: 1px solid rgba(26, 115, 232, 0.1);
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
 }
 
-.detail-value {
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--text-primary);
+.list-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: rgba(26, 115, 232, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    color: var(--primary-color);
+}
+
+.list-content {
+    flex: 1;
+}
+
+.list-title {
+    font-weight: 500;
     margin-bottom: 4px;
 }
 
-.detail-label {
-    font-size: 12px;
+.list-desc {
+    font-size: 13px;
     color: var(--text-secondary);
 }
 
-.stake-progress {
-    margin-top: 20px;
+/* 按钮 */
+.btn {
+    display: inline-block;
+    padding: 12px 20px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    text-decoration: none;
+    text-align: center;
+    margin: 4px 0;
+    width: 100%;
 }
 
-.progress-label {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 8px;
-    font-size: 14px;
-    color: var(--text-secondary);
+.btn-secondary {
+    background: var(--secondary-color);
 }
 
-.progress-bar-container {
-    height: 8px;
-    background: rgba(0, 0, 0, 0.05);
-    border-radius: 4px;
-    overflow: hidden;
-    position: relative;
+.btn-accent {
+    background: var(--accent-color);
 }
 
-.progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #1a73e8, #00bcd4);
-    border-radius: 4px;
-    position: relative;
-    transition: width 1s ease-out;
-}
-
-.progress-fill::after {
-    content: '';
-    position: absolute;
-    top: 0;
+/* 底部导航 */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
     left: 0;
     right: 0;
-    bottom: 0;
-    background: linear-gradient(90deg, 
-        transparent 0%, 
-        rgba(255, 255, 255, 0.4) 50%, 
-        transparent 100%);
-    animation: shimmer 2s infinite;
-}
-
-/* 新增：社区活跃度指示器 */
-.community-health {
+    background: white;
+    border-top: 1px solid #e0e0e0;
     display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-top: 16px;
-    padding: 12px 16px;
-    background: rgba(0, 200, 83, 0.1);
-    border-radius: 16px;
-    border: 1px solid rgba(0, 200, 83, 0.2);
+    justify-content: space-around;
+    padding: 10px 0;
+    z-index: 100;
 }
 
-.health-indicator {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.health-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: #00c853;
-    animation: pulse 2s infinite;
-}
-
-.health-text {
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--text-primary);
-}
-
-/* 新增：实时数据流 */
-.realtime-data {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 12px;
-    margin-top: 20px;
-}
-
-.realtime-item {
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 16px;
-    padding: 16px;
+.nav-item {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    border: 1px solid rgba(26, 115, 232, 0.1);
-    transition: all 0.3s ease;
-}
-
-.realtime-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 20px rgba(26, 115, 232, 0.1);
-}
-
-.realtime-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 12px;
-    display: flex;
     align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    color: white;
-    margin-bottom: 8px;
-}
-
-.realtime-label {
-    font-size: 12px;
+    text-decoration: none;
     color: var(--text-secondary);
-}
-
-.realtime-value {
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--text-primary);
-}
-
-.realtime-change {
     font-size: 11px;
-    font-weight: 600;
-    padding: 2px 8px;
-    border-radius: 10px;
-    display: inline-block;
-    width: fit-content;
+    flex: 1;
 }
 
-.realtime-change.positive {
-    background: rgba(0, 200, 83, 0.1);
-    color: #00c853;
+.nav-item.active {
+    color: var(--primary-color);
 }
 
-.realtime-change.negative {
-    background: rgba(244, 67, 54, 0.1);
-    color: #f44336;
+.nav-icon {
+    font-size: 20px;
+    margin-bottom: 4px;
 }
 
-/* 新增：质押排行榜 */
-.stake-leaderboard {
-    background: var(--glass-bg);
-    border-radius: 24px;
-    padding: 24px;
-    margin-top: 24px;
-    border: 1px solid var(--border-light);
-}
-
-.leaderboard-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.leaderboard-title {
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--text-primary);
-}
-
-.leaderboard-list {
-    display: flex;
-    flex-direction: column;
+/* 工具网格 */
+.tools-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 12px;
+    margin: 16px 0;
 }
 
-.leaderboard-item {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 16px;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 16px;
-    border: 1px solid rgba(26, 115, 232, 0.1);
-    transition: all 0.3s ease;
+.tool-item {
+    background: white;
+    border-radius: 10px;
+    padding: 16px 8px;
+    text-align: center;
+    text-decoration: none;
+    color: var(--text-primary);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
 
-.leaderboard-item:hover {
-    transform: translateX(5px);
-    border-color: rgba(26, 115, 232, 0.3);
-}
-
-.rank-badge {
-    width: 36px;
-    height: 36px;
-    border-radius: 12px;
+.tool-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    margin: 0 auto 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 700;
+    font-size: 20px;
     color: white;
-    flex-shrink: 0;
 }
 
-.rank-1 { background: linear-gradient(135deg, #ffd700, #ff9800); }
-.rank-2 { background: linear-gradient(135deg, #c0c0c0, #757575); }
-.rank-3 { background: linear-gradient(135deg, #cd7f32, #8d6e63); }
-.rank-other { background: linear-gradient(135deg, #1a73e8, #0d47a1); }
-
-.user-info {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.user-name {
-    font-weight: 600;
-    color: var(--text-primary);
-    font-size: 15px;
-}
-
-.user-amount {
-    font-size: 14px;
-    color: var(--text-secondary);
-}
-
-/* 移除原stats-row样式，替换为更简洁的统计标签 */
-.stats-tags {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    margin-top: 20px;
-}
-
-.stat-tag {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 16px;
-    background: rgba(26, 115, 232, 0.1);
-    border-radius: 20px;
-    border: 1px solid rgba(26, 115, 232, 0.2);
-}
-
-.stat-tag i {
-    color: var(--primary-color);
-    font-size: 16px;
-}
-
-.stat-tag-text {
-    font-size: 14px;
+.tool-title {
+    font-size: 12px;
     font-weight: 500;
-    color: var(--text-primary);
+}
+
+/* 响应式调整 */
+@media (max-width: 360px) {
+    .content {
+        padding: 12px;
+    }
+    
+    .card {
+        padding: 12px;
+    }
+    
+    .tools-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
