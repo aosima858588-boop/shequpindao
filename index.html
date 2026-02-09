@@ -1,190 +1,27 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>海豚社区 - 首页</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body>
-    <!-- 顶部导航 -->
-    <header class="app-header">
-        <div class="header-content">
-            <div class="app-title">
-                <i class="fas fa-dolphin"></i> 海豚社区
+使用工具
+                                    <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container footer-content">
+            <div class="copyright">
+                © 2023 海豚社区. 保留所有权利.
             </div>
-            <div style="font-size: 14px; opacity: 0.9;">
-                链上赚币工具
+            <div class="footer-links">
+                <a href="#" class="footer-link">隐私政策</a>
+                <a href="#" class="footer-link">服务条款</a>
+                <a href="#" class="footer-link">联系我们</a>
+                <a href="#" class="footer-link">帮助中心</a>
             </div>
         </div>
-    </header>
-    
-    <!-- 主内容 -->
-    <div class="app-container">
-        <main class="content">
-            <!-- Boost活动概述 -->
-            <div class="card">
-                <h2 class="section-title">🚀 Boost活动总览</h2>
-                <p style="margin-bottom: 16px; color: var(--text-secondary);">
-                    通过创新的阶梯式模型与社区协同策略，参与OKX Boost的活动，实现稳定收益与超额价值回报，重新定义资产增值体验。
-                </p>
-                <a href="boost-detail.html" class="btn">
-                    <i class="fas fa-info-circle"></i> 查看完整活动详情
-                </a>
-            </div>
-            
-            <!-- 关键数据 -->
-            <div class="card">
-                <h2 class="section-title">📊 关键数据</h2>
-                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 12px;">
-                    <div style="background: rgba(26, 115, 232, 0.1); padding: 12px; border-radius: 8px;">
-                        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;">社区总质押</div>
-                        <div style="font-size: 20px; font-weight: 700; color: var(--primary-color);">$1,245,680</div>
-                    </div>
-                    <div style="background: rgba(0, 188, 212, 0.1); padding: 12px; border-radius: 8px;">
-                        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;">总交易量</div>
-                        <div style="font-size: 20px; font-weight: 700; color: var(--secondary-color);">$856,420</div>
-                    </div>
-                    <div style="background: rgba(0, 200, 83, 0.1); padding: 12px; border-radius: 8px;">
-                        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;">日交易量</div>
-                        <div style="font-size: 20px; font-weight: 700; color: var(--accent-color);">$42,350</div>
-                    </div>
-                    <div style="background: rgba(255, 152, 0, 0.1); padding: 12px; border-radius: 8px;">
-                        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;">你的排名</div>
-                        <div style="font-size: 20px; font-weight: 700; color: var(--warning-color);">#1,248</div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 快速入口 -->
-            <div class="card">
-                <h2 class="section-title">⚡ 快速入口</h2>
-                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 12px;">
-                    <a href="boost-detail.html" style="background: var(--primary-color); color: white; padding: 16px; border-radius: 8px; text-decoration: none; text-align: center;">
-                        <i class="fas fa-chart-line" style="font-size: 24px; margin-bottom: 8px;"></i>
-                        <div style="font-weight: 500;">链上赚币</div>
-                    </a>
-                    <a href="#" style="background: var(--accent-color); color: white; padding: 16px; border-radius: 8px; text-decoration: none; text-align: center;">
-                        <i class="fas fa-shopping-cart" style="font-size: 24px; margin-bottom: 8px;"></i>
-                        <div style="font-weight: 500;">立即购买 H</div>
-                    </a>
-                    <a href="#" style="background: var(--secondary-color); color: white; padding: 16px; border-radius: 8px; text-decoration: none; text-align: center;">
-                        <i class="fas fa-users" style="font-size: 24px; margin-bottom: 8px;"></i>
-                        <div style="font-weight: 500;">社区红包群</div>
-                    </a>
-                    <a href="#" style="background: #9c27b0; color: white; padding: 16px; border-radius: 8px; text-decoration: none; text-align: center;">
-                        <i class="fas fa-file-alt" style="font-size: 24px; margin-bottom: 8px;"></i>
-                        <div style="font-weight: 500;">社区表单</div>
-                    </a>
-                </div>
-            </div>
-            
-            <!-- 常用工具 -->
-            <div class="card">
-                <h2 class="section-title">🛠️ 常用工具</h2>
-                <div class="tools-grid">
-                    <a href="sign.html" class="tool-item">
-                        <div class="tool-icon" style="background: var(--warning-color);">
-                            <i class="fas fa-calendar-check"></i>
-                        </div>
-                        <div class="tool-title">签到</div>
-                    </a>
-                    
-                    <a href="lottery.html" class="tool-item">
-                        <div class="tool-icon" style="background: #9c27b0;">
-                            <i class="fas fa-gift"></i>
-                        </div>
-                        <div class="tool-title">抽奖</div>
-                    </a>
-                    
-                    <a href="ai-assistant.html" class="tool-item">
-                        <div class="tool-icon" style="background: var(--secondary-color);">
-                            <i class="fas fa-robot"></i>
-                        </div>
-                        <div class="tool-title">AI助手</div>
-                    </a>
-                    
-                    <a href="calculator.html" class="tool-item">
-                        <div class="tool-icon" style="background: var(--accent-color);">
-                            <i class="fas fa-calculator"></i>
-                        </div>
-                        <div class="tool-title">收益计算</div>
-                    </a>
-                    
-                    <a href="query.html" class="tool-item">
-                        <div class="tool-icon" style="background: var(--primary-color);">
-                            <i class="fas fa-search"></i>
-                        </div>
-                        <div class="tool-title">查询系统</div>
-                    </a>
-                    
-                    <a href="download.html" class="tool-item">
-                        <div class="tool-icon" style="background: #ff5722;">
-                            <i class="fas fa-download"></i>
-                        </div>
-                        <div class="tool-title">下载中心</div>
-                    </a>
-                </div>
-            </div>
-            
-            <!-- 新人指南摘要 -->
-            <div class="card">
-                <h2 class="section-title">👋 新人快速上手</h2>
-                <div class="list-item">
-                    <div class="list-icon">
-                        <i class="fas fa-download"></i>
-                    </div>
-                    <div class="list-content">
-                        <div class="list-title">下载OKX Wallet</div>
-                        <div class="list-desc">邀请人绑定DPH777</div>
-                    </div>
-                </div>
-                <div class="list-item">
-                    <div class="list-icon">
-                        <i class="fas fa-bullseye"></i>
-                    </div>
-                    <div class="list-content">
-                        <div class="list-title">新手目标</div>
-                        <div class="list-desc">达到一次Boost交易量：$500</div>
-                    </div>
-                </div>
-                <a href="boost-detail.html" class="btn btn-secondary" style="margin-top: 12px;">
-                    <i class="fas fa-book"></i> 查看完整新人指南
-                </a>
-            </div>
-        </main>
-    </div>
-    
-    <!-- 底部导航 -->
-    <nav class="bottom-nav">
-        <a href="index.html" class="nav-item active">
-            <div class="nav-icon">
-                <i class="fas fa-home"></i>
-            </div>
-            <div>首页</div>
-        </a>
-        
-        <a href="models.html" class="nav-item">
-            <div class="nav-icon">
-                <i class="fas fa-chart-bar"></i>
-            </div>
-            <div>模型</div>
-        </a>
-        
-        <a href="ai-assistant.html" class="nav-item">
-            <div class="nav-icon">
-                <i class="fas fa-robot"></i>
-            </div>
-            <div>AI助手</div>
-        </a>
-        
-        <a href="wallet.html" class="nav-item">
-            <div class="nav-icon">
-                <i class="fas fa-wallet"></i>
-            </div>
-            <div>钱包</div>
-        </a>
-    </nav>
+    </footer>
 </body>
 </html>
