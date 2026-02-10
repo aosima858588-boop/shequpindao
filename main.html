@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>海豚社区 - 主页</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <style>
+    :root {
+      --bg-start: #f0f9ff;
+      --bg-end: #e0f2fe;
+      --primary: #3b82f6;
+      --primary-dark: #2563eb;
+      --secondary: #8b5cf6;
+      --accent: #0ea5e9;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --card: #ffffff;
+      --text: #1e293b;
+      --text-soft: #64748b;
+      --border: #e2e8f0;
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
+      --shadow-md: 0 10px 25px rgba(59, 130, 246, 0.15);
+      --radius-lg: 24px;
+      --radius-md: 16px;
+      --radius-sm: 12px;
+    }
+
+    * { 
+      margin:0; 
+      padding:0; 
+      box-sizing:border-box; 
+    }
+    
+    body {
+      font-family: 'Segoe UI', 'PingFang SC', system-ui, sans-serif;
+      background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+      color: var(--text);
+      min-height: 100vh;
+      padding: 1rem;
+      transition: padding 0.3s ease;
+    }
+
+    .container {
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    /* 头部 */
+    .header {
+      text-align: center;
+      padding: 1rem 0;
+      transition: padding 0.3s ease;
+    }
+
+    .logo {
+      font-size: 4rem;
+      margin-bottom: 0.5rem;
+      animation: dolphin 3s ease-in-out infinite;
+      display: inline-block;
+    }
+
+    @keyframes dolphin {
+      0%, 100% { 
+        transform: translateY(0) rotate(0); 
+      }
+      25% { 
+        transform: translateY(-10px) rotate(-5deg); 
+      }
+      75% { 
+        transform: translateY(-5px) rotate(5deg); 
+      }
+    }
+
+    .user-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: var(--radius-md);
+      transition: background 0.3s;
+    }
+
+    .user-header:hover {
+      background: rgba(255, 255, 255, 0.5);
+    }
+
+    .user-name {
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--primary);
+    }
+
+    .user-id {
+      font-size: 0.9rem;
+      color: var(--text-soft);
+      margin-left: 0.5rem;
+    }
+
+    .user-level {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--warning);
+      margin: 0.5rem 0 1.5rem;
+      padding: 0.5rem 1.2rem;
+      background: rgba(245, 158, 11, 0.1);
+      border-radius: 50px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .user-level i {
+      color: var(--warning);
+    }
+
+    .expand-icon {
+      color: var(--text-soft);
+      transition: transform 0.3s;
+    }
+
+    .user-header.expanded .expand-icon {
+      transform: rotate(180deg);
+    }
+
+    /* 用户详情区域，默认隐藏 */
+    .user-details {
+      background: white;
+      padding: 1rem;
+      border-radius: var(--radius-md);
+      margin-bottom: 1.5rem;
+      box-shadow: var(--shadow-sm);
+      display: none;
+    }
+
+    .user-details.show {
+      display: block;
+    }
+
+    /* 导航 */
+    .nav-tabs {
+      display: flex;
+      background: white;
+      border-radius: var(--radius-md);
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .nav-tab {
+      flex: 1;
+      padding: 1rem;
+      text-align: center;
+      background: none;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      color: var(--text-soft);
+      font-size: 1rem;
+    }
+
+    .nav-tab.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    .nav-tab:hover:not(.active) {
+      background: #f8fafc;
+    }
+
+    /* 活动卡片样式 */
+    .activity-section {
+      margin-bottom: 1.5rem;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 1rem;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .section-subtitle {
+      text-align: center;
+      color: var(--text-soft);
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .activity-card {
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      margin-bottom: 1.5rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .activity-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(59, 130, 246, 0.2);
+    }
+
+    .card-header {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      padding: 1.5rem;
+      color: white;
+      position: relative;
+    }
+
+    .card-title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-subtitle {
+      font-size: 1rem;
+      opacity: 0.9;
+      margin-bottom: 1rem;
+    }
+
+    .status-badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      backdrop-filter: blur(10px);
+    }
+
+    .card-content {
+      padding: 1.5rem;
+    }
+
+    .activity-desc {
+      color: var(--text);
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .activity-detail {
+      margin-bottom: 1.5rem;
+    }
+
+    .detail-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .detail-content {
+      color: var(--text-soft);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .rules-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .rules-list li {
+      padding: 0.5rem 0;
+      padding-left: 1.5rem;
+      position: relative;
+      color: var(--text-soft);
+    }
+
+    .rules-list li:before {
+      content: "•";
+      color: var(--primary);
+      font-weight: bold;
+      position: absolute;
+      left: 0;
+    }
+
+    /* 奖励区域 */
+    .rewards-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+
+    .reward-card {
+      background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+      border-radius: var(--radius-md);
+      padding: 1.2rem;
+      text-align: center;
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+
+    .reward-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--primary);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .reward-title {
+      font-size: 0.85rem;
+      color: var(--text-soft);
+      margin-bottom: 0.5rem;
+    }
+
+    .reward-amount {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    /* 倒计时 */
+    .countdown {
+      background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      text-align: center;
+      margin: 1.5rem 0;
+      border: 2px solid rgba(59, 130, 246, 0.1);
+    }
+
+    .countdown-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.8rem;
+    }
+
+    .countdown-timer {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--primary);
+      font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+      text-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+    }
+
+    /* 按钮组 */
+    .btn-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .btn {
+      padding: 1rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px rgba(59, 130, 246, 0.3);
+    }
+
+    .btn-outline {
+      border: 2px solid var(--primary);
+      color: var(--primary);
+      background: white;
+    }
+
+    .btn-outline:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-3px);
+    }
+
+    /* 其他页面的卡片样式 */
+    .card {
+      background: var(--card);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: var(--shadow-md);
+      transition: transform 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .card-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      color: white;
+      margin-right: 1rem;
+    }
+
+    .card-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+
+    .card-subtitle {
+      font-size: 0.95rem;
+      color: var(--text-soft);
+      line-height: 1.5;
+    }
+
+    /* 统计卡片 */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 1.2rem;
+      border-radius: var(--radius-md);
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .stat-value {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 0.3rem;
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      color: var(--text-soft);
+    }
+
+    /* 底部 */
+    .footer {
+      text-align: center;
+      padding: 1.5rem 0;
+      color: var(--text-soft);
+      font-size: 0.9rem;
+    }
+    
+    .message {
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      margin: 1rem 0;
+      display: none;
+      text-align: center;
+      animation: fadeIn 0.3s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .message.error {
+      background: rgba(239, 68, 68, 0.1);
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+
+    /* 当用户详情展开时，页面内容下移 */
+    body.expanded {
+      padding-top: 2rem;
+    }
+
+    .container.expanded .header {
+      padding-bottom: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .rewards-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .btn-group {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .card-title {
+        font-size: 1.4rem;
+      }
+      
+      .card-content {
+        padding: 1.2rem;
+      }
+      
+      .countdown-timer {
+        font-size: 1.8rem;
+      }
+      
+      .btn {
+        padding: 0.9rem;
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container" id="container">
+    <!-- 头部 -->
+    <div class="header">
+      <div class="logo">🐬</div>
+      <div class="user-header" id="userHeader">
+        <div>
+          <span class="user-name" id="userName">海豚用户</span>
+          <span class="user-id">ID: #<span id="userId">000001</span></span>
+        </div>
+        <div class="expand-icon">
+          <i class="fas fa-chevron-down"></i>
+        </div>
+      </div>
+      
+      <div class="user-level">
+        <i class="fas fa-crown"></i>
+        当前等级：金牌会员
+      </div>
+    </div>
+
+    <!-- 用户详情，默认隐藏 -->
+    <div class="user-details" id="userDetails">
+      <h3>用户信息</h3>
+      <p>这里是用户详细信息，可以展示更多内容。</p>
+      <!-- 这里可以添加更多用户信息 -->
+    </div>
+
+    <!-- 导航标签 -->
+    <div class="nav-tabs">
+      <button class="nav-tab active" id="boostTab">活动</button>
+      <button class="nav-tab" id="modelTab">模型</button>
+      <button class="nav-tab" id="walletTab">钱包</button>
+    </div>
+
+    <!-- 活动卡片 - Boost标签页 -->
+    <div class="card" id="boostCard">
+      <div class="activity-section">
+        <div class="section-title">社区专属活动</div>
+        <div class="section-subtitle">点击卡片查看详情并参与活动</div>
+        
+        <div class="activity-card">
+          <div class="card-header">
+            <div class="card-title">OKX Boost加速计划</div>
+            <div class="card-subtitle">社区专属交易加速活动，参与即享多重奖励</div>
+            <div class="status-badge">
+              <i class="fas fa-fire"></i> 火热进行中
+            </div>
+          </div>
+          
+          <div class="card-content">
+            <div class="activity-desc">
+              社区专属交易加速活动，参与即享多重奖励，最高可获得500USDT等值赠金。
+            </div>
+            
+            <div class="activity-detail">
+              <div class="detail-title">
+                <i class="fas fa-info-circle"></i>
+                <span>活动介绍</span>
+              </div>
+              <div class="detail-content">
+                这是海豚社区与OKX交易所合作的专属加速计划。活动期间，社区成员通过专属链接参与交易，即可获得额外加速奖励。活动旨在为社区成员提供更多交易优势和学习机会。
+              </div>
+            </div>
+            
+            <div class="activity-detail">
+              <div class="detail-title">
+                <i class="fas fa-clipboard-check"></i>
+                <span>参与规则</span>
+              </div>
+              <ul class="rules-list">
+                <li>需通过社区专属链接注册OKX账户</li>
+                <li>活动期间累计交易额需达到1,000 USDT</li>
+                <li>至少完成10笔有效交易</li>
+                <li>需加入OKX官方海豚社区群组</li>
+                <li>奖励将在活动结束后7个工作日内发放</li>
+              </ul>
+            </div>
+            
+            <div class="activity-detail">
+              <div class="detail-title">
+                <i class="fas fa-gift"></i>
+                <span>奖励详情</span>
+              </div>
+              <div class="rewards-grid">
+                <div class="reward-card">
+                  <div class="reward-title">基础奖励</div>
+                  <div class="reward-amount">50 USDT</div>
+                </div>
+                <div class="reward-card">
+                  <div class="reward-title">交易额达标奖</div>
+                  <div class="reward-amount">100-500 USDT</div>
+                </div>
+                <div class="reward-card">
+                  <div class="reward-title">邀请好友奖励</div>
+                  <div class="reward-amount">20 USDT/人</div>
+                </div>
+                <div class="reward-card">
+                  <div class="reward-title">社区贡献奖</div>
+                  <div class="reward-amount">特殊NFT勋章</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="countdown">
+              <div class="countdown-title">活动剩余时间</div>
+              <div class="countdown-timer" id="countdownTimer">19:02:50</div>
+            </div>
+            
+            <div class="btn-group">
+              <button class="btn btn-primary" id="joinActivityBtn">
+                <i class="fas fa-play-circle"></i>
+                立即参加活动
+              </button>
+              <button class="btn btn-outline" id="shareActivityBtn">
+                <i class="fas fa-share-alt"></i>
+                分享给好友
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 经济模型卡片（默认隐藏） -->
+    <div class="card" id="modelCard" style="display: none;">
+      <div class="card-header">
+        <div class="card-icon">
+          <i class="fas fa-chart-line"></i>
+        </div>
+        <div>
+          <h2 class="card-title" data-editable="model-title">海豚经济模型</h2>
+          <p class="card-subtitle" data-editable="model-desc">质押 USDT 每日 20:00 领取 H 代币，阶梯收益最高 1.2%。无锁仓。</p>
+        </div>
+      </div>
+      
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value" data-editable="stat-apy">8.5%</div>
+          <div class="stat-label">平均年化</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" data-editable="stat-stake">$5.1M</div>
+          <div class="stat-label">总质押量</div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" data-editable="btn-model" id="modelBtn">
+        <i class="fas fa-chart-bar"></i>
+        查看模型详情
+      </button>
+    </div>
+
+    <!-- 钱包卡片（默认隐藏） -->
+    <div class="card" id="walletCard" style="display: none;">
+      <div class="card-header">
+        <div class="card-icon">
+          <i class="fas fa-wallet"></i>
+        </div>
+        <div>
+          <h2 class="card-title">我的钱包</h2>
+          <p class="card-subtitle">管理您的数字资产和交易记录</p>
+        </div>
+      </div>
+
+      <div style="text-align: center; padding: 1rem 0;">
+        <div style="font-size: 2.5rem; font-weight: 800; color: var(--primary); margin: 1rem 0;">$<span id="balance">1,250.50</span></div>
+        <div style="color: var(--text-soft); font-size: 0.9rem;">总资产 (USD)</div>
+      </div>
+
+      <button class="btn btn-primary" id="depositBtn">
+        <i class="fas fa-plus"></i>
+        充值
+      </button>
+      <button class="btn btn-outline" id="withdrawBtn" style="margin-top: 0.5rem;">
+        <i class="fas fa-exchange-alt"></i>
+        提现
+      </button>
+    </div>
+
+    <!-- 底部信息 -->
+    <div class="footer" data-editable="footer-note">
+      海豚社区 · OKX Wallet Boost 官方合作渠道<br>链上可查 · 社区驱动 · 长期主义
+    </div>
+    
+    <!-- 消息提示 -->
+    <div id="message" class="message"></div>
+  </div>
+
+  <script type="module">
+    const API_BASE = 'https://haitun-backend.onrender.com';
+    
+    // 页面加载
+    document.addEventListener('DOMContentLoaded', () => {
+      // 加载用户信息
+      loadUserInfo();
+      
+      // 加载动态文案
+      loadContent();
+      
+      // 设置事件监听器
+      setupEventListeners();
+      
+      // 启动倒计时
+      startCountdown();
+    });
+    
+    // 加载用户信息
+    function loadUserInfo() {
+      const savedUser = localStorage.getItem('userInfo');
+      if (savedUser) {
+        try {
+          const user = JSON.parse(savedUser);
+          document.getElementById('userName').textContent = user.name || '海豚用户';
+          document.getElementById('userId').textContent = user.id || '000001';
+        } catch (e) {
+          console.error('用户信息加载失败', e);
+        }
+      } else {
+        // 如果没有登录信息，跳转到登录页
+        window.location.href = 'login.html';
+      }
+    }
+    
+    // 加载文案
+    async function loadContent() {
+      try {
+        const response = await fetch(`${API_BASE}/api/content`);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        
+        const data = await response.json();
+        
+        document.querySelectorAll('[data-editable]').forEach(el => {
+          const key = el.getAttribute('data-editable');
+          if (data[key] !== undefined && data[key] !== null) {
+            el.innerHTML = data[key];
+          }
+        });
+        
+        console.log('✅ 文案加载成功');
+      } catch (error) {
+        console.error('❌ 文案加载失败:', error);
+        showMessage('文案加载失败，部分内容可能显示不全', 'error');
+      }
+    }
+    
+    // 设置事件监听器
+    function setupEventListeners() {
+      // 用户信息伸缩
+      const userHeader = document.getElementById('userHeader');
+      const userDetails = document.getElementById('userDetails');
+      const container = document.getElementById('container');
+      const body = document.body;
+      
+      userHeader.addEventListener('click', () => {
+        userHeader.classList.toggle('expanded');
+        userDetails.classList.toggle('show');
+        body.classList.toggle('expanded');
+        container.classList.toggle('expanded');
+      });
+
+      // 标签页切换
+      document.getElementById('boostTab').addEventListener('click', () => switchTab('boost'));
+      document.getElementById('modelTab').addEventListener('click', () => switchTab('model'));
+      document.getElementById('walletTab').addEventListener('click', () => switchTab('wallet'));
+      
+      // 按钮点击事件
+      document.getElementById('joinActivityBtn').addEventListener('click', () => {
+        showMessage('正在跳转到 OKX Boost 活动页面...', 'success');
+      });
+      
+      document.getElementById('shareActivityBtn').addEventListener('click', () => {
+        showSharePopup();
+      });
+      
+      document.getElementById('modelBtn').addEventListener('click', () => {
+        showMessage('正在展示海豚经济模型详情...', 'success');
+      });
+      
+      document.getElementById('depositBtn').addEventListener('click', () => {
+        showMessage('充值功能开发中...', 'success');
+      });
+      
+      document.getElementById('withdrawBtn').addEventListener('click', () => {
+        showMessage('提现功能开发中...', 'success');
+      });
+    }
+    
+    // 切换标签页
+    function switchTab(tab) {
+      // 更新导航按钮状态
+      document.querySelectorAll('.nav-tab').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      event.target.classList.add('active');
+      
+      // 隐藏所有卡片
+      document.getElementById('boostCard').style.display = 'none';
+      document.getElementById('modelCard').style.display = 'none';
+      document.getElementById('walletCard').style.display = 'none';
+      
+      // 显示选中的卡片
+      document.getElementById(tab + 'Card').style.display = 'block';
+    }
+    
+    // 倒计时功能
+    function startCountdown() {
+      const countdownElement = document.getElementById('countdownTimer');
+      let hours = 19;
+      let minutes = 2;
+      let seconds = 50;
+      
+      function updateCountdown() {
+        // 格式化时间
+        const formatTime = (num) => num.toString().padStart(2, '0');
+        countdownElement.textContent = `${formatTime(hours)}:${formatTime(minutes)}:${formatTime(seconds)}`;
+        
+        // 更新时间
+        seconds--;
+        if (seconds < 0) {
+          seconds = 59;
+          minutes--;
+          if (minutes < 0) {
+            minutes = 59;
+            hours--;
+            if (hours < 0) {
+              // 倒计时结束
+              clearInterval(timer);
+              countdownElement.textContent = "活动已结束";
+              countdownElement.style.color = '#94a3b8';
+              return;
+            }
+          }
+        }
+      }
+      
+      // 立即更新一次
+      updateCountdown();
+      
+      // 每秒更新一次
+      const timer = setInterval(updateCountdown, 1000);
+    }
+    
+    // 分享弹窗
+    function showSharePopup() {
+      const shareMsg = document.createElement('div');
+      shareMsg.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        z-index: 1000;
+        text-align: center;
+        max-width: 300px;
+      `;
+      shareMsg.innerHTML = `
+        <h3 style="margin-bottom: 10px; color: #3b82f6;">分享活动</h3>
+        <p style="margin-bottom: 15px; color: #64748b;">活动链接已复制到剪贴板！</p>
+        <p style="margin-bottom: 20px; font-size: 14px; color: #94a3b8;">分享给好友一起参与活动吧！</p>
+        <button onclick="this.parentElement.remove()" style="
+          background: #3b82f6;
+          color: white;
+          border: none;
+          padding: 8px 20px;
+          border-radius: 6px;
+          cursor: pointer;
+        ">确定</button>
+      `;
+      document.body.appendChild(shareMsg);
+      
+      // 复制链接到剪贴板
+      const shareUrl = window.location.href;
+      navigator.clipboard.writeText(shareUrl).then(() => {
+        console.log('链接已复制到剪贴板');
+      });
+    }
+    
+    // 显示消息函数
+    function showMessage(text, type) {
+      const messageEl = document.getElementById('message');
+      messageEl.textContent = text;
+      messageEl.className = `message ${type}`;
+      messageEl.style.display = 'block';
+      
+      // 3秒后自动隐藏
+      setTimeout(() => {
+        messageEl.style.display = 'none';
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
