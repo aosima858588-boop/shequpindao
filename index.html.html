@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>海豚社区 | 紧凑型用户面板</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-light: #dbeafe;
+            --primary-dark: #1d4ed8;
+            --secondary: #7c3aed;
+            --accent: #0ea5e9;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --gold: #fbbf24;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --background: #ffffff;
+            --background-alt: #f9fafb;
+            --border: #e5e7eb;
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 25px -5px rgba(37, 99, 235, 0.1);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* ===== 用户信息面板 ===== */
+        .user-panel {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(124, 58, 237, 0.1));
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            padding: 20px;
+            margin-bottom: 24px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .user-panel:hover {
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .user-panel.active {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.15), rgba(124, 58, 237, 0.15));
+            box-shadow: var(--shadow-lg);
+        }
+
+        .user-panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .user-identity {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .dolphin-avatar {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            position: relative;
+        }
+
+        .dolphin-avatar::after {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .user-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .user-details {
+            display: flex;
+            gap: 20px;
+        }
+
+        .user-detail {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .user-detail i {
+            color: var(--primary);
+            font-size: 0.8rem;
+        }
+
+        .expand-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--background);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            transition: var(--transition);
+        }
+
+        .user-panel.active .expand-icon {
+            transform: rotate(180deg);
+            background: var(--primary);
+            color: white;
+        }
+
+        /* 用户面板扩展内容 */
+        .user-panel-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .user-panel-content-inner {
+            padding-top: 24px;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            border-top: 1px solid rgba(37, 99, 235, 0.1);
+            margin-top: 16px;
+        }
+
+        .user-panel.active .user-panel-content-inner {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.1s;
+        }
+
+        /* 金牌会员闪光效果 */
+        .gold-member {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b, #fbbf24);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+            font-size: 1.2rem;
+            padding: 8px 16px;
+            border-radius: var(--radius-md);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            animation: shine 2s infinite, pulse 2s infinite;
+            box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
+        }
+
+        @keyframes shine {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .member-badge {
+            background: linear-gradient(135deg, var(--gold), #f59e0b);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+
+        .member-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            background: white;
+            border-radius: var(--radius-md);
+            padding: 16px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .stat-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* ===== 导航按钮 ===== */
+        .nav-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .nav-btn {
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .nav-btn:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(135deg, var(--primary-light), white);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav-btn-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .nav-btn:nth-child(2) .nav-btn-icon {
+            background: linear-gradient(135deg, var(--success), var(--accent));
+        }
+
+        .nav-btn:nth-child(3) .nav-btn-icon {
+            background: linear-gradient(135deg, var(--warning), var(--danger));
+        }
+
+        .nav-btn-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+        }
+
+        /* ===== 卡片区域标题 ===== */
+        .section-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        /* ===== 核心：可展开卡片 ===== */
+        .expandable-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .expandable-card {
+            background: var(--background);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .expandable-card:hover {
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .expandable-card.active {
+            border-color: var(--primary);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* 卡片头部 - 始终可见 */
+        .card-header {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .card-main {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex: 1;
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .card-icon.success {
+            background: linear-gradient(135deg, var(--success), var(--accent));
+        }
+
+        .card-icon.warning {
+            background: linear-gradient(135deg, var(--warning), var(--danger));
+        }
+
+        .card-icon.purple {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        }
+
+        .card-title-group h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-primary);
+        }
+
+        .card-preview {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            max-width: 500px;
+        }
+
+        /* 状态指示器 */
+        .card-status {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-left: 20px;
+        }
+
+        .status-badge {
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-badge.success {
+            background: #d1fae5;
+            color: var(--success);
+        }
+
+        .status-badge.warning {
+            background: #fef3c7;
+            color: var(--warning);
+        }
+
+        .status-badge.purple {
+            background: #ede9fe;
+            color: #7c3aed;
+        }
+
+        .expand-card-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--background-alt);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            transition: var(--transition);
+        }
+
+        .expandable-card.active .expand-card-icon {
+            background: var(--primary);
+            color: white;
+            transform: rotate(180deg);
+        }
+
+        /* 卡片内容 - 默认隐藏，展开时显示 */
+        .card-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-content-inner {
+            padding: 0 20px 20px 20px;
+            border-top: 1px solid var(--border);
+            margin-top: 0;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .expandable-card.active .card-content-inner {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.1s;
+        }
+
+        /* 展开后的内容布局 */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+            margin-top: 16px;
+        }
+
+        .content-section h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .content-section h4 i {
+            font-size: 1rem;
+        }
+
+        .description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .rules-list {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .rules-list li {
+            padding: 8px 0;
+            border-bottom: 1px dashed var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .rules-list li:last-child {
+            border-bottom: none;
+        }
+
+        .rules-list li i {
+            color: var(--primary);
+        }
+
+        .rewards {
+            background: var(--background-alt);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-top: 16px;
+        }
+
+        .reward-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .reward-item:last-child {
+            border-bottom: none;
+        }
+
+        .reward-value {
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .action-section {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .countdown {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 16px;
+            border-radius: var(--radius-md);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .countdown.success {
+            background: linear-gradient(135deg, var(--success), var(--accent));
+        }
+
+        .countdown-title {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            margin-bottom: 6px;
+        }
+
+        .countdown-timer {
+            font-size: 1.6rem;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 14px 20px;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-primary.success {
+            background: linear-gradient(135deg, var(--success), var(--accent));
+        }
+
+        .btn-primary.warning {
+            background: linear-gradient(135deg, var(--warning), var(--danger));
+        }
+
+        .btn-primary.purple {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        }
+
+        .btn-secondary {
+            background: var(--background-alt);
+            color: var(--primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-light);
+            border-color: var(--primary);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+            
+            .card-status {
+                width: 100%;
+                justify-content: space-between;
+                margin-left: 0;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .nav-buttons {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .member-stats {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .user-details {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card-main {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+            
+            .card-title-group {
+                width: 100%;
+            }
+            
+            .card-preview {
+                max-width: 100%;
+            }
+            
+            .user-identity {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+            
+            .user-panel-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+            
+            .expand-icon {
+                align-self: flex-end;
+            }
+        }
+
+        /* 添加一些动画效果 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .expandable-card {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .expandable-card:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .expandable-card:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+
+        .expandable-card:nth-child(4) {
+            animation-delay: 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 用户信息面板 -->
+        <div class="user-panel" id="userPanel">
+            <div class="user-panel-header">
+                <div class="user-identity">
+                    <div class="dolphin-avatar">
+                        <i class="fas fa-dolphin"></i>
+                    </div>
+                    <div class="user-info">
+                        <div class="user-name">小丁丁</div>
+                        <div class="user-details">
+                            <div class="user-detail">
+                                <i class="fas fa-id-card"></i>
+                                <span>ID: 12312</span>
+                            </div>
+                            <div class="user-detail">
+                                <i class="fas fa-coins"></i>
+                                <span>DPH: 192</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="expand-icon">
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+            
+            <div class="user-panel-content" id="userPanelContent">
+                <div class="user-panel-content-inner">
+                    <div class="gold-member">
+                        <span class="member-badge">
+                            <i class="fas fa-crown"></i>
+                        </span>
+                        当前等级：金牌会员
+                    </div>
+                    
+                    <div class="member-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">87</div>
+                            <div class="stat-label">社区活跃度</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">15</div>
+                            <div class="stat-label">参与活动数</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">第38名</div>
+                            <div class="stat-label">社区排名</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 导航按钮 -->
+        <div class="nav-buttons">
+            <div class="nav-btn active" id="navActivity">
+                <div class="nav-btn-icon">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <div class="nav-btn-label">活动</div>
+            </div>
+            <div class="nav-btn" id="navModel">
+                <div class="nav-btn-icon">
+                    <i class="fas fa-cube"></i>
+                </div>
+                <div class="nav-btn-label">模型</div>
+            </div>
+            <div class="nav-btn" id="navWallet">
+                <div class="nav-btn-icon">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <div class="nav-btn-label">钱包</div>
+            </div>
+        </div>
+        
+        <!-- 卡片区域标题 -->
+        <div class="section-header">
+            <h1>社区专属活动</h1>
+            <p class="subtitle">点击卡片查看详情并参与活动</p>
+        </div>
+        
+        <!-- 可展开卡片 -->
+        <div class="expandable-cards">
+            <!-- 第一个卡片：OKX Boost活动 -->
+            <div class="expandable-card active" id="card-okx">
+                <div class="card-header">
+                    <div class="card-main">
+                        <div class="card-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <div class="card-title-group">
+                            <h3>OKX Boost 加速计划</h3>
+                            <p class="card-preview">社区专属交易加速活动，参与即享多重奖励，最高可获得 500 USDT 等值赠金...</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card-status">
+                        <span class="status-badge">🔥 火热进行中</span>
+                        <div class="expand-card-icon">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-content" style="max-height: 800px;">
+                    <div class="card-content-inner">
+                        <div class="content-grid">
+                            <div class="content-section">
+                                <h4><i class="fas fa-info-circle"></i> 活动介绍</h4>
+                                <p class="description">
+                                    这是海豚社区与OKX交易所合作的专属加速计划。活动期间，社区成员通过专属链接参与交易，即可获得额外加速奖励。活动旨在为社区成员提供更多交易优势和学习机会。
+                                </p>
+                                
+                                <h4><i class="fas fa-list-check"></i> 参与规则</h4>
+                                <ul class="rules-list">
+                                    <li><i class="fas fa-check-circle"></i> 需通过社区专属链接注册OKX账户</li>
+                                    <li><i class="fas fa-check-circle"></i> 活动期间累计交易额需达到 1,000 USDT</li>
+                                    <li><i class="fas fa-check-circle"></i> 至少完成 10 笔有效交易</li>
+                                    <li><i class="fas fa-check-circle"></i> 需加入OKX官方海豚社区群组</li>
+                                    <li><i class="fas fa-check-circle"></i> 奖励将在活动结束后7个工作日内发放</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="content-section">
+                                <h4><i class="fas fa-gift"></i> 奖励详情</h4>
+                                <div class="rewards">
+                                    <div class="reward-item">
+                                        <span>基础奖励</span>
+                                        <span class="reward-value">50 USDT</span>
+                                    </div>
+                                    <div class="reward-item">
+                                        <span>交易额达标奖</span>
+                                        <span class="reward-value">100-500 USDT</span>
+                                    </div>
+                                    <div class="reward-item">
+                                        <span>邀请好友奖励</span>
+                                        <span class="reward-value">20 USDT/人</span>
+                                    </div>
+                                    <div class="reward-item">
+                                        <span>社区贡献奖</span>
+                                        <span class="reward-value">特殊NFT勋章</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="action-section">
+                                    <div class="countdown">
+                                        <div class="countdown-title">活动剩余时间</div>
+                                        <div class="countdown-timer" id="countdown-okx">19:49:03</div>
+                                    </div>
+                                    
+                                    <div class="action-buttons">
+                                        <button class="btn btn-primary">
+                                            <i class="fas fa-play-circle"></i>
+                                            立即参加活动
+                                        </button>
+                                        <button class="btn btn-secondary">
+                                            <i class="fas fa-share-alt"></i>
+                                            分享给好友
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 第二个卡片：Web3资源宝库 -->
+            <div class="expandable-card" id="card-resource">
+                <div class="card-header">
+                    <div class="card-main">
+                        <div class="card-icon success">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <div class="card-title-group">
+                            <h3>Web3 资源宝库</h3>
+                            <p class="card-preview">汇集全网优质区块链学习资源、开发工具和实战案例，从入门到精通一站式解决方案...</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card-status">
+                        <span class="status-badge success">📚 持续更新</span>
+                        <div class="expand-card-icon">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-content" style="max-height: 0px;">
+                    <div class="card-content-inner">
+                        <div class="content-grid">
+                            <div class="content-section">
+                                <h4><i class="fas fa-info-circle"></i> 资源介绍</h4>
+                                <p class="description">
+                                    海豚社区资源中心收录了经过筛选的优质Web3学习材料，涵盖区块链基础、智能合约开发、DeFi、NFT等多个领域。所有资源均由社区专家审核推荐，定期更新最新内容。
+                                </p>
+                                
+                                <h4><i class="fas fa-list-check"></i> 热门资源</h4>
+                                <ul class="rules-list">
+                                    <li><i class="fas fa-book"></i> Solidity智能合约开发指南</li>
+                                    <li><i class="fas fa-video"></i> DeFi原理与实践视频课程</li>
+                                    <li><i class="fas fa-file-code"></i> Web3.js/Ethers.js开发手册</li>
+                                    <li><i class="fas fa-chart-line"></i> 2023年NFT市场趋势分析报告</li>
+                                    <li><i class="fas fa-tools"></i> 区块链开发工具包合集</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="content-section">
+                                <h4><i class="fas fa-gift"></i> 会员特权</h4>
+                                <div class="rewards">
+                                    <div class="reward-item">
+                                        <span>免费会员</span>
+                                        <span class="reward-value">基础资源</span>
+                                    </div>
+                                    <div class="reward-item">
+                                        <span>高级会员</span>
+                                        <span class="reward-value">全部资源+更新</span>
+                                    </div>
+                                    <div class="reward-item">
+                                        <span>专家会员</span>
+                                        <span class="reward-value">专属资料+1对1指导</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="action-section">
+                                    <div class="countdown success">
+                                        <div class="countdown-title">最近更新</div>
+                                        <div class="countdown-timer" id="countdown-resource">24小时前</div>
+                                    </div>
+                                    
+                                    <div class="action-buttons">
+                                        <button class="btn btn-primary success">
+                                            <i class="fas fa-key"></i>
+                                            解锁全部资源
+                                        </button>
+                                        <button class="btn btn-secondary">
+                                            <i class="fas fa-search"></i>
+                                            浏览资源
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 第三个卡片：AI模型市场 -->
+            <div class="expandable-card" id="card-model">
+                <div class="card-header">
+                    <div class="card-main">
+                        <div class="card-icon purple">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="card-title-group">
+                            <h3>AI 模型市场</h3>
+                            <p class="card-preview">探索、交易和使用海豚社区精选的AI模型，涵盖图像生成、文本分析、预测模型等...</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card-status">
+                        <span class="status-badge purple">🤖 12个模型</span>
+                        <div class="expand-card-icon">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-content" style="max-height: 0px;">
+                    <div class="card-content-inner">
+                        <div class="content-grid">
+                            <div class="content-section">
+                                <h4><i class="fas fa-info-circle"></i> 市场介绍</h4>
+                                <p class="description">
+                                    海豚社区AI模型市场汇集了各类优质AI模型，支持模型交易、租赁和使用。所有模型都经过严格测试，确保性能稳定，为开发者和企业提供一站式AI解决方案。
+                                </p>
+                                
+                                <h4><i class="fas fa-list-check"></i> 热门模型</h4>
+                                <ul class="rules-list">
+                                    <li><i class="fas fa-palette"></i> 图像生成模型 - DALL-E 3优化版</li>
+                                    <li><i class="fas fa-language"></i> 多语言翻译模型 - 支持58种语言</li>
+                                    <li><i class="fas fa-chart-bar"></i> 市场预测模型 - 加密货币趋势分析</li>
+                                    <li><i class="fas fa-comments"></i> 智能客服模型 - 24小时自动回复</li>
+                                    <li><i class="fas fa-code"></i> 代码生成模型 - 支持15种编程语言</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="content-section">
+                                <h4><i class="fas fa-gift"></i> 模型定价</h4>
+                                <div class="rewards">
+                                    <div class="reward-item">
+                                        <span>基础模型</span>
+                                        <span class="reward-value">免费试用</span>
+                                    </div>
+                                    <div class="reward-item">
+                                        <span>专业模型</span>
+                                        <span class="reward-value">10-50 DPH/次</span>
+                                    </div>
+                                    <div class="reward-item">
+                                        <span>企业模型</span>
+                                        <span class="reward-value">定制价格</span>
+                                    </div>
+                                    <div class="reward-item">
+                                        <span>模型交易</span>
+                                        <span class="reward-value">DPH/USDT支付</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="action-section">
+                                    <div class="countdown" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+                                        <div class="countdown-title">今日使用量</div>
+                                        <div class="countdown-timer">3,842 次</div>
+                                    </div>
+                                    
+                                    <div class="action-buttons">
+                                        <button class="btn btn-primary purple">
+                                            <i class="fas fa-shopping-cart"></i>
+                                            浏览模型市场
+                                        </button>
+                                        <button class="btn btn-secondary">
+                                            <i class="fas fa-upload"></i>
+                                            上传我的模型
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 第四个卡片：智能钱包 -->
+            <div class="expandable-card" id="card-wallet">
+                <div class="card-header">
+                    <div class="card-main">
+                        <div class="card-icon warning">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <div class="card-title-group">
+                            <h3>智能钱包</h3>
+                            <p class="card-preview">一站式数字资产管理，支持多链资产查看、交易、DeFi挖矿和NFT收藏管理...</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card-status">
+                        <span class="status-badge warning">💰 多链支持</span>
+                        <div class="expand-card-icon">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-content" style="max-height: 0px;">
+                    <div class="card-content-inner">
+                        <div class="content-grid">
+                            <div class="content-section">
+                                <h4><i class="fas fa-info-circle"></i> 钱包功能</h4>
+                                <p class="description">
+                                    海豚社区智能钱包支持以太坊、BSC、Polygon等多条主流区块链，提供安全的资产存储、便捷的交易功能和丰富的DeFi生态接入。所有操作均在本地完成，私钥永不离开您的设备。
+                                </p>
+                                
+                                <h4><i class="fas fa-list-check"></i> 核心功能</h4>
+                                <ul class="rules-list">
+                                    <li><i class="fas fa-shield-alt"></i> 多重安全防护，保障资产安全</li>
+                                    <li><i class="fas fa-exchange-alt"></i> 一键跨链资产转移</li>
+                                    <li><i class="fas fa-seedling"></i> 集成主流DeFi协议，一键挖矿</li>
+                                    <li><i class="fas fa-images"></i> NFT收藏展示与管理</li>
+                                    <li><i class="fas fa-chart-pie"></i> 资产组合分析与报告</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="content-section">
+                                <h4><i class="fas fa-gift"></i> 资产概览</h4>
+                                <div class="rewards">
+                                    <div class="reward-item">
+                                        <span>总资产价值</span>
+                                        <span class="reward-value">3,842 USDT</span>
+                                    </div>
+                                    <div class="reward-item">
+                                        <span>DPH余额</span>
+                                        <span class="reward-value">192 DPH</span>
+                                    </div>
+                                    <div class="reward-item">
+                                        <span>NFT收藏</span>
+                                        <span class="reward-value">7个</span>
+                                    </div>
+                                    <div class="reward-item">
+                                        <span>DeFi收益</span>
+                                        <span class="reward-value">+12.5% APY</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="action-section">
+                                    <div class="countdown" style="background: linear-gradient(135deg, var(--warning), var(--danger));">
+                                        <div class="countdown-title">今日收益</div>
+                                        <div class="countdown-timer">+2.4 DPH</div>
+                                    </div>
+                                    
+                                    <div class="action-buttons">
+                                        <button class="btn btn-primary warning">
+                                            <i class="fas fa-exchange-alt"></i>
+                                            发起交易
+                                        </button>
+                                        <button class="btn btn-secondary">
+                                            <i class="fas fa-chart-line"></i>
+                                            查看资产报告
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 用户面板展开/收起功能
+            const userPanel = document.getElementById('userPanel');
+            const userPanelContent = document.getElementById('userPanelContent');
+            
+            userPanel.addEventListener('click', function() {
+                const isActive = this.classList.contains('active');
+                
+                if (!isActive) {
+                    this.classList.add('active');
+                    const height = userPanelContent.scrollHeight + 50;
+                    userPanelContent.style.maxHeight = height + 'px';
+                } else {
+                    this.classList.remove('active');
+                    userPanelContent.style.maxHeight = '0';
+                }
+            });
+            
+            // 导航按钮点击事件
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // 移除所有按钮的active类
+                    navButtons.forEach(b => b.classList.remove('active'));
+                    
+                    // 为当前点击的按钮添加active类
+                    this.classList.add('active');
+                    
+                    // 根据点击的按钮筛选卡片（示例）
+                    const btnId = this.id;
+                    const allCards = document.querySelectorAll('.expandable-card');
+                    
+                    if (btnId === 'navActivity') {
+                        // 显示所有卡片
+                        allCards.forEach(card => card.style.display = 'flex');
+                    } else if (btnId === 'navModel') {
+                        // 只显示模型相关卡片
+                        allCards.forEach(card => {
+                            if (card.id === 'card-model') {
+                                card.style.display = 'flex';
+                            } else {
+                                card.style.display = 'none';
+                            }
+                        });
+                    } else if (btnId === 'navWallet') {
+                        // 只显示钱包相关卡片
+                        allCards.forEach(card => {
+                            if (card.id === 'card-wallet') {
+                                card.style.display = 'flex';
+                            } else {
+                                card.style.display = 'none';
+                            }
+                        });
+                    }
+                });
+            });
+            
+            // 卡片展开/收起功能
+            const cards = document.querySelectorAll('.expandable-card');
+            
+            // 初始化：第一个卡片展开，其他收起
+            cards.forEach((card, index) => {
+                if (index !== 0) {
+                    const content = card.querySelector('.card-content');
+                    content.style.maxHeight = '0';
+                    card.classList.remove('active');
+                } else {
+                    // 第一个卡片展开
+                    card.classList.add('active');
+                    const content = card.querySelector('.card-content');
+                    const innerContent = card.querySelector('.card-content-inner');
+                    const height = innerContent.scrollHeight + 50;
+                    content.style.maxHeight = height + 'px';
+                }
+                
+                // 点击卡片切换状态
+                card.addEventListener('click', function(e) {
+                    // 如果点击的是按钮，不触发卡片收起
+                    if (e.target.closest('button')) {
+                        return;
+                    }
+                    
+                    // 切换当前卡片的激活状态
+                    const isActive = this.classList.contains('active');
+                    
+                    // 先收起所有卡片
+                    cards.forEach(c => {
+                        c.classList.remove('active');
+                        const content = c.querySelector('.card-content');
+                        content.style.maxHeight = '0';
+                    });
+                    
+                    // 如果点击的卡片原本不是激活状态，则展开它
+                    if (!isActive) {
+                        this.classList.add('active');
+                        const content = this.querySelector('.card-content');
+                        // 获取内容实际高度
+                        const innerContent = this.querySelector('.card-content-inner');
+                        const height = innerContent.scrollHeight + 50; // 添加一些边距
+                        content.style.maxHeight = height + 'px';
+                    }
+                });
+            });
+            
+            // 倒计时功能
+            function updateCountdown() {
+                const countdownElement = document.getElementById('countdown-okx');
+                if (!countdownElement) return;
+                
+                // 设置活动结束时间（示例：3天后）
+                const now = new Date();
+                const endTime = new Date(now);
+                endTime.setDate(endTime.getDate() + 3); // 3天后结束
+                endTime.setHours(23, 59, 59);
+                
+                const diff = endTime - now;
+                
+                // 如果活动已结束
+                if (diff <= 0) {
+                    countdownElement.textContent = "活动已结束";
+                    document.querySelector('.status-badge').textContent = "⏰ 已结束";
+                    document.querySelector('.status-badge').style.background = "#f3f4f6";
+                    document.querySelector('.status-badge').style.color = "#6b7280";
+                    return;
+                }
+                
+                const hours = Math.floor(diff / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                
+                countdownElement.textContent = 
+                    `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+            
+            // 初始更新并设置定时器
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+            
+            // 资源中心更新时间
+            function updateResourceTime() {
+                const resourceTimeElement = document.getElementById('countdown-resource');
+                if (!resourceTimeElement) return;
+                
+                const now = new Date();
+                const updateTime = new Date(now);
+                updateTime.setHours(updateTime.getHours() - 24); // 24小时前更新
+                
+                const diff = now - updateTime;
+                const hours = Math.floor(diff / (1000 * 60 * 60));
+                
+                if (hours < 1) {
+                    resourceTimeElement.textContent = "刚刚更新";
+                } else if (hours < 24) {
+                    resourceTimeElement.textContent = `${hours}小时前`;
+                } else {
+                    const days = Math.floor(hours / 24);
+                    resourceTimeElement.textContent = `${days}天前`;
+                }
+            }
+            
+            updateResourceTime();
+            
+            // 按钮点击事件
+            document.querySelectorAll('.btn-primary').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation(); // 防止触发卡片点击事件
+                    const cardTitle = this.closest('.expandable-card').querySelector('h3').textContent;
+                    alert(`即将跳转到：${cardTitle} 的参与页面`);
+                });
+            });
+            
+            document.querySelectorAll('.btn-secondary').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation(); // 防止触发卡片点击事件
+                    const cardTitle = this.closest('.expandable-card').querySelector('h3').textContent;
+                    
+                    // 模拟分享功能
+                    if (navigator.share) {
+                        navigator.share({
+                            title: cardTitle,
+                            text: '看看这个来自海豚社区的有趣活动！',
+                            url: window.location.href,
+                        });
+                    } else {
+                        alert(`已复制 ${cardTitle} 的分享链接到剪贴板`);
+                    }
+                });
+            });
+            
+            // 模拟DPH余额变化（每30秒增加1 DPH）
+            setInterval(() => {
+                const dphElement = document.querySelector('.user-detail:nth-child(2) span');
+                if (dphElement) {
+                    const currentDPH = parseInt(dphElement.textContent.split(': ')[1]);
+                    dphElement.textContent = `DPH: ${currentDPH + 1}`;
+                    
+                    // 更新钱包卡片中的DPH余额
+                    const walletDPH = document.querySelector('.reward-item:nth-child(2) .reward-value');
+                    if (walletDPH) {
+                        walletDPH.textContent = `${currentDPH + 1} DPH`;
+                    }
+                    
+                    // 更新今日收益
+                    const todayEarn = document.querySelector('#card-wallet .countdown-timer');
+                    if (todayEarn) {
+                        const currentEarn = parseFloat(todayEarn.textContent.split('+')[1]);
+                        todayEarn.textContent = `+${(currentEarn + 0.1).toFixed(1)} DPH`;
+                    }
+                }
+            }, 30000);
+        });
+    </script>
+</body>
+</html>
