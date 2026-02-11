@@ -1,1 +1,891 @@
-https://aosima858588-boop.github.io/h.web3/
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+  <title>海豚经济模型 · 数据演示看板</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* ===== 全局变量（与社区主页完全统一）===== */
+    :root {
+      --primary: #0066ff;
+      --primary-light: rgba(0, 102, 255, 0.08);
+      --primary-dark: #0052cc;
+      --secondary: #8b5cf6;
+      --accent: #00c6ff;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --text-primary: #1a1a1a;
+      --text-secondary: #666666;
+      --text-light: #999999;
+      --bg-gradient: linear-gradient(135deg, #f0f7ff 0%, #e6f0ff 100%);
+      --card-bg: rgba(255, 255, 255, 0.9);
+      --card-shadow: 0 8px 25px rgba(0, 102, 255, 0.08);
+      --border-light: rgba(0, 102, 255, 0.1);
+      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'SF Pro Display', sans-serif;
+    }
+
+    body {
+      background: var(--bg-gradient);
+      color: var(--text-primary);
+      padding: 24px 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    /* 背景线条（提亮版，与主页一致） */
+    .line-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.3;
+      pointer-events: none;
+    }
+    .line-bg svg {
+      width: 100%;
+      height: 100%;
+    }
+    .line-bg path {
+      stroke: rgba(0, 102, 255, 0.2);
+      stroke-width: 1.5;
+      fill: none;
+      stroke-dasharray: 8 6;
+      animation: lineFloat 18s linear infinite;
+    }
+    @keyframes lineFloat {
+      0% { stroke-dashoffset: 0; }
+      100% { stroke-dashoffset: 100; }
+    }
+
+    /* ===== 主容器：数据看板 ===== */
+    .dashboard {
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* ----- 头部（模型标识 + 简明摘要）----- */
+    .model-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .model-title {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+    .model-icon {
+      width: 70px;
+      height: 70px;
+      border-radius: 20px;
+      background: rgba(139, 92, 246, 0.1);
+      border: 2px solid rgba(139, 92, 246, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--secondary);
+      font-size: 2.4rem;
+      transition: var(--transition);
+    }
+    .model-icon i {
+      filter: drop-shadow(0 4px 8px rgba(139, 92, 246, 0.2));
+    }
+    .model-name h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--secondary), #c084fc);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+    .model-name p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .live-badge {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--success);
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ----- 核心数据卡片网格（6项）----- */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 18px;
+      margin-bottom: 30px;
+    }
+    .stat-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(8px);
+      border: 1.5px solid var(--border-light);
+      border-radius: 24px;
+      padding: 20px 18px;
+      transition: var(--transition);
+      box-shadow: var(--card-shadow);
+    }
+    .stat-card:hover {
+      border-color: rgba(0, 102, 255, 0.2);
+      background: rgba(255, 255, 255, 0.95);
+      transform: translateY(-4px);
+    }
+    .stat-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-bottom: 12px;
+    }
+    .stat-label i {
+      font-size: 1.1rem;
+      color: var(--primary);
+    }
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1.1;
+      margin-bottom: 5px;
+    }
+    .stat-trend {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .trend-up { color: var(--success); }
+    .trend-down { color: var(--danger); }
+
+    /* ----- 双栏布局：模拟器 + 收益分解 ----- */
+    .simulation-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 30px;
+    }
+    @media (max-width: 800px) {
+      .simulation-row { grid-template-columns: 1fr; }
+    }
+
+    /* 模拟器卡片 */
+    .sim-card, .earning-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(8px);
+      border: 1.5px solid var(--border-light);
+      border-radius: 28px;
+      padding: 24px;
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .card-header i {
+      font-size: 1.6rem;
+      color: var(--primary);
+      background: rgba(0, 102, 255, 0.08);
+      padding: 12px;
+      border-radius: 18px;
+    }
+    .card-header h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    /* 滑块组 */
+    .param-group {
+      margin-bottom: 24px;
+    }
+    .param-label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      color: var(--text-secondary);
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .param-label span:last-child {
+      color: var(--primary);
+      font-weight: 800;
+      background: rgba(0, 102, 255, 0.08);
+      padding: 4px 12px;
+      border-radius: 30px;
+    }
+    input[type=range] {
+      width: 100%;
+      height: 8px;
+      background: rgba(0, 102, 255, 0.1);
+      border-radius: 10px;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 24px;
+      height: 24px;
+      background: white;
+      border: 2px solid var(--primary);
+      border-radius: 50%;
+      box-shadow: 0 4px 8px rgba(0, 102, 255, 0.2);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    input[type=range]::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+      background: var(--primary);
+    }
+
+    /* 收益卡片 */
+    .earning-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 10px;
+    }
+    .earning-item {
+      background: rgba(0, 102, 255, 0.04);
+      border-radius: 20px;
+      padding: 18px;
+      border: 1px solid rgba(0, 102, 255, 0.08);
+    }
+    .earning-item .label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+    }
+    .earning-item .value {
+      font-size: 1.9rem;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+    .total-value {
+      grid-column: span 2;
+      background: linear-gradient(135deg, rgba(0,102,255,0.05), rgba(139,92,246,0.05));
+      border-radius: 20px;
+      padding: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid rgba(0,102,255,0.2);
+    }
+    .total-value span:first-child {
+      font-weight: 700;
+      color: var(--text-secondary);
+    }
+    .total-value span:last-child {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    /* ----- 飞轮效应与健康度（双卡）----- */
+    .flywheel-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 800px) {
+      .flywheel-row { grid-template-columns: 1fr; }
+    }
+
+    .flywheel-card, .health-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(8px);
+      border: 1.5px solid var(--border-light);
+      border-radius: 28px;
+      padding: 24px;
+    }
+    .flywheel-nodes {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .node-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px dashed rgba(0,0,0,0.05);
+    }
+    .node-dot {
+      width: 32px;
+      height: 32px;
+      background: rgba(0,102,255,0.08);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      font-weight: 800;
+    }
+    .health-metrics {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 10px;
+    }
+    .metric {
+      background: rgba(255,255,255,0.5);
+      border-radius: 18px;
+      padding: 16px;
+    }
+    .metric-label {
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      margin-bottom: 8px;
+    }
+    .metric-value {
+      font-size: 1.6rem;
+      font-weight: 800;
+    }
+
+    /* ----- 经济模型架构（折叠卡片）----- */
+    .arch-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--border-light);
+      border-radius: 28px;
+      padding: 24px;
+      margin-top: 20px;
+    }
+    .arch-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .arch-header i {
+      font-size: 1.6rem;
+      color: var(--secondary);
+    }
+    .dual-token {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 16px;
+    }
+    .token-spec {
+      background: rgba(0,0,0,0.02);
+      border-radius: 20px;
+      padding: 20px;
+    }
+
+    /* 阶梯利率表 */
+    .rate-table {
+      margin-top: 20px;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th {
+      text-align: left;
+      padding: 12px 8px;
+      background: rgba(0,102,255,0.04);
+      color: var(--text-primary);
+      font-weight: 700;
+    }
+    td {
+      padding: 10px 8px;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+
+    /* 按钮与交互 */
+    .btn {
+      padding: 14px 24px;
+      border-radius: 40px;
+      font-weight: 700;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: var(--transition);
+      background: white;
+      border: 1.5px solid var(--border-light);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      border: none;
+    }
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 25px rgba(0,102,255,0.3);
+    }
+
+    /* 图标补全——海豚模型专用 */
+    .dolphin-icon {
+      color: var(--secondary);
+    }
+    .model-badge i {
+      margin-right: 4px;
+    }
+
+    /* 响应式 */
+    @media (max-width: 600px) {
+      .model-name h1 { font-size: 1.6rem; }
+      .stat-number { font-size: 1.6rem; }
+    }
+  </style>
+</head>
+<body>
+  <!-- 线条背景（与主页风格一致） -->
+  <div class="line-bg" id="lineBg"></div>
+
+  <div class="dashboard">
+    <!-- ===== 头部：模型标识（图标已补全）===== -->
+    <div class="model-header">
+      <div class="model-title">
+        <div class="model-icon">
+          <i class="fas fa-dolphin"></i>   <!-- 海豚图标已修复 -->
+        </div>
+        <div class="model-name">
+          <h1>海豚动态经济模型</h1>
+          <p><i class="fas fa-check-circle" style="color: var(--success);"></i> 公平发射 · 双收益飞轮 · OKX Boost 协同</p>
+        </div>
+      </div>
+      <div class="live-badge">
+        <i class="fas fa-circle" style="font-size: 0.6rem;"></i> 模拟器实时运行
+      </div>
+    </div>
+
+    <!-- ===== 核心数据卡片（6项关键指标）===== -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label"><i class="fas fa-chart-line"></i> H实时价格</div>
+        <div class="stat-number" id="priceDisplay">$0.0010</div>
+        <div class="stat-trend"><span class="trend-down"><i class="fas fa-arrow-down"></i> -0.87%</span> 24h</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label"><i class="fas fa-lock"></i> 质押总额(TVL)</div>
+        <div class="stat-number" id="tvlDisplay">$199K</div>
+        <div class="stat-trend"><span class="trend-up"><i class="fas fa-arrow-up"></i> +12.3%</span> 周增幅</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label"><i class="fas fa-arrows-spin"></i> 日交易量</div>
+        <div class="stat-number" id="volumeDisplay">$10K</div>
+        <div class="stat-trend">≈ 520 笔交易</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label"><i class="fas fa-coins"></i> 流通市值</div>
+        <div class="stat-number" id="mcapDisplay">$0.3M</div>
+        <div class="stat-trend">流通率 32%</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label"><i class="fas fa-gauge-high"></i> 年化APY</div>
+        <div class="stat-number" id="apyDisplay">3678%</div>
+        <div class="stat-trend">阶梯利率最高档</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label"><i class="fas fa-star"></i> Boost积分</div>
+        <div class="stat-number" id="boostDisplay">5.0</div>
+        <div class="stat-trend">≈ $500 交易量</div>
+      </div>
+    </div>
+
+    <!-- ===== 模拟器 + 收益分解（双栏）===== -->
+    <div class="simulation-row">
+      <!-- 左侧：参数模拟器（可输入/滑块） -->
+      <div class="sim-card">
+        <div class="card-header">
+          <i class="fas fa-sliders"></i>
+          <h3>模拟器控制台</h3>
+        </div>
+        <div class="param-group">
+          <div class="param-label">
+            <span><i class="fas fa-dollar-sign" style="color: var(--primary);"></i> 质押金额 (USDT)</span>
+            <span><input type="number" id="stakeInput" value="1000" min="100" max="50000" step="100" style="width: 100px; padding: 6px; border-radius: 30px; border: 1.5px solid var(--border-light); text-align: right;"></span>
+          </div>
+          <input type="range" id="stakeSlider" min="100" max="50000" value="1000" step="100">
+        </div>
+        <div class="param-group">
+          <div class="param-label">
+            <span><i class="fas fa-calendar"></i> 质押天数</span>
+            <span id="daysValue">45 天</span>
+          </div>
+          <input type="range" id="daysSlider" min="1" max="90" value="45" step="1">
+        </div>
+        <div class="param-group">
+          <div class="param-label">
+            <span><i class="fas fa-chart-simple"></i> 日交易量 (模拟Boost)</span>
+            <span id="volumeValue">$10,000</span>
+          </div>
+          <input type="range" id="volumeSlider" min="1000" max="50000" value="10000" step="500">
+        </div>
+        <div class="param-group">
+          <div class="param-label">
+            <span><i class="fas fa-cube"></i> 价格机制强度</span>
+            <span id="strengthValue">中</span>
+          </div>
+          <input type="range" id="strengthSlider" min="0" max="2" value="1" step="1">
+        </div>
+        <button class="btn btn-primary" style="width: 100%;" onclick="alert('模拟参数已更新，下方收益实时联动')">
+          <i class="fas fa-rotate"></i> 更新模拟
+        </button>
+        <p style="color: var(--text-light); font-size: 0.8rem; margin-top: 16px;">
+          <i class="fas fa-info-circle"></i> 拖动滑块或直接输入金额，收益实时变化
+        </p>
+      </div>
+
+      <!-- 右侧：您的收益分析（动态） -->
+      <div class="earning-card">
+        <div class="card-header">
+          <i class="fas fa-sack-dollar"></i>
+          <h3>您的收益分析</h3>
+        </div>
+        <div class="earning-grid">
+          <div class="earning-item">
+            <div class="label"><i class="fas fa-sun"></i> 日收益</div>
+            <div class="value" id="dailyEarn">$10.00</div>
+          </div>
+          <div class="earning-item">
+            <div class="label"><i class="fas fa-boxes-packing"></i> 质押收益</div>
+            <div class="value" id="stakeEarn">$450</div>
+          </div>
+          <div class="earning-item">
+            <div class="label"><i class="fas fa-chart-line"></i> 资本利得</div>
+            <div class="value" id="gainEarn">$4,219</div>
+          </div>
+          <div class="earning-item">
+            <div class="label"><i class="fas fa-bolt"></i> Boost奖励</div>
+            <div class="value" id="boostEarn">$120</div>
+          </div>
+          <div class="total-value">
+            <span><i class="fas fa-coins"></i> 总收益</span>
+            <span id="totalEarn">$4,799</span>
+          </div>
+        </div>
+        <div style="margin-top: 20px; background: rgba(0,102,255,0.04); border-radius: 16px; padding: 16px;">
+          <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+            <div><span style="color: var(--text-secondary);">年化APY</span> <strong style="color: var(--primary); font-size: 1.3rem; margin-left: 8px;" id="apyDynamic">438%</strong></div>
+            <div><span style="color: var(--text-secondary);">Boost积分</span> <strong style="color: var(--warning); font-size: 1.3rem; margin-left: 8px;" id="boostDynamic">5.0</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 飞轮效应 + 协议健康度 ===== -->
+    <div class="flywheel-row">
+      <!-- 飞轮八节点（带图标） -->
+      <div class="flywheel-card">
+        <div class="card-header">
+          <i class="fas fa-dharmachakra"></i>
+          <h3>正向收益飞轮 · 八节点</h3>
+        </div>
+        <div class="flywheel-nodes">
+          <div class="node-item"><span class="node-dot">1</span> 质押USDT → 智能金库</div>
+          <div class="node-item"><span class="node-dot">2</span> 每日领取H收益</div>
+          <div class="node-item"><span class="node-dot">3</span> 卖掉H → 产生Boost交易量</div>
+          <div class="node-item"><span class="node-dot">4</span> 交易所得买入H → 更多交易量</div>
+          <div class="node-item"><span class="node-dot">5</span> 达到门槛 → 领取欧易空投</div>
+          <div class="node-item"><span class="node-dot">6</span> 新币卖成U → 继续质押</div>
+          <div class="node-item"><span class="node-dot">7</span> 积累更多H收益</div>
+          <div class="node-item"><span class="node-dot">8</span> 交易量↑ → H价格↑ → 空投↑ → 资本利得</div>
+        </div>
+      </div>
+      <!-- 协议健康度 -->
+      <div class="health-card">
+        <div class="card-header">
+          <i class="fas fa-heart-pulse"></i>
+          <h3>协议健康度</h3>
+        </div>
+        <div class="health-metrics">
+          <div class="metric">
+            <div class="metric-label">资金利用率</div>
+            <div class="metric-value">71.7%</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">储备金覆盖率</div>
+            <div class="metric-value">1.8x</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">风险等级</div>
+            <div class="metric-value" style="color: var(--success);">低风险</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">流动性深度</div>
+            <div class="metric-value">$125K</div>
+          </div>
+        </div>
+        <div style="margin-top: 20px; background: rgba(0,102,255,0.02); border-radius: 16px; padding: 16px;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+            <span>综合评分</span>
+            <span style="font-weight: 800; color: var(--primary);">86.5</span>
+          </div>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <span style="background: rgba(0,102,255,0.08); padding: 4px 12px; border-radius: 30px; font-size: 0.8rem;">📈 价格增长 92%</span>
+            <span style="background: rgba(0,102,255,0.08); padding: 4px 12px; border-radius: 30px; font-size: 0.8rem;">⚖️ 稳定性 88%</span>
+            <span style="background: rgba(0,102,255,0.08); padding: 4px 12px; border-radius: 30px; font-size: 0.8rem;">👥 用户增长 85%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 经济模型完整架构（双代币 + 阶梯利率）===== -->
+    <div class="arch-card">
+      <div class="arch-header">
+        <i class="fas fa-cubes"></i>
+        <h3>📘 海豚动态经济模型 · 完整架构</h3>
+      </div>
+      <!-- 双代币 -->
+      <div class="dual-token">
+        <div class="token-spec">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px;">
+            <i class="fas fa-token" style="font-size: 1.8rem; color: var(--primary);"></i>
+            <h4 style="font-size: 1.2rem;">H代币 (基础资产)</h4>
+          </div>
+          <p style="color: var(--text-secondary); margin-bottom: 12px;">总供应量 10亿枚 · 永不增发 · 100%公平发射</p>
+          <ul style="list-style: none; color: var(--text-secondary);">
+            <li style="margin-bottom: 8px;"><i class="fas fa-check-circle" style="color: var(--success);"></i> 质押收益资产</li>
+            <li style="margin-bottom: 8px;"><i class="fas fa-check-circle" style="color: var(--success);"></i> 交易媒介、Boost凭证</li>
+            <li style="margin-bottom: 8px;"><i class="fas fa-check-circle" style="color: var(--success);"></i> 买卖税5/5，用于回购销毁</li>
+          </ul>
+        </div>
+        <div class="token-spec">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px;">
+            <i class="fas fa-token" style="font-size: 1.8rem; color: var(--secondary);"></i>
+            <h4 style="font-size: 1.2rem;">DPH代币 (平台治理)</h4>
+          </div>
+          <p style="color: var(--text-secondary); margin-bottom: 12px;">总供应量 1亿枚 · 逐步释放</p>
+          <ul style="list-style: none; color: var(--text-secondary);">
+            <li style="margin-bottom: 8px;"><i class="fas fa-check-circle" style="color: var(--success);"></i> 协议治理、手续费分红</li>
+            <li style="margin-bottom: 8px;"><i class="fas fa-check-circle" style="color: var(--success);"></i> 质押奖励、社区空投</li>
+            <li style="margin-bottom: 8px;"><i class="fas fa-check-circle" style="color: var(--success);"></i> 生态建设、团队激励</li>
+          </ul>
+        </div>
+      </div>
+      <!-- 阶梯利率表 -->
+      <div style="margin-top: 24px;">
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px;">
+          <i class="fas fa-table"></i>
+          <h4>阶梯利率表（智能合约自动执行）</h4>
+        </div>
+        <div class="rate-table">
+          <table>
+            <thead>
+              <tr><th>阶段</th><th>日利率</th><th>年化APY</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>1-7天</td><td>0.5%</td><td>182.5%</td></tr>
+              <tr><td>8-15天</td><td>0.6%</td><td>219.0%</td></tr>
+              <tr><td>16-30天</td><td>0.8%</td><td>292.0%</td></tr>
+              <tr><td>31-60天</td><td>1.0%</td><td>365.0%</td></tr>
+              <tr><td>61+天</td><td>1.2%</td><td>438.0%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- OKX Boost协同策略 -->
+      <div style="margin-top: 28px; background: rgba(0,102,255,0.02); border-radius: 20px; padding: 20px;">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+          <i class="fas fa-bolt" style="color: var(--warning);"></i>
+          <h4 style="font-size: 1.2rem;">⚡ OKX Boost 协同策略</h4>
+        </div>
+        <p style="color: var(--text-secondary);">Boost积分 = 实际交易量 × 0.85 · 10天滚动窗口 · $500交易量 = 1积分 · 按积分比例瓜分空投奖池</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ========== 模拟器联动逻辑 ==========
+    // 获取DOM元素
+    const stakeInput = document.getElementById('stakeInput');
+    const stakeSlider = document.getElementById('stakeSlider');
+    const daysSlider = document.getElementById('daysSlider');
+    const daysValue = document.getElementById('daysValue');
+    const volumeSlider = document.getElementById('volumeSlider');
+    const volumeValue = document.getElementById('volumeValue');
+    const strengthSlider = document.getElementById('strengthSlider');
+    const strengthValue = document.getElementById('strengthValue');
+
+    // 收益显示
+    const dailyEarn = document.getElementById('dailyEarn');
+    const stakeEarn = document.getElementById('stakeEarn');
+    const gainEarn = document.getElementById('gainEarn');
+    const boostEarn = document.getElementById('boostEarn');
+    const totalEarn = document.getElementById('totalEarn');
+    const apyDynamic = document.getElementById('apyDynamic');
+    const boostDynamic = document.getElementById('boostDynamic');
+    const priceDisplay = document.getElementById('priceDisplay');
+    const tvlDisplay = document.getElementById('tvlDisplay');
+    const volumeDisplay = document.getElementById('volumeDisplay');
+    const mcapDisplay = document.getElementById('mcapDisplay');
+    const apyDisplay = document.getElementById('apyDisplay');
+    const boostDisplay = document.getElementById('boostDisplay');
+
+    // 初始化事件监听
+    function initSimulator() {
+      // 滑块与输入框双向绑定
+      stakeSlider.addEventListener('input', function() {
+        stakeInput.value = this.value;
+        updateEarnings();
+      });
+      stakeInput.addEventListener('input', function() {
+        let val = parseInt(this.value) || 1000;
+        if (val < 100) val = 100;
+        if (val > 50000) val = 50000;
+        stakeSlider.value = val;
+        updateEarnings();
+      });
+
+      daysSlider.addEventListener('input', function() {
+        daysValue.innerText = this.value + ' 天';
+        updateEarnings();
+      });
+
+      volumeSlider.addEventListener('input', function() {
+        volumeValue.innerText = '$' + parseInt(this.value).toLocaleString();
+        updateEarnings();
+      });
+
+      strengthSlider.addEventListener('input', function() {
+        const val = parseInt(this.value);
+        if (val === 0) strengthValue.innerText = '弱';
+        else if (val === 1) strengthValue.innerText = '中';
+        else strengthValue.innerText = '强';
+        updateEarnings();
+      });
+
+      // 初始更新
+      updateEarnings();
+    }
+
+    // 收益计算函数（模拟动态）
+    function updateEarnings() {
+      const stake = parseFloat(stakeInput.value) || 1000;
+      const days = parseInt(daysSlider.value);
+      const volume = parseInt(volumeSlider.value);
+      const strength = parseInt(strengthSlider.value);
+
+      // 阶梯利率计算
+      let dailyRate = 0.005; // 默认0.5%
+      if (days >= 61) dailyRate = 0.012;
+      else if (days >= 31) dailyRate = 0.01;
+      else if (days >= 16) dailyRate = 0.008;
+      else if (days >= 8) dailyRate = 0.006;
+      
+      const apy = (dailyRate * 365 * 100).toFixed(0);
+      
+      // 收益计算
+      const daily = stake * dailyRate;
+      const totalStake = daily * days;
+      
+      // 资本利得（模拟，基于价格机制强度）
+      let priceBase = 0.0010;
+      let gainMultiple = 1.0;
+      if (strength === 0) gainMultiple = 0.6;
+      else if (strength === 1) gainMultiple = 1.0;
+      else gainMultiple = 1.5;
+      
+      const capitalGain = (stake * 0.2 * gainMultiple * (days / 30)).toFixed(0);
+      
+      // Boost奖励
+      const boostReward = (volume / 500) * 0.6; // 每500U交易量约0.6U等值奖励
+      const boostPoints = (volume / 500).toFixed(1);
+      
+      // 总收益
+      const total = parseFloat(totalStake) + parseFloat(capitalGain) + boostReward;
+
+      // 更新UI
+      dailyEarn.innerText = '$' + daily.toFixed(2);
+      stakeEarn.innerText = '$' + Math.round(totalStake);
+      gainEarn.innerText = '$' + capitalGain;
+      boostEarn.innerText = '$' + boostReward.toFixed(0);
+      totalEarn.innerText = '$' + Math.round(total).toLocaleString();
+      apyDynamic.innerText = apy + '%';
+      boostDynamic.innerText = boostPoints;
+
+      // 更新核心卡片（联动变化）
+      priceDisplay.innerText = '$' + (0.0010 + (strength * 0.0002)).toFixed(4);
+      volumeDisplay.innerText = '$' + (volume).toLocaleString();
+      apyDisplay.innerText = apy + '%';
+      boostDisplay.innerText = boostPoints;
+      
+      // 模拟TVL和市值微小变动
+      const tvlBase = 199000;
+      tvlDisplay.innerText = '$' + (tvlBase + stake * 0.5).toFixed(0) + 'K';
+      mcapDisplay.innerText = '$0.' + (300 + Math.floor(stake/100)).toFixed(0) + 'M';
+    }
+
+    // 初始化背景线条（与主页一致）
+    function createLineBg() {
+      const container = document.getElementById('lineBg');
+      const svgNS = "http://www.w3.org/2000/svg";
+      const svg = document.createElementNS(svgNS, "svg");
+      svg.setAttribute("width", "100%");
+      svg.setAttribute("height", "100%");
+      svg.setAttribute("viewBox", "0 0 1200 1200");
+      
+      for (let i = 0; i < 25; i++) {
+        const path = document.createElementNS(svgNS, "path");
+        const x1 = Math.random() * 1200;
+        const y1 = Math.random() * 1200;
+        const x2 = Math.random() * 1200;
+        const y2 = Math.random() * 1200;
+        const cp1x = x1 + (Math.random() - 0.5) * 400;
+        const cp1y = y1 + (Math.random() - 0.5) * 400;
+        const cp2x = x2 + (Math.random() - 0.5) * 400;
+        const cp2y = y2 + (Math.random() - 0.5) * 400;
+        
+        path.setAttribute("d", `M ${x1},${y1} C ${cp1x},${cp1y} ${cp2x},${cp2y} ${x2},${y2}`);
+        path.setAttribute("stroke", `rgba(0, 102, 255, ${0.1 + Math.random() * 0.15})`);
+        path.setAttribute("stroke-width", "1.2");
+        path.setAttribute("fill", "none");
+        path.setAttribute("stroke-dasharray", "8 6");
+        svg.appendChild(path);
+      }
+      container.appendChild(svg);
+    }
+
+    // 启动
+    window.onload = function() {
+      createLineBg();
+      initSimulator();
+    };
+  </script>
+</body>
+</html>
