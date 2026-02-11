@@ -1,1738 +1,359 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>链上赚币 | 智能质押 - 海豚模式</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #00d4ff;
-            --primary-light: rgba(0, 212, 255, 0.3);
-            --primary-dark: #0099cc;
-            --secondary-color: #9d4edd;
-            --accent-color: #ff6b6b;
-            --text-color: #ffffff;
-            --text-secondary: #a0aec0;
-            --bg-dark: #0a0e17;
-            --bg-card: rgba(16, 23, 41, 0.8);
-            --border-glow: rgba(0, 212, 255, 0.5);
-            --shadow-glow: 0 0 20px rgba(0, 212, 255, 0.3);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        html, body {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            font-family: 'Inter', sans-serif;
-            color: var(--text-color);
-            background: var(--bg-dark);
-        }
-
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 10px;
-            position: relative;
-            overflow: auto;
-        }
-
-        /* 背景线条效果 */
-        .background-lines {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none;
-            overflow: hidden;
-        }
-
-        .line {
-            position: absolute;
-            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
-            opacity: 0.1;
-            animation: lineMove 20s linear infinite;
-        }
-
-        .line-1 {
-            top: 10%;
-            left: -100px;
-            width: 300px;
-            height: 1px;
-            animation-delay: 0s;
-        }
-
-        .line-2 {
-            top: 30%;
-            right: -150px;
-            width: 400px;
-            height: 1px;
-            animation-delay: 3s;
-            animation-direction: reverse;
-        }
-
-        .line-3 {
-            bottom: 20%;
-            left: -200px;
-            width: 500px;
-            height: 1px;
-            animation-delay: 6s;
-        }
-
-        .line-4 {
-            bottom: 50%;
-            right: -100px;
-            width: 350px;
-            height: 1px;
-            animation-delay: 9s;
-            animation-direction: reverse;
-        }
-
-        @keyframes lineMove {
-            0% {
-                transform: translateX(0) rotate(0deg);
-            }
-            100% {
-                transform: translateX(100vw) rotate(0deg);
-            }
-        }
-
-        /* 海报主容器 */
-        .poster-container {
-            width: 100%;
-            max-width: 1600px;
-            height: 100%;
-            min-height: 100vh;
-            background: rgba(10, 14, 23, 0.7);
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 212, 255, 0.2);
-            box-shadow: var(--shadow-glow), 0 20px 60px rgba(0, 0, 0, 0.5);
-            overflow: hidden;
-            position: relative;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* 头部区域 - 优化版 */
-        .poster-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-            position: relative;
-            z-index: 10;
-            padding: 0 10px;
-        }
-
-        .logo-section {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .logo-icon {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            position: relative;
-            overflow: hidden;
-            animation: logoPulse 3s infinite alternate;
-        }
-
-        @keyframes logoPulse {
-            0% { transform: scale(1); box-shadow: 0 0 20px rgba(0, 212, 255, 0.5); }
-            100% { transform: scale(1.05); box-shadow: 0 0 40px rgba(0, 212, 255, 0.8); }
-        }
-
-        .logo-icon::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            animation: shine 3s infinite linear;
-        }
-
-        @keyframes shine {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        .logo-text {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .main-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 3rem;
-            font-weight: 900;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            line-height: 1;
-            letter-spacing: 1.5px;
-            text-shadow: 0 0 30px rgba(0, 212, 255, 0.4);
-            position: relative;
-            display: inline-block;
-        }
-
-        .main-title::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary-color), transparent);
-            border-radius: 2px;
-        }
-
-        .subtitle {
-            font-size: 1.4rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-            margin-top: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .subtitle::before {
-            content: '';
-            width: 40px;
-            height: 3px;
-            background: linear-gradient(90deg, var(--primary-color), transparent);
-            border-radius: 2px;
-        }
-
-        .partner-section {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .partner-title {
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
-        .okx-logo {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--primary-color);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
-        }
-
-        .okx-logo::after {
-            content: 'Wallet';
-            font-size: 1.6rem;
-            color: var(--text-secondary);
-            font-weight: 600;
-        }
-
-        /* 进度条容器 */
-        .progress-container {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 300px;
-            height: 300px;
-            z-index: 15;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.5s ease;
-        }
-
-        .progress-circle {
-            width: 200px;
-            height: 200px;
-            position: relative;
-            margin-bottom: 20px;
-        }
-
-        .progress-ring {
-            transform: rotate(-90deg);
-            width: 100%;
-            height: 100%;
-        }
-
-        .progress-ring-circle {
-            fill: none;
-            stroke: var(--primary-color);
-            stroke-width: 8;
-            stroke-linecap: round;
-            stroke-dasharray: 565;
-            stroke-dashoffset: 565;
-            transition: stroke-dashoffset 1s ease;
-        }
-
-        .progress-text {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--primary-color);
-            text-shadow: 0 0 20px rgba(0, 212, 255, 0.7);
-        }
-
-        .progress-label {
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-            margin-top: 10px;
-        }
-
-        /* 超大飞轮区域 */
-        .flywheel-section {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            min-height: 70vh;
-            width: 100%;
-        }
-
-        /* 超大飞轮图形 */
-        .flywheel-container {
-            width: 1000px;
-            height: 1000px;
-            position: relative;
-            margin: 0 auto;
-            opacity: 0;
-            transition: opacity 1s ease;
-        }
-
-        .flywheel-circle {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border-radius: 50%;
-            border: 2px solid rgba(0, 212, 255, 0.2);
-        }
-
-        .flywheel-circle.outer {
-            width: 950px;
-            height: 950px;
-        }
-
-        .flywheel-circle.middle {
-            width: 750px;
-            height: 750px;
-        }
-
-        .flywheel-circle.inner {
-            width: 550px;
-            height: 550px;
-        }
-
-        /* 飞轮节点 */
-        .flywheel-node {
-            position: absolute;
-            width: 160px;
-            height: 160px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transform-origin: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            z-index: 2;
-            opacity: 0;
-        }
-
-        .flywheel-node.visible {
-            opacity: 1;
-        }
-
-        .flywheel-node:hover {
-            transform: scale(1.2);
-        }
-
-        .node-icon {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 36px;
-            margin-bottom: 15px;
-            background: rgba(16, 23, 41, 0.95);
-            border: 2px solid var(--primary-color);
-            box-shadow: 0 0 30px rgba(0, 212, 255, 0.7);
-            transition: all 0.3s ease;
-        }
-
-        .node-text {
-            font-size: 1.3rem;
-            font-weight: 700;
-            text-align: center;
-            color: var(--text-color);
-            max-width: 160px;
-            line-height: 1.2;
-            text-shadow: 0 0 15px rgba(0, 212, 255, 0.8);
-            background: rgba(10, 14, 23, 0.8);
-            padding: 8px 12px;
-            border-radius: 10px;
-            border: 1px solid rgba(0, 212, 255, 0.3);
-        }
-
-        .flywheel-node.active .node-icon {
-            background: var(--primary-color);
-            color: var(--bg-dark);
-            box-shadow: 0 0 50px rgba(0, 212, 255, 1);
-            animation: pulse 1.5s infinite alternate;
-        }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 30px rgba(0, 212, 255, 0.8); }
-            100% { box-shadow: 0 0 60px rgba(0, 212, 255, 1); }
-        }
-
-        /* 连接线 */
-        .connection-line {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        .line-path {
-            fill: none;
-            stroke: var(--primary-color);
-            stroke-width: 2.5;
-            stroke-dasharray: 20;
-            stroke-dashoffset: 1000;
-            animation: dash 40s linear infinite;
-            opacity: 0.7;
-        }
-
-        @keyframes dash {
-            to {
-                stroke-dashoffset: 0;
-            }
-        }
-
-        /* 中心区域 */
-        .center-circle {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 250px;
-            height: 250px;
-            border-radius: 50%;
-            background: rgba(10, 14, 23, 0.95);
-            border: 4px solid var(--primary-color);
-            box-shadow: 0 0 80px rgba(0, 212, 255, 0.8), inset 0 0 60px rgba(0, 212, 255, 0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            z-index: 3;
-            animation: centerPulse 6s infinite alternate;
-            opacity: 0;
-        }
-
-        @keyframes centerPulse {
-            0% { 
-                box-shadow: 0 0 60px rgba(0, 212, 255, 0.7), inset 0 0 40px rgba(0, 212, 255, 0.3);
-                transform: translate(-50%, -50%) scale(1);
-            }
-            100% { 
-                box-shadow: 0 0 100px rgba(0, 212, 255, 1), inset 0 0 60px rgba(0, 212, 255, 0.5);
-                transform: translate(-50%, -50%) scale(1.08);
-            }
-        }
-
-        .center-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.2rem;
-            font-weight: 900;
-            color: var(--primary-color);
-            text-align: center;
-        }
-
-        .center-subtitle {
-            font-size: 1.3rem;
-            color: var(--text-secondary);
-            text-align: center;
-            margin-top: 10px;
-        }
-
-        /* 节点详情面板 - 智能隐藏/显示 */
-        .node-detail-container {
-            position: absolute;
-            top: 50%;
-            right: 50px;
-            transform: translateY(-50%);
-            width: 400px;
-            z-index: 10;
-            transition: all 0.5s ease;
-        }
-
-        .node-detail {
-            background: rgba(16, 23, 41, 0.95);
-            border-radius: 15px;
-            border: 2px solid rgba(0, 212, 255, 0.4);
-            padding: 30px;
-            box-shadow: var(--shadow-glow), 0 10px 40px rgba(0, 0, 0, 0.5);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.5s ease;
-            transform: translateX(20px);
-        }
-
-        .node-detail.active {
-            opacity: 1;
-            visibility: visible;
-            transform: translateX(0);
-        }
-
-        .detail-toggle {
-            position: absolute;
-            top: 50%;
-            right: 0;
-            transform: translateY(-50%);
-            width: 40px;
-            height: 100px;
-            background: rgba(16, 23, 41, 0.9);
-            border: 1px solid rgba(0, 212, 255, 0.3);
-            border-right: none;
-            border-radius: 10px 0 0 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary-color);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .detail-toggle:hover {
-            background: rgba(0, 212, 255, 0.1);
-            width: 45px;
-        }
-
-        .detail-toggle i {
-            font-size: 1.5rem;
-            transition: transform 0.3s ease;
-        }
-
-        .detail-toggle.collapsed i {
-            transform: rotate(180deg);
-        }
-
-        .detail-header {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 25px;
-        }
-
-        .detail-icon {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            background: var(--primary-light);
-            color: var(--primary-color);
-            border: 2px solid var(--primary-color);
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
-        }
-
-        .detail-title {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: var(--primary-color);
-        }
-
-        .detail-content {
-            font-size: 1.1rem;
-            line-height: 1.7;
-            color: var(--text-color);
-            margin-bottom: 25px;
-        }
-
-        .detail-step {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 15px;
-            padding: 12px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            border-left: 4px solid var(--primary-color);
-        }
-
-        .detail-step i {
-            color: var(--primary-color);
-            font-size: 1.3rem;
-        }
-
-        /* 底部区域 */
-        .poster-footer {
-            position: absolute;
-            bottom: 30px;
-            left: 0;
-            right: 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 50px;
-            z-index: 10;
-        }
-
-        .slogan {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.8rem;
-            font-weight: 700;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            max-width: 600px;
-            line-height: 1.3;
-            text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 20px;
-        }
-
-        .btn {
-            padding: 15px 35px;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: none;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .btn-primary {
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            color: var(--bg-dark);
-            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.4);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.6);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--primary-color);
-            border: 2px solid var(--primary-color);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(0, 212, 255, 0.1);
-            transform: translateY(-5px);
-            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.3);
-        }
-
-        /* 控制面板 */
-        .control-panel {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            display: flex;
-            gap: 10px;
-            z-index: 100;
-        }
-
-        .control-btn {
-            background: rgba(16, 23, 41, 0.8);
-            border: 1px solid var(--primary-color);
-            color: var(--primary-color);
-            padding: 8px 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .control-btn:hover {
-            background: rgba(0, 212, 255, 0.1);
-            transform: translateY(-2px);
-        }
-
-        /* 移动端适配 */
-        @media (max-width: 1600px) {
-            .flywheel-container {
-                width: 850px;
-                height: 850px;
-            }
-            
-            .flywheel-circle.outer {
-                width: 800px;
-                height: 800px;
-            }
-            
-            .flywheel-circle.middle {
-                width: 600px;
-                height: 600px;
-            }
-            
-            .flywheel-circle.inner {
-                width: 400px;
-                height: 400px;
-            }
-            
-            .flywheel-node {
-                width: 140px;
-                height: 140px;
-            }
-            
-            .node-icon {
-                width: 80px;
-                height: 80px;
-                font-size: 32px;
-            }
-            
-            .node-text {
-                font-size: 1.1rem;
-                max-width: 140px;
-            }
-            
-            .center-circle {
-                width: 200px;
-                height: 200px;
-            }
-            
-            .center-title {
-                font-size: 1.8rem;
-            }
-            
-            .slogan {
-                font-size: 1.5rem;
-            }
-        }
-
-        @media (max-width: 1200px) {
-            .flywheel-container {
-                width: 700px;
-                height: 700px;
-            }
-            
-            .flywheel-circle.outer {
-                width: 650px;
-                height: 650px;
-            }
-            
-            .flywheel-circle.middle {
-                width: 450px;
-                height: 450px;
-            }
-            
-            .flywheel-circle.inner {
-                width: 250px;
-                height: 250px;
-            }
-            
-            .flywheel-node {
-                width: 110px;
-                height: 110px;
-            }
-            
-            .node-icon {
-                width: 60px;
-                height: 60px;
-                font-size: 24px;
-                margin-bottom: 10px;
-            }
-            
-            .node-text {
-                font-size: 0.9rem;
-                max-width: 110px;
-            }
-            
-            .center-circle {
-                width: 160px;
-                height: 160px;
-            }
-            
-            .center-title {
-                font-size: 1.4rem;
-            }
-            
-            .poster-footer {
-                padding: 0 30px;
-            }
-            
-            .slogan {
-                font-size: 1.3rem;
-                max-width: 450px;
-            }
-            
-            .node-detail-container {
-                width: 350px;
-                right: 30px;
-            }
-        }
-
-        @media (max-width: 900px) {
-            body {
-                padding: 5px;
-                overflow: auto;
-            }
-            
-            .poster-container {
-                padding: 15px;
-                min-height: auto;
-                overflow-y: auto;
-            }
-            
-            .poster-header {
-                flex-direction: column;
-                gap: 15px;
-                margin-bottom: 15px;
-            }
-            
-            .partner-section {
-                align-self: flex-start;
-            }
-            
-            .main-title {
-                font-size: 2.2rem;
-            }
-            
-            .flywheel-container {
-                width: 500px;
-                height: 500px;
-                margin-top: 20px;
-            }
-            
-            .flywheel-circle.outer {
-                width: 450px;
-                height: 450px;
-            }
-            
-            .flywheel-circle.middle {
-                width: 300px;
-                height: 300px;
-            }
-            
-            .flywheel-circle.inner {
-                width: 150px;
-                height: 150px;
-            }
-            
-            .flywheel-node {
-                width: 80px;
-                height: 80px;
-            }
-            
-            .node-icon {
-                width: 45px;
-                height: 45px;
-                font-size: 18px;
-                margin-bottom: 5px;
-            }
-            
-            .node-text {
-                font-size: 0.75rem;
-                max-width: 80px;
-                padding: 3px 6px;
-            }
-            
-            .center-circle {
-                width: 120px;
-                height: 120px;
-            }
-            
-            .center-title {
-                font-size: 1.1rem;
-            }
-            
-            .center-subtitle {
-                font-size: 0.9rem;
-            }
-            
-            .poster-footer {
-                position: relative;
-                bottom: auto;
-                flex-direction: column;
-                gap: 20px;
-                align-items: flex-start;
-                margin-top: 30px;
-                padding: 0;
-            }
-            
-            .slogan {
-                font-size: 1.2rem;
-                max-width: 100%;
-            }
-            
-            .action-buttons {
-                width: 100%;
-                justify-content: space-between;
-            }
-            
-            .btn {
-                padding: 12px 25px;
-                font-size: 1rem;
-            }
-            
-            .node-detail-container {
-                position: relative;
-                top: auto;
-                right: auto;
-                transform: none;
-                width: 100%;
-                margin-top: 30px;
-            }
-            
-            .detail-toggle {
-                display: none;
-            }
-            
-            .node-detail {
-                opacity: 1;
-                visibility: visible;
-                transform: none;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .flywheel-container {
-                width: 380px;
-                height: 380px;
-            }
-            
-            .flywheel-circle.outer {
-                width: 350px;
-                height: 350px;
-            }
-            
-            .flywheel-circle.middle {
-                width: 230px;
-                height: 230px;
-            }
-            
-            .flywheel-circle.inner {
-                width: 110px;
-                height: 110px;
-            }
-            
-            .flywheel-node {
-                width: 70px;
-                height: 70px;
-            }
-            
-            .node-icon {
-                width: 40px;
-                height: 40px;
-                font-size: 16px;
-                margin-bottom: 3px;
-            }
-            
-            .node-text {
-                font-size: 0.65rem;
-                max-width: 70px;
-            }
-            
-            .center-circle {
-                width: 90px;
-                height: 90px;
-            }
-            
-            .center-title {
-                font-size: 0.9rem;
-            }
-            
-            .center-subtitle {
-                font-size: 0.7rem;
-            }
-            
-            .main-title {
-                font-size: 1.8rem;
-            }
-            
-            .subtitle {
-                font-size: 1rem;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>海豚社区 | OKX Boost × 链上收益</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <style>
+    :root {
+      --bg-start: #f0f9ff;
+      --bg-end: #e0f2fe;
+      --primary: #3b82f6;
+      --primary-dark: #2563eb;
+      --secondary: #8b5cf6;
+      --accent: #0ea5e9;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --card: #ffffff;
+      --text: #1e293b;
+      --text-soft: #64748b;
+      --border: #e2e8f0;
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
+      --shadow-md: 0 10px 25px rgba(59, 130, 246, 0.15);
+      --radius-lg: 24px;
+      --radius-md: 16px;
+      --radius-sm: 12px;
+    }
+
+    * { 
+      margin:0; 
+      padding:0; 
+      box-sizing:border-box; 
+    }
+    
+    body {
+      font-family: 'Segoe UI', 'PingFang SC', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 2rem 1.5rem;
+    }
+
+    .hero {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 1rem 0;
+    }
+
+    .dolphin {
+      width: 100px;
+      height: 100px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      color: white;
+      margin-bottom: 1.5rem;
+      box-shadow: var(--shadow-md);
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0); }
+      50% { transform: translateY(-15px) rotate(-5deg); }
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      line-height: 1.2;
+    }
+
+    .slogan {
+      font-size: 1.2rem;
+      color: var(--text-soft);
+      max-width: 32ch;
+      margin: 0 auto 2.5rem;
+      line-height: 1.6;
+    }
+
+    /* 2×2 按钮网格 */
+    .btn-grid-2x2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      width: 100%;
+      max-width: 360px;
+      margin-bottom: 2rem;
+    }
+
+    .btn {
+      padding: 1rem 0.5rem;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px rgba(59, 130, 246, 0.3);
+    }
+
+    .btn-outline {
+      border: 2px solid var(--primary);
+      color: var(--primary);
+      background: white;
+    }
+
+    .btn-outline:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-3px);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 1.2rem;
+      border-radius: var(--radius-md);
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.3s;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .stat-value {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 0.3rem;
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      color: var(--text-soft);
+      font-weight: 500;
+    }
+
+    .footer {
+      margin-top: auto;
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--text-soft);
+      line-height: 1.6;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .loading {
+      opacity: 0.7;
+      cursor: wait;
+    }
+
+    .loading::after {
+      content: "";
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      margin-left: 8px;
+      border: 2px solid currentColor;
+      border-radius: 50%;
+      border-top-color: transparent;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 1.5rem 1rem;
+      }
+      
+      .dolphin {
+        width: 80px;
+        height: 80px;
+        font-size: 3rem;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .slogan {
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+      }
+      
+      .btn-grid-2x2 {
+        gap: 0.8rem;
+      }
+
+      .btn {
+        padding: 0.8rem 0.3rem;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
 </head>
 <body>
-    <!-- 背景线条 -->
-    <div class="background-lines">
-        <div class="line line-1"></div>
-        <div class="line line-2"></div>
-        <div class="line line-3"></div>
-        <div class="line line-4"></div>
+
+  <main class="hero">
+    <div class="dolphin">🐬</div>
+    <h1 data-editable="welcome-title">开启海豚模式</h1>
+    <p class="slogan" data-editable="slogan">OKX Boost 官方增益通道<br>海豚经济模型 × 稳定新币空投</p>
+
+    <!-- 2×2 四按钮组件 -->
+    <div class="btn-grid-2x2">
+      <a href="login.html" class="btn btn-primary" data-editable="btn-enter">
+        <i class="fas fa-sign-in-alt"></i>
+        进入社区
+      </a>
+      <a href="#features" class="btn btn-outline" data-editable="btn-play">
+        <i class="fas fa-play-circle"></i>
+        先看在玩
+      </a>
+      <a href="register.html" class="btn btn-primary" data-editable="btn-register">
+        <i class="fas fa-user-plus"></i>
+        注册一个
+      </a>
+      <a href="#" class="btn btn-outline" data-editable="btn-redpacket">
+        <i class="fas fa-gift"></i>
+        领个红包
+      </a>
     </div>
 
-    <!-- 海报主容器 -->
-    <div class="poster-container" id="posterContainer">
-        <!-- 控制面板 -->
-        <div class="control-panel">
-            <button class="control-btn" id="speedUpBtn">加速</button>
-            <button class="control-btn" id="speedDownBtn">减速</button>
-            <button class="control-btn" id="resetBtn">重置</button>
-        </div>
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-value" data-editable="stat-members">9.2K+</div>
+        <div class="stat-label">社区成员</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" data-editable="stat-stake">$5.1M</div>
+        <div class="stat-label">总质押量</div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer" data-editable="footer-note">
+    海豚社区 · OKX Wallet Boost 官方合作渠道<br>链上可查 · 社区驱动 · 长期主义
+  </footer>
+
+  <script type="module">
+    const API_BASE = 'https://haitun-backend.onrender.com';
+    
+    // 显示加载状态
+    document.body.classList.add('loading');
+    
+    async function loadContent() {
+      try {
+        const response = await fetch(`${API_BASE}/api/content`);
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
         
-        <!-- 头部 -->
-        <div class="poster-header">
-            <div class="logo-section">
-                <div class="logo-icon">
-                    <i class="fas fa-dolphin"></i>
-                </div>
-                <div class="logo-text">
-                    <h1 class="main-title">链上赚币 | 智能质押</h1>
-                    <p class="subtitle">海豚模式创新社区协同策略</p>
-                </div>
-            </div>
-            
-            <div class="partner-section">
-                <p class="partner-title">携手</p>
-                <div class="okx-logo">OKX</div>
-                <p class="partner-title">共同打造的增益活动</p>
-            </div>
-        </div>
-
-        <!-- 进度条 -->
-        <div class="progress-container" id="progressContainer">
-            <div class="progress-circle">
-                <svg class="progress-ring" viewBox="0 0 200 200">
-                    <circle class="progress-ring-circle" cx="100" cy="100" r="90"></circle>
-                </svg>
-            </div>
-            <div class="progress-text" id="progressText">0%</div>
-            <div class="progress-label">飞轮启动中...</div>
-        </div>
-
-        <!-- 超大飞轮区域 -->
-        <div class="flywheel-section">
-            <!-- 超大飞轮 -->
-            <div class="flywheel-container" id="flywheelContainer">
-                <!-- 连接线 -->
-                <svg class="connection-line" viewBox="0 0 1000 1000">
-                    <!-- 外环连接线 -->
-                    <path class="line-path" d="M500,25 A475,475 0 1,1 500,975 A475,475 0 1,1 500,25" />
-                    <!-- 中环连接线 -->
-                    <path class="line-path" d="M500,125 A375,375 0 1,1 500,875 A375,375 0 1,1 500,125" />
-                    <!-- 内环连接线 -->
-                    <path class="line-path" d="M500,225 A275,275 0 1,1 500,775 A275,275 0 1,1 500,225" />
-                </svg>
-                
-                <!-- 飞轮圆环 -->
-                <div class="flywheel-circle outer" id="outerCircle"></div>
-                <div class="flywheel-circle middle" id="middleCircle"></div>
-                <div class="flywheel-circle inner" id="innerCircle"></div>
-                
-                <!-- 飞轮节点 -->
-                <div class="flywheel-node" style="top: 5%; left: 50%; transform: translateX(-50%);" data-node="1">
-                    <div class="node-icon">
-                        <i class="fas fa-lock"></i>
-                    </div>
-                    <div class="node-text">质押USDT</div>
-                </div>
-                
-                <div class="flywheel-node" style="top: 15%; right: 15%;" data-node="2">
-                    <div class="node-icon">
-                        <i class="fas fa-coins"></i>
-                    </div>
-                    <div class="node-text">获得H代币</div>
-                </div>
-                
-                <div class="flywheel-node" style="top: 35%; right: 5%;" data-node="3">
-                    <div class="node-icon">
-                        <i class="fas fa-exchange-alt"></i>
-                    </div>
-                    <div class="node-text">交易H代币</div>
-                </div>
-                
-                <div class="flywheel-node" style="top: 60%; right: 15%;" data-node="4">
-                    <div class="node-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <div class="node-text">获得交易量</div>
-                </div>
-                
-                <div class="flywheel-node" style="bottom: 5%; left: 50%; transform: translateX(-50%);" data-node="5">
-                    <div class="node-icon">
-                        <i class="fas fa-gift"></i>
-                    </div>
-                    <div class="node-text">OKX空投</div>
-                </div>
-                
-                <div class="flywheel-node" style="top: 60%; left: 15%;" data-node="6">
-                    <div class="node-icon">
-                        <i class="fas fa-wallet"></i>
-                    </div>
-                    <div class="node-text">无损收益到账</div>
-                </div>
-                
-                <div class="flywheel-node" style="top: 35%; left: 5%;" data-node="7">
-                    <div class="node-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <div class="node-text">越来越多人质押</div>
-                </div>
-                
-                <div class="flywheel-node" style="top: 15%; left: 15%;" data-node="8">
-                    <div class="node-icon">
-                        <i class="fas fa-arrow-up"></i>
-                    </div>
-                    <div class="node-text">H升值</div>
-                </div>
-                
-                <div class="flywheel-node" style="top: 5%; left: 35%;" data-node="9">
-                    <div class="node-icon">
-                        <i class="fas fa-money-bill-wave"></i>
-                    </div>
-                    <div class="node-text">资本利得到账</div>
-                </div>
-                
-                <div class="flywheel-node" style="top: 5%; right: 35%;" data-node="10">
-                    <div class="node-icon">
-                        <i class="fas fa-redo"></i>
-                    </div>
-                    <div class="node-text">继续质押</div>
-                </div>
-                
-                <!-- 中心圆 -->
-                <div class="center-circle" id="centerCircle">
-                    <div class="center-title">正向循环</div>
-                    <div class="center-subtitle">飞轮效应</div>
-                </div>
-            </div>
-            
-            <!-- 节点详情面板 -->
-            <div class="node-detail-container">
-                <div class="detail-toggle" id="detailToggle">
-                    <i class="fas fa-chevron-right"></i>
-                </div>
-                <div class="node-detail" id="nodeDetail">
-                    <div class="detail-header">
-                        <div class="detail-icon" id="detailIcon">
-                            <i class="fas fa-lock"></i>
-                        </div>
-                        <h3 class="detail-title" id="detailTitle">质押USDT</h3>
-                    </div>
-                    <div class="detail-content" id="detailContent">
-                        <p>通过OKX Wallet质押USDT，开启海豚模式的收益飞轮。质押过程安全透明，享受智能合约保障。</p>
-                    </div>
-                    <div class="detail-steps" id="detailSteps">
-                        <!-- 步骤内容将通过JavaScript动态填充 -->
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 底部 -->
-        <div class="poster-footer">
-            <div class="slogan">海豚模式：让收益在链上自由流动，构建可持续增长生态</div>
-            <div class="action-buttons">
-                <button class="btn btn-primary" id="joinBtn">立即参与</button>
-                <button class="btn btn-secondary" id="learnBtn">了解更多</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // 节点数据
-            const nodeData = {
-                1: {
-                    title: "质押USDT",
-                    icon: "fas fa-lock",
-                    content: "通过OKX Wallet质押USDT，开启海豚模式的收益飞轮。质押过程安全透明，享受智能合约保障。",
-                    steps: [
-                        "连接OKX Wallet钱包",
-                        "选择质押USDT数量",
-                        "确认智能合约交易",
-                        "开始获得H代币奖励"
-                    ]
-                },
-                2: {
-                    title: "获得H代币",
-                    icon: "fas fa-coins",
-                    content: "质押USDT后，系统将自动分配H代币奖励。H代币是海豚生态的核心治理与权益代币。",
-                    steps: [
-                        "实时计算质押奖励",
-                        "自动发放H代币到钱包",
-                        "查看H代币余额",
-                        "了解H代币权益"
-                    ]
-                },
-                3: {
-                    title: "交易H代币",
-                    icon: "fas fa-exchange-alt",
-                    content: "在去中心化交易所交易H代币，增加流动性，为生态贡献交易量，获得额外奖励。",
-                    steps: [
-                        "进入DEX交易界面",
-                        "选择H代币交易对",
-                        "执行买入/卖出操作",
-                        "确认交易完成"
-                    ]
-                },
-                4: {
-                    title: "获得交易量",
-                    icon: "fas fa-chart-line",
-                    content: "通过交易H代币产生的手续费将部分返还给质押者，交易量越大，奖励越丰厚。",
-                    steps: [
-                        "系统自动统计交易量",
-                        "计算交易手续费返还",
-                        "分配额外奖励到钱包",
-                        "查看交易量排行榜"
-                    ]
-                },
-                5: {
-                    title: "OKX空投",
-                    icon: "fas fa-gift",
-                    content: "OKX Wallet为活跃用户提供额外空投奖励，质押和交易行为都将增加空投权重。",
-                    steps: [
-                        "符合空投资格条件",
-                        "系统计算空投权重",
-                        "发放空投奖励到钱包",
-                        "查看空投历史记录"
-                    ]
-                },
-                6: {
-                    title: "无损收益到账",
-                    icon: "fas fa-wallet",
-                    content: "所有奖励（H代币、交易手续费返还、空投）将自动转入您的钱包，实现真正的无损收益。",
-                    steps: [
-                        "自动计算总收益",
-                        "智能合约执行分发",
-                        "收益实时到账钱包",
-                        "查看收益明细报表"
-                    ]
-                },
-                7: {
-                    title: "越来越多人质押",
-                    icon: "fas fa-users",
-                    content: "良好的收益效应吸引更多用户参与质押，形成网络效应，生态规模持续扩大。",
-                    steps: [
-                        "社区口碑传播效应",
-                        "质押用户持续增长",
-                        "生态资金池扩大",
-                        "增强系统稳定性"
-                    ]
-                },
-                8: {
-                    title: "H升值",
-                    icon: "fas fa-arrow-up",
-                    content: "随着生态发展，H代币需求增加，价值自然上升，为早期参与者带来资本利得。",
-                    steps: [
-                        "H代币应用场景扩展",
-                        "市场需求持续增长",
-                        "价值发现与重估",
-                        "价格稳步上升"
-                    ]
-                },
-                9: {
-                    title: "资本利得到账",
-                    icon: "fas fa-money-bill-wave",
-                    content: "H代币升值带来的资本利得，加上质押收益，实现双重收益叠加效应。",
-                    steps: [
-                        "计算H代币增值收益",
-                        "资本利得自动到账",
-                        "总收益复合增长",
-                        "查看资产增长曲线"
-                    ]
-                },
-                10: {
-                    title: "继续质押",
-                    icon: "fas fa-redo",
-                    content: "将收益重新质押，进入下一轮收益循环，享受复利效应，加速财富积累。",
-                    steps: [
-                        "选择复投模式",
-                        "自动将收益重新质押",
-                        "进入新一轮飞轮循环",
-                        "享受复利增长效应"
-                    ]
-                }
-            };
-
-            // 获取DOM元素
-            const flywheelNodes = document.querySelectorAll('.flywheel-node');
-            const nodeDetail = document.getElementById('nodeDetail');
-            const detailIcon = document.getElementById('detailIcon');
-            const detailTitle = document.getElementById('detailTitle');
-            const detailContent = document.getElementById('detailContent');
-            const detailSteps = document.getElementById('detailSteps');
-            const joinBtn = document.getElementById('joinBtn');
-            const learnBtn = document.getElementById('learnBtn');
-            const detailToggle = document.getElementById('detailToggle');
-            const progressContainer = document.getElementById('progressContainer');
-            const progressText = document.getElementById('progressText');
-            const progressCircle = document.querySelector('.progress-ring-circle');
-            const flywheelContainer = document.getElementById('flywheelContainer');
-            const centerCircle = document.getElementById('centerCircle');
-            const outerCircle = document.getElementById('outerCircle');
-            const middleCircle = document.getElementById('middleCircle');
-            const innerCircle = document.getElementById('innerCircle');
-            const speedUpBtn = document.getElementById('speedUpBtn');
-            const speedDownBtn = document.getElementById('speedDownBtn');
-            const resetBtn = document.getElementById('resetBtn');
-
-            // 状态变量
-            let activeNode = null;
-            let currentProgress = 0;
-            let isProgressComplete = false;
-            let currentSpeed = 80; // 初始速度（秒）
-            let minSpeed = 10; // 最快速度
-            let maxSpeed = 120; // 最慢速度
-            let detailVisible = true;
-
-            // 初始化
-            init();
-
-            // 初始化函数
-            function init() {
-                // 开始加载进度
-                startProgress();
-                
-                // 设置节点点击事件
-                setupNodeEvents();
-                
-                // 设置按钮事件
-                setupButtonEvents();
-                
-                // 设置详情面板切换
-                setupDetailToggle();
+        const data = await response.json();
+        
+        // 更新所有可编辑元素
+        document.querySelectorAll("[data-editable]").forEach(el => {
+          const key = el.getAttribute("data-editable");
+          if (data[key] !== undefined && data[key] !== null) {
+            if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+              el.value = data[key];
+            } else if (el.hasAttribute('placeholder')) {
+              el.setAttribute('placeholder', data[key]);
+            } else {
+              el.innerHTML = data[key];
             }
-
-            // 开始进度条
-            function startProgress() {
-                const progressInterval = setInterval(() => {
-                    currentProgress += 1;
-                    updateProgress(currentProgress);
-                    
-                    if (currentProgress >= 100) {
-                        clearInterval(progressInterval);
-                        isProgressComplete = true;
-                        setTimeout(() => {
-                            progressContainer.style.opacity = '0';
-                            setTimeout(() => {
-                                progressContainer.style.display = 'none';
-                                showFlywheel();
-                                startAutoCycle();
-                            }, 500);
-                        }, 1000);
-                    }
-                }, 30);
-            }
-
-            // 更新进度条
-            function updateProgress(progress) {
-                const circumference = 565; // 2 * π * r
-                const offset = circumference - (progress / 100) * circumference;
-                progressCircle.style.strokeDashoffset = offset;
-                progressText.textContent = `${progress}%`;
-                
-                // 随着进度增加，逐渐增加飞轮速度
-                if (progress > 0) {
-                    const speed = maxSpeed - ((progress / 100) * (maxSpeed - minSpeed));
-                    updateFlywheelSpeed(speed);
-                }
-            }
-
-            // 显示飞轮
-            function showFlywheel() {
-                flywheelContainer.style.opacity = '1';
-                centerCircle.style.opacity = '1';
-                
-                // 逐个显示节点
-                flywheelNodes.forEach((node, index) => {
-                    setTimeout(() => {
-                        node.classList.add('visible');
-                    }, index * 100);
-                });
-            }
-
-            // 更新飞轮速度
-            function updateFlywheelSpeed(speed) {
-                currentSpeed = speed;
-                
-                // 设置不同圆环的速度（反向旋转以增强效果）
-                outerCircle.style.animationDuration = `${speed}s`;
-                middleCircle.style.animationDuration = `${speed * 0.75}s`;
-                middleCircle.style.animationDirection = 'reverse';
-                innerCircle.style.animationDuration = `${speed * 0.5}s`;
-                
-                // 开始动画
-                outerCircle.style.animation = `rotate ${speed}s linear infinite`;
-                middleCircle.style.animation = `rotate ${speed * 0.75}s linear infinite reverse`;
-                innerCircle.style.animation = `rotate ${speed * 0.5}s linear infinite`;
-            }
-
-            // 加速飞轮
-            function speedUp() {
-                if (currentSpeed > minSpeed) {
-                    currentSpeed -= 10;
-                    updateFlywheelSpeed(currentSpeed);
-                }
-            }
-
-            // 减速飞轮
-            function speedDown() {
-                if (currentSpeed < maxSpeed) {
-                    currentSpeed += 10;
-                    updateFlywheelSpeed(currentSpeed);
-                }
-            }
-
-            // 重置飞轮
-            function resetFlywheel() {
-                currentSpeed = 80;
-                updateFlywheelSpeed(currentSpeed);
-                
-                // 重置节点状态
-                flywheelNodes.forEach(node => {
-                    node.classList.remove('active');
-                    node.querySelector('.node-icon').style.boxShadow = '0 0 30px rgba(0, 212, 255, 0.7)';
-                });
-                
-                // 隐藏详情面板
-                nodeDetail.classList.remove('active');
-                activeNode = null;
-            }
-
-            // 设置节点事件
-            function setupNodeEvents() {
-                flywheelNodes.forEach(node => {
-                    node.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        const nodeId = parseInt(this.getAttribute('data-node'));
-                        activateNode(nodeId);
-                    });
-                    
-                    // 鼠标悬停效果
-                    node.addEventListener('mouseenter', function() {
-                        if (!this.classList.contains('active')) {
-                            this.style.transform = 'scale(1.2)';
-                            this.querySelector('.node-icon').style.boxShadow = '0 0 40px rgba(0, 212, 255, 0.9)';
-                        }
-                    });
-                    
-                    node.addEventListener('mouseleave', function() {
-                        if (!this.classList.contains('active')) {
-                            this.style.transform = '';
-                            this.querySelector('.node-icon').style.boxShadow = '0 0 30px rgba(0, 212, 255, 0.7)';
-                        }
-                    });
-                });
-            }
-
-            // 激活节点函数
-            function activateNode(nodeId) {
-                // 移除所有节点的激活状态
-                flywheelNodes.forEach(node => {
-                    node.classList.remove('active');
-                    node.querySelector('.node-icon').style.boxShadow = '0 0 30px rgba(0, 212, 255, 0.7)';
-                });
-                
-                // 添加当前节点的激活状态
-                const currentNode = document.querySelector(`.flywheel-node[data-node="${nodeId}"]`);
-                currentNode.classList.add('active');
-                currentNode.querySelector('.node-icon').style.boxShadow = '0 0 60px rgba(0, 212, 255, 1)';
-                
-                // 更新详情面板
-                const data = nodeData[nodeId];
-                detailIcon.innerHTML = `<i class="${data.icon}"></i>`;
-                detailTitle.textContent = data.title;
-                detailContent.textContent = data.content;
-                
-                // 更新步骤
-                detailSteps.innerHTML = '';
-                data.steps.forEach(step => {
-                    const stepElement = document.createElement('div');
-                    stepElement.className = 'detail-step';
-                    stepElement.innerHTML = `
-                        <i class="fas fa-chevron-right"></i>
-                        <span>${step}</span>
-                    `;
-                    detailSteps.appendChild(stepElement);
-                });
-                
-                // 显示详情面板（如果已折叠则展开）
-                if (!detailVisible) {
-                    toggleDetail();
-                }
-                
-                nodeDetail.classList.add('active');
-                
-                // 更新当前激活节点
-                activeNode = nodeId;
-            }
-
-            // 设置详情面板切换
-            function setupDetailToggle() {
-                detailToggle.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    toggleDetail();
-                });
-            }
-
-            // 切换详情面板显示/隐藏
-            function toggleDetail() {
-                detailVisible = !detailVisible;
-                
-                if (detailVisible) {
-                    nodeDetail.classList.add('active');
-                    detailToggle.classList.remove('collapsed');
-                } else {
-                    nodeDetail.classList.remove('active');
-                    detailToggle.classList.add('collapsed');
-                }
-            }
-
-            // 自动循环切换节点
-            function startAutoCycle() {
-                let autoCycleInterval = setInterval(() => {
-                    if (activeNode === null) {
-                        activateNode(1);
-                    } else {
-                        let nextNode = activeNode + 1;
-                        if (nextNode > 10) nextNode = 1;
-                        activateNode(nextNode);
-                    }
-                }, 4000);
-
-                // 鼠标悬停时停止自动循环
-                flywheelNodes.forEach(node => {
-                    node.addEventListener('mouseenter', () => {
-                        clearInterval(autoCycleInterval);
-                    });
-                    
-                    node.addEventListener('mouseleave', () => {
-                        clearInterval(autoCycleInterval);
-                        autoCycleInterval = setInterval(() => {
-                            if (activeNode === null) {
-                                activateNode(1);
-                            } else {
-                                let nextNode = activeNode + 1;
-                                if (nextNode > 10) nextNode = 1;
-                                activateNode(nextNode);
-                            }
-                        }, 4000);
-                    });
-                });
-            }
-
-            // 设置按钮事件
-            function setupButtonEvents() {
-                // 加速按钮
-                speedUpBtn.addEventListener('click', function() {
-                    speedUp();
-                    this.style.background = 'rgba(0, 212, 255, 0.2)';
-                    setTimeout(() => {
-                        this.style.background = '';
-                    }, 300);
-                });
-
-                // 减速按钮
-                speedDownBtn.addEventListener('click', function() {
-                    speedDown();
-                    this.style.background = 'rgba(0, 212, 255, 0.2)';
-                    setTimeout(() => {
-                        this.style.background = '';
-                    }, 300);
-                });
-
-                // 重置按钮
-                resetBtn.addEventListener('click', function() {
-                    resetFlywheel();
-                    this.style.background = 'rgba(0, 212, 255, 0.2)';
-                    setTimeout(() => {
-                        this.style.background = '';
-                    }, 300);
-                });
-
-                // 参与按钮
-                joinBtn.addEventListener('click', function() {
-                    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 连接中...';
-                    this.style.opacity = '0.8';
-                    
-                    setTimeout(() => {
-                        this.innerHTML = '<i class="fas fa-check"></i> 已连接';
-                        this.style.opacity = '1';
-                        
-                        // 模拟连接成功效果
-                        flywheelNodes.forEach(node => {
-                            node.querySelector('.node-icon').style.animation = 'pulse 1.5s';
-                        });
-                        
-                        // 飞轮短暂加速
-                        const originalSpeed = currentSpeed;
-                        updateFlywheelSpeed(20);
-                        
-                        // 3秒后恢复原状
-                        setTimeout(() => {
-                            this.innerHTML = '立即参与';
-                            flywheelNodes.forEach(node => {
-                                node.querySelector('.node-icon').style.animation = '';
-                            });
-                            updateFlywheelSpeed(originalSpeed);
-                        }, 3000);
-                    }, 1500);
-                });
-
-                // 了解更多按钮
-                learnBtn.addEventListener('click', function() {
-                    // 显示所有节点详情
-                    const detailContainer = document.createElement('div');
-                    detailContainer.style.cssText = `
-                        position: fixed;
-                        top: 0;
-                        left: 0;
-                        width: 100%;
-                        height: 100%;
-                        background: rgba(10, 14, 23, 0.98);
-                        z-index: 1000;
-                        padding: 40px;
-                        overflow-y: auto;
-                        display: flex;
-                        flex-direction: column;
-                        align-items: center;
-                    `;
-                    
-                    const closeBtn = document.createElement('button');
-                    closeBtn.innerHTML = '<i class="fas fa-times"></i>';
-                    closeBtn.style.cssText = `
-                        position: absolute;
-                        top: 20px;
-                        right: 20px;
-                        width: 60px;
-                        height: 60px;
-                        border-radius: 50%;
-                        background: var(--primary-color);
-                        color: var(--bg-dark);
-                        border: none;
-                        font-size: 28px;
-                        cursor: pointer;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
-                    `;
-                    
-                    const title = document.createElement('h2');
-                    title.textContent = '海豚模式完整流程';
-                    title.style.cssText = `
-                        font-family: 'Orbitron', sans-serif;
-                        font-size: 3rem;
-                        color: var(--primary-color);
-                        margin-bottom: 40px;
-                        text-align: center;
-                        text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
-                    `;
-                    
-                    detailContainer.appendChild(closeBtn);
-                    detailContainer.appendChild(title);
-                    
-                    // 添加所有节点详情
-                    for (let i = 1; i <= 10; i++) {
-                        const data = nodeData[i];
-                        const nodeCard = document.createElement('div');
-                        nodeCard.style.cssText = `
-                            background: rgba(16, 23, 41, 0.9);
-                            border-radius: 15px;
-                            padding: 30px;
-                            margin-bottom: 25px;
-                            width: 100%;
-                            max-width: 900px;
-                            border: 2px solid rgba(0, 212, 255, 0.4);
-                            box-shadow: 0 0 25px rgba(0, 212, 255, 0.3);
-                            transition: transform 0.3s ease;
-                        `;
-                        
-                        nodeCard.addEventListener('mouseenter', function() {
-                            this.style.transform = 'translateY(-5px)';
-                        });
-                        
-                        nodeCard.addEventListener('mouseleave', function() {
-                            this.style.transform = 'translateY(0)';
-                        });
-                        
-                        nodeCard.innerHTML = `
-                            <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
-                                <div style="width: 70px; height: 70px; border-radius: 50%; background: var(--primary-light); color: var(--primary-color); display: flex; align-items: center; justify-content: center; font-size: 28px; box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);">
-                                    <i class="${data.icon}"></i>
-                                </div>
-                                <h3 style="font-size: 1.8rem; color: var(--primary-color); font-weight: 800;">${i}. ${data.title}</h3>
-                            </div>
-                            <p style="color: var(--text-color); margin-bottom: 20px; line-height: 1.7; font-size: 1.1rem;">${data.content}</p>
-                            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px;">
-                                ${data.steps.map(step => `
-                                    <div style="background: rgba(255, 255, 255, 0.05); padding: 12px 20px; border-radius: 10px; color: var(--text-color); font-size: 1rem; border-left: 4px solid var(--primary-color);">
-                                        <i class="fas fa-check-circle" style="color: var(--primary-color); margin-right: 10px;"></i>${step}
-                                    </div>
-                                `).join('')}
-                            </div>
-                        `;
-                        
-                        detailContainer.appendChild(nodeCard);
-                    }
-                    
-                    document.body.appendChild(detailContainer);
-                    
-                    // 关闭按钮事件
-                    closeBtn.addEventListener('click', function() {
-                        document.body.removeChild(detailContainer);
-                    });
-                    
-                    // 点击背景关闭
-                    detailContainer.addEventListener('click', function(e) {
-                        if (e.target === detailContainer) {
-                            document.body.removeChild(detailContainer);
-                        }
-                    });
-                });
-            }
-
-            // 响应式调整
-            window.addEventListener('resize', function() {
-                // 在移动端自动隐藏详情面板
-                if (window.innerWidth <= 900 && detailVisible) {
-                    toggleDetail();
-                }
-            });
+          }
         });
-    </script>
+        
+        console.log('✅ 文案加载成功');
+      } catch (error) {
+        console.error('❌ 文案加载失败:', error);
+        // 显示错误提示但继续显示默认文案
+        const errorMsg = document.createElement('div');
+        errorMsg.style.cssText = `
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          background: #fee;
+          color: #c33;
+          padding: 10px 15px;
+          border-radius: 8px;
+          font-size: 14px;
+          z-index: 1000;
+          border: 1px solid #fcc;
+        `;
+        errorMsg.textContent = '文案加载失败，显示默认内容';
+        document.body.appendChild(errorMsg);
+        setTimeout(() => errorMsg.remove(), 3000);
+      } finally {
+        document.body.classList.remove('loading');
+      }
+    }
+    
+    // 页面加载完成后获取文案
+    document.addEventListener('DOMContentLoaded', loadContent);
+    
+    // 监听链接点击，如果是锚点链接则平滑滚动
+    document.addEventListener('click', (e) => {
+      if (e.target.matches('a[href^="#"]')) {
+        e.preventDefault();
+        const targetId = e.target.getAttribute('href').substring(1);
+        const targetElement = document.getElementById(targetId);
+        if (targetElement) {
+          targetElement.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    });
+    
+    // 添加页面加载动画
+    window.addEventListener('load', () => {
+      document.body.style.opacity = '0';
+      document.body.style.transition = 'opacity 0.3s ease';
+      setTimeout(() => {
+        document.body.style.opacity = '1';
+      }, 100);
+    });
+  </script>
 </body>
 </html>
