@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>海豚社区 · 折叠开关独立版（强分隔）</title>
+    <title>海豚社区 · OKX Boost 专题</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -112,7 +112,7 @@
             50% { filter: drop-shadow(0 0 25px rgba(0, 102, 255, 0.6)); transform: scale(1.05) rotate(1deg); }
         }
 
-        /* 线条连接动画背景 - 加速版 */
+        /* 线条连接动画背景 - 加速版 (4-8秒) */
         .line-background {
             position: fixed;
             top: 0;
@@ -129,7 +129,7 @@
             stroke-width: 1.8;
             stroke: rgba(0, 102, 255, 0.1);
             fill: none;
-            animation: lineDraw 5s linear infinite; /* 4-8秒随机，在JS中设置 */
+            animation: lineDraw 5s linear infinite;
         }
 
         @keyframes lineDraw {
@@ -409,7 +409,6 @@
         .action-btn:nth-child(3).active { border-color: var(--warning); }
         .action-btn:nth-child(3).active::before { background: linear-gradient(90deg, var(--warning), #f97316); }
 
-        /* 图标区域 - 移除旧的after装饰线，改用独立分隔线元素 */
         .btn-icon {
             width: 70px;
             height: 70px;
@@ -424,7 +423,7 @@
             position: relative;
             z-index: 1;
             border: 2px solid rgba(0, 102, 255, 0.1);
-            margin-bottom: 8px;  /* 为分隔线留出空间 */
+            margin-bottom: 8px;
         }
         .btn-icon::before {
             content: '';
@@ -444,13 +443,13 @@
             transition: var(--transition);
         }
 
-        /* 全新独立分隔线 - 放在图标与名称之间，强力视觉分割 */
+        /* 独立分隔线 - 强力视觉分割 */
         .btn-divider {
             width: 70%;
             height: 3px;
             background: linear-gradient(90deg, transparent, var(--primary), var(--accent), var(--primary), transparent);
             border-radius: 3px;
-            margin: 6px 0 10px 0;  /* 上下间距，明确分隔 */
+            margin: 6px 0 10px 0;
             box-shadow: 0 0 12px rgba(0, 102, 255, 0.5);
             opacity: 0.7;
             transition: var(--transition);
@@ -576,7 +575,7 @@
             width: 100%;
         }
 
-        /* 卡片样式 - 全面瘦身 */
+        /* 卡片样式 - 全面瘦身，顶部线条默认微光，解决“没走上”问题 */
         .activity-card {
             background: transparent;
             border-radius: 18px;
@@ -594,14 +593,15 @@
             right: 0;
             height: 2px;
             background: linear-gradient(90deg, var(--primary), var(--accent));
-            opacity: 0;
+            opacity: 0.12;  /* 默认可见微光，但不刺眼 */
             transition: var(--transition);
+            z-index: 1;
         }
         .activity-card:hover {
             border-color: rgba(0, 102, 255, 0.15);
             background: rgba(255, 255, 255, 0.5);
         }
-        .activity-card:hover::before { opacity: 1; }
+        .activity-card:hover::before { opacity: 0.6; }
         .activity-card.active {
             border-color: rgba(0, 102, 255, 0.2);
             background: rgba(255, 255, 255, 0.8);
@@ -684,34 +684,6 @@
         .activity-card.active .card-icon::before {
             opacity: 1;
             animation: borderRotate 3s linear infinite;
-        }
-
-        .card-icon.green {
-            color: var(--success);
-            border-color: rgba(16, 185, 129, 0.1);
-        }
-        .card-icon.green::before { background: linear-gradient(45deg, var(--success), transparent) border-box; }
-        .activity-card:hover .card-icon.green {
-            color: var(--success);
-            border-color: rgba(16, 185, 129, 0.2);
-        }
-        .activity-card.active .card-icon.green {
-            color: var(--success);
-            border-color: rgba(16, 185, 129, 0.3);
-        }
-
-        .card-icon.purple {
-            color: var(--secondary);
-            border-color: rgba(139, 92, 246, 0.1);
-        }
-        .card-icon.purple::before { background: linear-gradient(45deg, var(--secondary), transparent) border-box; }
-        .activity-card:hover .card-icon.purple {
-            color: var(--secondary);
-            border-color: rgba(139, 92, 246, 0.2);
-        }
-        .activity-card.active .card-icon.purple {
-            color: var(--secondary);
-            border-color: rgba(139, 92, 246, 0.3);
         }
 
         .card-text h3 {
@@ -834,7 +806,7 @@
             padding-bottom: 20px;
         }
 
-        .content-section { margin-top: 14px; }
+        .content-section { margin-top: 16px; }
         .section-title {
             font-size: 0.95rem;
             font-weight: 800;
@@ -889,12 +861,13 @@
 
         .card-actions {
             display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 16px;
+            flex-direction: row;  /* 水平排列双按钮 */
+            gap: 12px;
+            margin-top: 20px;
+            justify-content: center;
         }
         .card-action-button {
-            padding: 12px 18px;
+            padding: 12px 20px;
             border-radius: 14px;
             font-weight: 800;
             font-size: 0.9rem;
@@ -905,8 +878,8 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            min-width: 160px;
-            margin: 0 auto;
+            flex: 1;
+            max-width: 180px;
         }
         .card-action-primary {
             background: linear-gradient(135deg, var(--primary), var(--accent));
@@ -985,6 +958,8 @@
                 margin-left: 0;
                 align-self: flex-end;
             }
+            .card-actions { flex-direction: column; align-items: center; }
+            .card-action-button { max-width: 100%; width: 100%; }
         }
         @media (max-width: 480px) {
             .h-interactive { font-size: 60px; }
@@ -1046,11 +1021,10 @@
         </div>
     </div>
 
-    <!-- ===== 三大核心切换按钮 - 图标与名称通过独立高光线强力分隔 ===== -->
+    <!-- 三大核心切换按钮 - 图标与名称通过独立高光线强力分隔 -->
     <div class="action-buttons">
         <div class="action-btn active" id="btnBoost">
             <div class="btn-icon"><i class="fas fa-rocket"></i></div>
-            <!-- 独立分隔线：清晰隔开图标与名称，不包在一起 -->
             <div class="btn-divider"></div>
             <div class="btn-label">Boost</div>
         </div>
@@ -1066,16 +1040,16 @@
         </div>
     </div>
 
-    <!-- ========== BOOST 分组 ========== -->
+    <!-- ========== BOOST 分组（已更新OKX Boost卡片内容） ========== -->
     <div id="boost-group" class="card-group" style="display: flex;">
-        <!-- 卡片1：OKX Boost -->
+        <!-- 卡片1：OKX Boost 专题（完全按需求重构） -->
         <div class="activity-card">
             <div class="card-header">
                 <div class="card-main">
                     <div class="card-icon"><i class="fas fa-bolt"></i></div>
                     <div class="card-text">
-                        <h3>OKX Boost</h3>
-                        <p>社区专属交易加速，最高500 USDT赠金</p>
+                        <h3>OKX Boost 专题</h3>
+                        <p>社区协同OKX Wallet共同打造的创新型收益增值活动，社区用户均可根据策略达到无磨损交易</p>
                     </div>
                 </div>
                 <div class="card-status">
@@ -1085,26 +1059,54 @@
             </div>
             <div class="card-content">
                 <div class="content-inner">
+                    <!-- 1. 活动解析 -->
                     <div class="content-section">
-                        <div class="section-title"><i class="fas fa-list-check"></i> 参与规则</div>
-                        <ul class="rules-list">
-                            <li><i class="fas fa-check"></i> 专属链接注册OKX</li>
-                            <li><i class="fas fa-check"></i> 累计交易 ≥1,000 USDT</li>
-                            <li><i class="fas fa-check"></i> 完成10笔有效交易</li>
-                            <li><i class="fas fa-check"></i> 加入海豚社区群</li>
-                        </ul>
-                        <div class="rewards">
-                            <div class="reward-item"><span>基础奖励</span><span class="reward-value">50 USDT</span></div>
-                            <div class="reward-item"><span>交易达标</span><span class="reward-value">100-500 USDT</span></div>
+                        <div class="section-title"><i class="fas fa-info-circle"></i> 活动解析</div>
+                        <div style="font-size:0.85rem; color: var(--text-secondary); margin-bottom: 12px;">
+                            <p style="margin-bottom: 8px;"><strong>活动愿景：</strong>OKX Boost是 OKX Wallet 2025年9月份正式推出的链上创新项目参与平台，旨在为优质区块链项目与真实用户搭建高效桥梁。</p>
+                            <p style="margin-bottom: 6px;"><strong>三大核心模式</strong></p>
+                            <ul class="rules-list" style="margin-bottom: 8px;">
+                                <li><i class="fas fa-rocket"></i> <strong>X Launch：</strong>基于 OKX DEX 交易活跃度，用户可瓜分新项目代币奖池，是“交易即贡献”的公平分配机制；</li>
+                                <li><i class="fas fa-gift"></i> <strong>Giveaway：</strong>完成关注社群、链上交互等简单任务，即可获得项目代币或白名单资格，适合 Web3 探索者；</li>
+                                <li><i class="fas fa-trophy"></i> <strong>交易赛：</strong>针对热门项目的限时交易竞赛，排行榜前列用户共享高额奖池。</li>
+                            </ul>
+                            <p style="margin-bottom: 8px;"><strong>公平透明的参与逻辑</strong><br>OKX Boost 引入 Boost 交易量 与 Boost 余额 两项核心指标——分别统计用户过去10天在 OKX DEX 的平均交易额与 OKX Wallet 中优质资产的日均持仓——共同决定活动资格与奖励权重。所有奖励分发均在开源、去中心化的智能合约中自动执行，不受平台干预，确保每一份激励都流向真实参与者。</p>
+                            <p style="margin-bottom: 8px;"><strong>不止于奖励</strong><br>入选 OKX Boost 的项目将持续获得 OKX 生态关注，其链上数据表现将成为未来 OKX 交易所潜在上币机会的重要参考，真正实现链上与中心化交易所的双重流动性与用户基础赋能。</p>
                         </div>
-                        <div class="card-actions">
-                            <button class="card-action-button card-action-primary"><i class="fas fa-play"></i>立即参加</button>
+                    </div>
+                    <!-- 2. Boost数据说明 -->
+                    <div class="content-section">
+                        <div class="section-title"><i class="fas fa-chart-simple"></i> Boost数据说明</div>
+                        <div style="background: rgba(0,102,255,0.03); border-radius: 12px; padding: 12px; border: 1px solid rgba(0,102,255,0.1);">
+                            <p style="font-size:0.85rem; color: var(--text-secondary); margin-bottom: 10px;">Boost 数据综合反映你过去 10 天在 OKX DEX 的交易活跃度 (Boost 交易量) 和在 OKX Wallet 的资产持仓 (Boost 余额)。这两个指标将用于 OKX Boost 各类活动，影响你的活动资格及奖励金额。</p>
+                            <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+                                <div style="flex:1; min-width: 140px; background: rgba(0,102,255,0.05); border-radius: 10px; padding: 10px;">
+                                    <div style="display: flex; align-items: center; gap: 6px; color: var(--primary); font-weight: 700; margin-bottom: 4px;"><i class="fas fa-chart-line"></i> ① Boost交易量</div>
+                                    <div style="font-size:0.8rem; color: var(--text-secondary);">十天内达到$500交易量即可领取空投奖励，量越多奖励越高（平均每天500U的交易量）</div>
+                                </div>
+                                <div style="flex:1; min-width: 140px; background: rgba(0,102,255,0.05); border-radius: 10px; padding: 10px;">
+                                    <div style="display: flex; align-items: center; gap: 6px; color: var(--success); font-weight: 700; margin-bottom: 4px;"><i class="fas fa-wallet"></i> ② Boost余额</div>
+                                    <div style="font-size:0.8rem; color: var(--text-secondary);">本地址十天内持有USDT或OKB 200U（很简单，基本上都会通过）</div>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+                    <!-- 3. 奖励的新币|收益来源 -->
+                    <div class="content-section">
+                        <div class="section-title"><i class="fas fa-coins"></i> 奖励的新币 | 收益来源</div>
+                        <div style="font-size:0.85rem; color: var(--text-secondary); background: rgba(255,204,0,0.05); border-radius: 12px; padding: 12px; border: 1px solid rgba(255,204,0,0.2);">
+                            <p>代币发行方其良好的链上数据表现，入选OKX Boost为持续获得OKX 生态的关注所做的上所前的活动，也为代币增加曝光度，欧易增加交易量，参与者获得新币奖励，真正实现链上与中心化交易所的双重流动性与用户基础赋能。</p>
+                        </div>
+                    </div>
+                    <!-- 双按钮：报名参加 / 提交表单 -->
+                    <div class="card-actions">
+                        <button class="card-action-button card-action-primary"><i class="fas fa-pen-to-square"></i> 报名参加</button>
+                        <button class="card-action-button card-action-secondary"><i class="fas fa-file-alt"></i> 提交表单</button>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- 卡片2：社区协同策略 -->
+        <!-- 卡片2：社区协同策略（保持不变） -->
         <div class="activity-card">
             <div class="card-header">
                 <div class="card-main">
@@ -1126,13 +1128,13 @@
                         <li><i class="fas fa-arrows-spread"></i> 共享池：组队交易，奖励加权分配</li>
                         <li><i class="fas fa-bolt"></i> 全队加速：每10单全员额外Boost</li>
                     </ul>
-                    <div class="card-actions">
+                    <div class="card-actions" style="flex-direction: column;">
                         <button class="card-action-button card-action-secondary">组队参与</button>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- 卡片3：社区排行榜 -->
+        <!-- 卡片3：社区排行榜（保持不变） -->
         <div class="activity-card">
             <div class="card-header">
                 <div class="card-main">
@@ -1159,7 +1161,7 @@
                 </div>
             </div>
         </div>
-        <!-- 卡片4：社区留言板 -->
+        <!-- 卡片4：社区留言板（保持不变） -->
         <div class="activity-card">
             <div class="card-header">
                 <div class="card-main">
@@ -1423,7 +1425,7 @@
                     line.setAttribute("stroke", `rgba(0, 102, 255, ${0.05 + Math.random() * 0.12})`);
                     line.setAttribute("stroke-dasharray", "10,5");
                     line.style.animationDelay = `${Math.random() * 4}s`;
-                    line.style.animationDuration = `${4 + Math.random() * 4}s`; // 4~8秒
+                    line.style.animationDuration = `${4 + Math.random() * 4}s`;
                     svg.appendChild(line);
                 }
                 lineBackground.appendChild(svg);
