@@ -39,7 +39,6 @@
 
         body {
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 10px;
@@ -112,8 +111,9 @@
         /* 海报主容器 */
         .poster-container {
             width: 100%;
-            max-width: 1400px;
-            min-height: 95vh;
+            max-width: 1600px;
+            height: 100%;
+            min-height: 100vh;
             background: rgba(10, 14, 23, 0.7);
             border-radius: 20px;
             backdrop-filter: blur(10px);
@@ -121,43 +121,37 @@
             box-shadow: var(--shadow-glow), 0 20px 60px rgba(0, 0, 0, 0.5);
             overflow: hidden;
             position: relative;
-            padding: 30px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
         }
 
-        /* 头部区域 */
+        /* 头部区域 - 简洁化 */
         .poster-header {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 30px;
+            align-items: center;
+            margin-bottom: 10px;
             position: relative;
             z-index: 10;
+            padding: 0 10px;
         }
 
         .logo-section {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .logo {
             display: flex;
             align-items: center;
             gap: 15px;
         }
 
         .logo-icon {
-            width: 70px;
-            height: 70px;
+            width: 60px;
+            height: 60px;
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            border-radius: 15px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 32px;
+            font-size: 28px;
             position: relative;
             overflow: hidden;
         }
@@ -183,7 +177,7 @@
 
         .main-title {
             font-family: 'Orbitron', sans-serif;
-            font-size: 3.2rem;
+            font-size: 2.5rem;
             font-weight: 900;
             background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
             -webkit-background-clip: text;
@@ -194,43 +188,42 @@
         }
 
         .subtitle {
-            font-size: 1.6rem;
+            font-size: 1.2rem;
             font-weight: 500;
             color: var(--text-secondary);
-            margin-top: 8px;
+            margin-top: 5px;
         }
 
         .partner-section {
             display: flex;
-            flex-direction: column;
-            align-items: flex-end;
+            align-items: center;
             gap: 15px;
         }
 
         .partner-title {
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             color: var(--text-secondary);
             font-weight: 500;
         }
 
         .okx-logo {
             font-family: 'Orbitron', sans-serif;
-            font-size: 2.8rem;
+            font-size: 2.2rem;
             font-weight: 800;
             color: var(--primary-color);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .okx-logo::after {
             content: 'Wallet';
-            font-size: 1.7rem;
+            font-size: 1.4rem;
             color: var(--text-secondary);
             font-weight: 500;
         }
 
-        /* 飞轮核心区域 - 放大版本 */
+        /* 超大飞轮区域 - 占据绝对中心 */
         .flywheel-section {
             flex-grow: 1;
             display: flex;
@@ -238,37 +231,14 @@
             align-items: center;
             justify-content: center;
             position: relative;
-            margin: 20px 0;
             min-height: 70vh;
-        }
-
-        .flywheel-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            text-align: center;
-            margin-bottom: 40px;
-            position: relative;
-            padding-bottom: 15px;
-            z-index: 10;
-        }
-
-        .flywheel-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 300px;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+            width: 100%;
         }
 
         /* 超大飞轮图形 */
         .flywheel-container {
-            width: 850px;
-            height: 850px;
+            width: 1000px;
+            height: 1000px;
             position: relative;
             margin: 0 auto;
         }
@@ -284,19 +254,19 @@
         }
 
         .flywheel-circle.outer {
-            width: 800px;
-            height: 800px;
+            width: 950px;
+            height: 950px;
         }
 
         .flywheel-circle.middle {
-            width: 650px;
-            height: 650px;
+            width: 750px;
+            height: 750px;
             animation: rotate 60s linear infinite reverse;
         }
 
         .flywheel-circle.inner {
-            width: 500px;
-            height: 500px;
+            width: 550px;
+            height: 550px;
             animation: rotate 40s linear infinite;
         }
 
@@ -305,11 +275,11 @@
             100% { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
-        /* 飞轮节点 - 放大版本 */
+        /* 飞轮节点 */
         .flywheel-node {
             position: absolute;
-            width: 140px;
-            height: 140px;
+            width: 160px;
+            height: 160px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -321,44 +291,47 @@
         }
 
         .flywheel-node:hover {
-            transform: scale(1.15);
+            transform: scale(1.2);
         }
 
         .node-icon {
-            width: 80px;
-            height: 80px;
+            width: 90px;
+            height: 90px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 32px;
+            font-size: 36px;
             margin-bottom: 15px;
             background: rgba(16, 23, 41, 0.95);
             border: 2px solid var(--primary-color);
-            box-shadow: 0 0 25px rgba(0, 212, 255, 0.6);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.7);
             transition: all 0.3s ease;
         }
 
         .node-text {
-            font-size: 1.1rem;
+            font-size: 1.3rem;
             font-weight: 700;
             text-align: center;
             color: var(--text-color);
-            max-width: 140px;
+            max-width: 160px;
             line-height: 1.2;
-            text-shadow: 0 0 10px rgba(0, 212, 255, 0.7);
+            text-shadow: 0 0 15px rgba(0, 212, 255, 0.8);
+            background: rgba(10, 14, 23, 0.8);
+            padding: 5px 10px;
+            border-radius: 8px;
         }
 
         .flywheel-node.active .node-icon {
             background: var(--primary-color);
             color: var(--bg-dark);
-            box-shadow: 0 0 35px rgba(0, 212, 255, 1);
+            box-shadow: 0 0 50px rgba(0, 212, 255, 1);
             animation: pulse 1.5s infinite alternate;
         }
 
         @keyframes pulse {
-            0% { box-shadow: 0 0 25px rgba(0, 212, 255, 0.7); }
-            100% { box-shadow: 0 0 40px rgba(0, 212, 255, 1); }
+            0% { box-shadow: 0 0 30px rgba(0, 212, 255, 0.8); }
+            100% { box-shadow: 0 0 60px rgba(0, 212, 255, 1); }
         }
 
         /* 连接线 */
@@ -375,10 +348,10 @@
         .line-path {
             fill: none;
             stroke: var(--primary-color);
-            stroke-width: 2;
-            stroke-dasharray: 15;
+            stroke-width: 2.5;
+            stroke-dasharray: 20;
             stroke-dashoffset: 1000;
-            animation: dash 30s linear infinite;
+            animation: dash 40s linear infinite;
             opacity: 0.7;
         }
 
@@ -388,58 +361,124 @@
             }
         }
 
-        /* 中心区域 - 放大版本 */
+        /* 中心区域 */
         .center-circle {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 200px;
-            height: 200px;
+            width: 250px;
+            height: 250px;
             border-radius: 50%;
             background: rgba(10, 14, 23, 0.95);
-            border: 3px solid var(--primary-color);
-            box-shadow: 0 0 50px rgba(0, 212, 255, 0.7), inset 0 0 40px rgba(0, 212, 255, 0.3);
+            border: 4px solid var(--primary-color);
+            box-shadow: 0 0 80px rgba(0, 212, 255, 0.8), inset 0 0 60px rgba(0, 212, 255, 0.4);
             display: flex;
             align-items: center;
             justify-content: center;
             flex-direction: column;
             z-index: 3;
-            animation: centerPulse 5s infinite alternate;
+            animation: centerPulse 6s infinite alternate;
         }
 
         @keyframes centerPulse {
             0% { 
-                box-shadow: 0 0 40px rgba(0, 212, 255, 0.6), inset 0 0 30px rgba(0, 212, 255, 0.2);
+                box-shadow: 0 0 60px rgba(0, 212, 255, 0.7), inset 0 0 40px rgba(0, 212, 255, 0.3);
                 transform: translate(-50%, -50%) scale(1);
             }
             100% { 
-                box-shadow: 0 0 70px rgba(0, 212, 255, 0.9), inset 0 0 40px rgba(0, 212, 255, 0.4);
-                transform: translate(-50%, -50%) scale(1.05);
+                box-shadow: 0 0 100px rgba(0, 212, 255, 1), inset 0 0 60px rgba(0, 212, 255, 0.5);
+                transform: translate(-50%, -50%) scale(1.08);
             }
         }
 
         .center-title {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.8rem;
-            font-weight: 800;
+            font-size: 2.2rem;
+            font-weight: 900;
             color: var(--primary-color);
             text-align: center;
         }
 
         .center-subtitle {
-            font-size: 1.1rem;
+            font-size: 1.3rem;
             color: var(--text-secondary);
             text-align: center;
-            margin-top: 8px;
+            margin-top: 10px;
         }
 
-        /* 节点详情面板 */
+        /* 底部区域 - 悬浮在飞轮上方 */
+        .poster-footer {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 50px;
+            z-index: 10;
+        }
+
+        .slogan {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            max-width: 600px;
+            line-height: 1.3;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .btn {
+            padding: 15px 35px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: var(--bg-dark);
+            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.6);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(0, 212, 255, 0.1);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.3);
+        }
+
+        /* 节点详情面板 - 悬浮显示，不遮挡飞轮 */
         .node-detail {
             position: absolute;
-            top: 0;
-            right: 0;
-            width: 350px;
+            top: 50%;
+            right: 50px;
+            transform: translateY(-50%);
+            width: 400px;
             background: rgba(16, 23, 41, 0.95);
             border-radius: 15px;
             border: 2px solid rgba(0, 212, 255, 0.4);
@@ -447,7 +486,6 @@
             box-shadow: var(--shadow-glow), 0 10px 40px rgba(0, 0, 0, 0.5);
             opacity: 0;
             visibility: hidden;
-            transform: translateY(20px);
             transition: all 0.5s ease;
             z-index: 10;
         }
@@ -455,7 +493,6 @@
         .node-detail.active {
             opacity: 1;
             visibility: visible;
-            transform: translateY(0);
         }
 
         .detail-header {
@@ -508,89 +545,21 @@
             font-size: 1.3rem;
         }
 
-        /* 底部区域 */
-        .poster-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 30px;
-            padding-top: 30px;
-            border-top: 2px solid rgba(0, 212, 255, 0.2);
-            position: relative;
-            z-index: 10;
-        }
-
-        .slogan {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2rem;
-            font-weight: 700;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            max-width: 600px;
-            line-height: 1.3;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 20px;
-        }
-
-        .btn {
-            padding: 15px 35px;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: none;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .btn-primary {
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            color: var(--bg-dark);
-            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.4);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.6);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--primary-color);
-            border: 2px solid var(--primary-color);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(0, 212, 255, 0.1);
-            transform: translateY(-5px);
-            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.3);
-        }
-
-        /* 响应式设计 */
-        @media (max-width: 1400px) {
-            .poster-container {
-                max-width: 1200px;
-                padding: 25px;
-            }
-            
+        /* 移动端适配 */
+        @media (max-width: 1600px) {
             .flywheel-container {
-                width: 750px;
-                height: 750px;
+                width: 850px;
+                height: 850px;
             }
             
             .flywheel-circle.outer {
-                width: 700px;
-                height: 700px;
+                width: 800px;
+                height: 800px;
             }
             
             .flywheel-circle.middle {
-                width: 550px;
-                height: 550px;
+                width: 600px;
+                height: 600px;
             }
             
             .flywheel-circle.inner {
@@ -599,43 +568,44 @@
             }
             
             .flywheel-node {
-                width: 120px;
-                height: 120px;
+                width: 140px;
+                height: 140px;
             }
             
             .node-icon {
-                width: 70px;
-                height: 70px;
-                font-size: 28px;
+                width: 80px;
+                height: 80px;
+                font-size: 32px;
             }
             
             .node-text {
-                font-size: 1rem;
-                max-width: 120px;
+                font-size: 1.1rem;
+                max-width: 140px;
+            }
+            
+            .center-circle {
+                width: 200px;
+                height: 200px;
+            }
+            
+            .center-title {
+                font-size: 1.8rem;
+            }
+            
+            .slogan {
+                font-size: 1.5rem;
             }
         }
 
-        @media (max-width: 1100px) {
-            .poster-container {
-                max-width: 1000px;
-            }
-            
-            .main-title {
-                font-size: 2.8rem;
-            }
-            
-            .subtitle {
-                font-size: 1.4rem;
-            }
-            
+        @media (max-width: 1200px) {
             .flywheel-container {
-                width: 650px;
-                height: 650px;
+                width: 700px;
+                height: 700px;
             }
             
             .flywheel-circle.outer {
-                width: 600px;
-                height: 600px;
+                width: 650px;
+                height: 650px;
             }
             
             .flywheel-circle.middle {
@@ -644,13 +614,13 @@
             }
             
             .flywheel-circle.inner {
-                width: 300px;
-                height: 300px;
+                width: 250px;
+                height: 250px;
             }
             
             .flywheel-node {
-                width: 100px;
-                height: 100px;
+                width: 110px;
+                height: 110px;
             }
             
             .node-icon {
@@ -662,7 +632,7 @@
             
             .node-text {
                 font-size: 0.9rem;
-                max-width: 100px;
+                max-width: 110px;
             }
             
             .center-circle {
@@ -671,102 +641,115 @@
             }
             
             .center-title {
-                font-size: 1.5rem;
+                font-size: 1.4rem;
+            }
+            
+            .poster-footer {
+                padding: 0 30px;
             }
             
             .slogan {
-                font-size: 1.6rem;
+                font-size: 1.3rem;
+                max-width: 450px;
+            }
+            
+            .node-detail {
+                width: 350px;
+                right: 30px;
             }
         }
 
         @media (max-width: 900px) {
             body {
                 padding: 5px;
+                overflow: auto;
             }
             
             .poster-container {
-                padding: 20px;
+                padding: 15px;
                 min-height: auto;
+                overflow-y: auto;
             }
             
             .poster-header {
                 flex-direction: column;
-                gap: 25px;
-                margin-bottom: 25px;
+                gap: 15px;
+                margin-bottom: 15px;
             }
             
             .partner-section {
-                align-items: flex-start;
+                align-self: flex-start;
             }
             
             .main-title {
-                font-size: 2.5rem;
+                font-size: 2rem;
             }
             
             .flywheel-container {
-                width: 550px;
-                height: 550px;
+                width: 500px;
+                height: 500px;
+                margin-top: 20px;
             }
             
             .flywheel-circle.outer {
-                width: 500px;
-                height: 500px;
+                width: 450px;
+                height: 450px;
             }
             
             .flywheel-circle.middle {
-                width: 350px;
-                height: 350px;
+                width: 300px;
+                height: 300px;
             }
             
             .flywheel-circle.inner {
-                width: 200px;
-                height: 200px;
+                width: 150px;
+                height: 150px;
             }
             
             .flywheel-node {
-                width: 90px;
-                height: 90px;
+                width: 80px;
+                height: 80px;
             }
             
             .node-icon {
-                width: 50px;
-                height: 50px;
-                font-size: 20px;
-                margin-bottom: 8px;
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
+                margin-bottom: 5px;
             }
             
             .node-text {
-                font-size: 0.85rem;
-                max-width: 90px;
+                font-size: 0.75rem;
+                max-width: 80px;
+                padding: 3px 6px;
             }
             
             .center-circle {
-                width: 140px;
-                height: 140px;
+                width: 120px;
+                height: 120px;
             }
             
             .center-title {
-                font-size: 1.3rem;
+                font-size: 1.1rem;
             }
             
-            .node-detail {
-                position: relative;
-                width: 100%;
-                margin-top: 30px;
-                right: auto;
-                opacity: 1;
-                visibility: visible;
-                transform: none;
+            .center-subtitle {
+                font-size: 0.9rem;
             }
             
             .poster-footer {
+                position: relative;
+                bottom: auto;
                 flex-direction: column;
-                gap: 30px;
+                gap: 20px;
                 align-items: flex-start;
+                margin-top: 30px;
+                padding: 0;
             }
             
             .slogan {
-                font-size: 1.5rem;
+                font-size: 1.2rem;
+                max-width: 100%;
             }
             
             .action-buttons {
@@ -778,35 +761,38 @@
                 padding: 12px 25px;
                 font-size: 1rem;
             }
+            
+            .node-detail {
+                position: relative;
+                top: auto;
+                right: auto;
+                transform: none;
+                width: 100%;
+                margin-top: 30px;
+                opacity: 1;
+                visibility: visible;
+            }
         }
 
         @media (max-width: 600px) {
-            .main-title {
-                font-size: 2rem;
-            }
-            
-            .subtitle {
-                font-size: 1.1rem;
-            }
-            
             .flywheel-container {
-                width: 400px;
-                height: 400px;
-            }
-            
-            .flywheel-circle.outer {
                 width: 380px;
                 height: 380px;
             }
             
+            .flywheel-circle.outer {
+                width: 350px;
+                height: 350px;
+            }
+            
             .flywheel-circle.middle {
-                width: 260px;
-                height: 260px;
+                width: 230px;
+                height: 230px;
             }
             
             .flywheel-circle.inner {
-                width: 140px;
-                height: 140px;
+                width: 110px;
+                height: 110px;
             }
             
             .flywheel-node {
@@ -818,30 +804,92 @@
                 width: 40px;
                 height: 40px;
                 font-size: 16px;
-                margin-bottom: 5px;
+                margin-bottom: 3px;
             }
             
             .node-text {
-                font-size: 0.75rem;
+                font-size: 0.65rem;
                 max-width: 70px;
             }
             
             .center-circle {
-                width: 110px;
-                height: 110px;
+                width: 90px;
+                height: 90px;
             }
             
             .center-title {
+                font-size: 0.9rem;
+            }
+            
+            .center-subtitle {
+                font-size: 0.7rem;
+            }
+            
+            .main-title {
+                font-size: 1.6rem;
+            }
+            
+            .subtitle {
                 font-size: 1rem;
             }
-            
-            .flywheel-title {
-                font-size: 1.8rem;
-            }
-            
-            .slogan {
-                font-size: 1.3rem;
-            }
+        }
+
+        /* 节点信息提示 */
+        .node-tooltip {
+            position: absolute;
+            background: rgba(16, 23, 41, 0.95);
+            border: 1px solid var(--primary-color);
+            border-radius: 8px;
+            padding: 10px 15px;
+            color: var(--text-color);
+            font-size: 0.9rem;
+            max-width: 200px;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+            z-index: 100;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        /* 简化模式按钮 */
+        .simplify-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(16, 23, 41, 0.8);
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        .simplify-toggle:hover {
+            background: rgba(0, 212, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* 简化模式样式 */
+        .simplify-mode .node-text {
+            display: none;
+        }
+        
+        .simplify-mode .flywheel-node {
+            width: 120px;
+            height: 120px;
+        }
+        
+        .simplify-mode .node-icon {
+            width: 70px;
+            height: 70px;
+            font-size: 28px;
+        }
+        
+        .simplify-mode .node-detail {
+            display: none;
         }
     </style>
 </head>
@@ -855,18 +903,19 @@
     </div>
 
     <!-- 海报主容器 -->
-    <div class="poster-container">
+    <div class="poster-container" id="posterContainer">
+        <!-- 简化模式切换按钮 -->
+        <div class="simplify-toggle" id="simplifyToggle">简化模式</div>
+        
         <!-- 头部 -->
         <div class="poster-header">
             <div class="logo-section">
-                <div class="logo">
-                    <div class="logo-icon">
-                        <i class="fas fa-dolphin"></i>
-                    </div>
-                    <div class="logo-text">
-                        <h1 class="main-title">链上赚币 | 智能质押</h1>
-                        <p class="subtitle">海豚模式创新社区协同策略</p>
-                    </div>
+                <div class="logo-icon">
+                    <i class="fas fa-dolphin"></i>
+                </div>
+                <div class="logo-text">
+                    <h1 class="main-title">链上赚币 | 智能质押</h1>
+                    <p class="subtitle">海豚模式创新社区协同策略</p>
                 </div>
             </div>
             
@@ -877,19 +926,18 @@
             </div>
         </div>
 
-        <!-- 超大飞轮核心区域 -->
+        <!-- 超大飞轮区域 -->
         <div class="flywheel-section">
-            <h2 class="flywheel-title">正向收益飞轮</h2>
-            
+            <!-- 超大飞轮 -->
             <div class="flywheel-container">
                 <!-- 连接线 -->
-                <svg class="connection-line" viewBox="0 0 850 850">
+                <svg class="connection-line" viewBox="0 0 1000 1000">
                     <!-- 外环连接线 -->
-                    <path class="line-path" d="M425,25 A400,400 0 1,1 425,825 A400,400 0 1,1 425,25" />
+                    <path class="line-path" d="M500,25 A475,475 0 1,1 500,975 A475,475 0 1,1 500,25" />
                     <!-- 中环连接线 -->
-                    <path class="line-path" d="M425,100 A325,325 0 1,1 425,750 A325,325 0 1,1 425,100" />
+                    <path class="line-path" d="M500,125 A375,375 0 1,1 500,875 A375,375 0 1,1 500,125" />
                     <!-- 内环连接线 -->
-                    <path class="line-path" d="M425,175 A250,250 0 1,1 425,675 A250,250 0 1,1 425,175" />
+                    <path class="line-path" d="M500,225 A275,275 0 1,1 500,775 A275,275 0 1,1 500,225" />
                 </svg>
                 
                 <!-- 飞轮圆环 -->
@@ -1127,6 +1175,8 @@
             const detailSteps = document.getElementById('detailSteps');
             const joinBtn = document.getElementById('joinBtn');
             const learnBtn = document.getElementById('learnBtn');
+            const simplifyToggle = document.getElementById('simplifyToggle');
+            const posterContainer = document.getElementById('posterContainer');
 
             // 当前激活的节点
             let activeNode = null;
@@ -1136,7 +1186,8 @@
 
             // 节点点击事件
             flywheelNodes.forEach(node => {
-                node.addEventListener('click', function() {
+                node.addEventListener('click', function(e) {
+                    e.stopPropagation();
                     const nodeId = parseInt(this.getAttribute('data-node'));
                     activateNode(nodeId);
                 });
@@ -1144,15 +1195,15 @@
                 // 鼠标悬停效果
                 node.addEventListener('mouseenter', function() {
                     if (!this.classList.contains('active')) {
-                        this.style.transform = 'scale(1.15)';
-                        this.querySelector('.node-icon').style.boxShadow = '0 0 30px rgba(0, 212, 255, 0.9)';
+                        this.style.transform = 'scale(1.2)';
+                        this.querySelector('.node-icon').style.boxShadow = '0 0 40px rgba(0, 212, 255, 0.9)';
                     }
                 });
                 
                 node.addEventListener('mouseleave', function() {
                     if (!this.classList.contains('active')) {
                         this.style.transform = '';
-                        this.querySelector('.node-icon').style.boxShadow = '0 0 25px rgba(0, 212, 255, 0.6)';
+                        this.querySelector('.node-icon').style.boxShadow = '0 0 30px rgba(0, 212, 255, 0.7)';
                     }
                 });
             });
@@ -1162,13 +1213,13 @@
                 // 移除所有节点的激活状态
                 flywheelNodes.forEach(node => {
                     node.classList.remove('active');
-                    node.querySelector('.node-icon').style.boxShadow = '0 0 25px rgba(0, 212, 255, 0.6)';
+                    node.querySelector('.node-icon').style.boxShadow = '0 0 30px rgba(0, 212, 255, 0.7)';
                 });
                 
                 // 添加当前节点的激活状态
                 const currentNode = document.querySelector(`.flywheel-node[data-node="${nodeId}"]`);
                 currentNode.classList.add('active');
-                currentNode.querySelector('.node-icon').style.boxShadow = '0 0 40px rgba(0, 212, 255, 1)';
+                currentNode.querySelector('.node-icon').style.boxShadow = '0 0 60px rgba(0, 212, 255, 1)';
                 
                 // 更新详情面板
                 const data = nodeData[nodeId];
@@ -1200,12 +1251,12 @@
                 }
             }
 
-            // 自动循环切换节点（每5秒切换一个）
+            // 自动循环切换节点（每6秒切换一个）
             let autoCycleInterval = setInterval(() => {
                 let nextNode = activeNode + 1;
                 if (nextNode > 10) nextNode = 1;
                 activateNode(nextNode);
-            }, 5000);
+            }, 6000);
 
             // 鼠标悬停时停止自动循环
             flywheelNodes.forEach(node => {
@@ -1218,8 +1269,29 @@
                         let nextNode = activeNode + 1;
                         if (nextNode > 10) nextNode = 1;
                         activateNode(nextNode);
-                    }, 5000);
+                    }, 6000);
                 });
+            });
+
+            // 简化模式切换
+            simplifyToggle.addEventListener('click', function() {
+                posterContainer.classList.toggle('simplify-mode');
+                this.textContent = posterContainer.classList.contains('simplify-mode') ? '完整模式' : '简化模式';
+            });
+
+            // 点击海报其他地方关闭详情面板
+            posterContainer.addEventListener('click', function(e) {
+                if (!e.target.closest('.flywheel-node') && !e.target.closest('.node-detail')) {
+                    nodeDetail.classList.remove('active');
+                    
+                    // 移除所有节点的激活状态
+                    flywheelNodes.forEach(node => {
+                        node.classList.remove('active');
+                        node.querySelector('.node-icon').style.boxShadow = '0 0 30px rgba(0, 212, 255, 0.7)';
+                    });
+                    
+                    activeNode = null;
+                }
             });
 
             // 按钮交互
@@ -1238,8 +1310,11 @@
                     
                     // 飞轮加速旋转
                     document.querySelectorAll('.flywheel-circle').forEach(circle => {
-                        circle.style.animationDuration = '20s';
+                        circle.style.animationDuration = '15s';
                     });
+                    
+                    // 中心圆增强发光
+                    document.querySelector('.center-circle').style.animationDuration = '2s';
                     
                     // 3秒后恢复原状
                     setTimeout(() => {
@@ -1250,6 +1325,7 @@
                         document.querySelectorAll('.flywheel-circle').forEach(circle => {
                             circle.style.animationDuration = '';
                         });
+                        document.querySelector('.center-circle').style.animationDuration = '';
                     }, 3000);
                 }, 1500);
             });
@@ -1376,7 +1452,7 @@
                         let nextNode = activeNode + 1;
                         if (nextNode > 10) nextNode = 1;
                         activateNode(nextNode);
-                    }, 5000);
+                    }, 6000);
                 }
             });
         });
