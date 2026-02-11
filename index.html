@@ -3,28 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>移动端线条交互设计案例</title>
+    <title>链上赚币 | 智能质押 - 海豚模式</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #4a6fff;
-            --primary-light: #7d9aff;
-            --primary-dark: #3050d6;
-            --secondary-color: #00d4aa;
-            --accent-color: #ff6b8b;
-            --text-dark: #1a1a1a;
-            --text-medium: #666;
-            --text-light: #999;
-            --bg-light: #f8f9ff;
-            --bg-white: #ffffff;
-            --border-color: #e6e9ff;
-            --shadow-sm: 0 2px 8px rgba(74, 111, 255, 0.08);
-            --shadow-md: 0 4px 16px rgba(74, 111, 255, 0.12);
-            --shadow-lg: 0 8px 32px rgba(74, 111, 255, 0.16);
-            --radius-sm: 8px;
-            --radius-md: 16px;
-            --radius-lg: 24px;
+            --primary-color: #00d4ff;
+            --primary-light: rgba(0, 212, 255, 0.3);
+            --primary-dark: #0099cc;
+            --secondary-color: #9d4edd;
+            --accent-color: #ff6b6b;
+            --text-color: #ffffff;
+            --text-secondary: #a0aec0;
+            --bg-dark: #0a0e17;
+            --bg-card: rgba(16, 23, 41, 0.8);
+            --border-glow: rgba(0, 212, 255, 0.5);
+            --shadow-glow: 0 0 20px rgba(0, 212, 255, 0.3);
         }
 
         * {
@@ -34,1184 +28,1235 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        html {
-            scroll-behavior: smooth;
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-color);
+            background: var(--bg-dark);
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            color: var(--text-dark);
-            background: var(--bg-white);
-            line-height: 1.6;
-            overflow-x: hidden;
-            padding-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow: auto;
         }
 
-        .container {
-            max-width: 100%;
-            padding: 0 20px;
+        /* 背景线条效果 */
+        .background-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .line {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+            opacity: 0.1;
+            animation: lineMove 20s linear infinite;
+        }
+
+        .line-1 {
+            top: 10%;
+            left: -100px;
+            width: 300px;
+            height: 1px;
+            animation-delay: 0s;
+        }
+
+        .line-2 {
+            top: 30%;
+            right: -150px;
+            width: 400px;
+            height: 1px;
+            animation-delay: 3s;
+            animation-direction: reverse;
+        }
+
+        .line-3 {
+            bottom: 20%;
+            left: -200px;
+            width: 500px;
+            height: 1px;
+            animation-delay: 6s;
+        }
+
+        .line-4 {
+            bottom: 50%;
+            right: -100px;
+            width: 350px;
+            height: 1px;
+            animation-delay: 9s;
+            animation-direction: reverse;
+        }
+
+        @keyframes lineMove {
+            0% {
+                transform: translateX(0) rotate(0deg);
+            }
+            100% {
+                transform: translateX(100vw) rotate(0deg);
+            }
+        }
+
+        /* 海报主容器 */
+        .poster-container {
+            width: 100%;
+            max-width: 1200px;
+            min-height: 90vh;
+            background: rgba(10, 14, 23, 0.7);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            box-shadow: var(--shadow-glow), 0 20px 60px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            position: relative;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         /* 头部区域 */
-        .header {
-            padding: 60px 0 30px;
-            text-align: center;
-            background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
-            border-radius: 0 0 30px 30px;
-            margin-bottom: 30px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 100%;
-            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%234a6fff' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
-            opacity: 0.5;
-        }
-
-        .title {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 12px;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            position: relative;
-            display: inline-block;
-        }
-
-        .subtitle {
-            font-size: 1.1rem;
-            color: var(--text-medium);
-            max-width: 600px;
-            margin: 0 auto 20px;
-        }
-
-        /* 导航菜单 */
-        .nav-menu {
+        .poster-header {
             display: flex;
-            overflow-x: auto;
-            gap: 12px;
-            padding: 0 0 20px;
-            margin-bottom: 30px;
-            scrollbar-width: none;
-        }
-
-        .nav-menu::-webkit-scrollbar {
-            display: none;
-        }
-
-        .nav-item {
-            padding: 10px 20px;
-            background: var(--bg-light);
-            border-radius: 50px;
-            font-weight: 500;
-            font-size: 0.95rem;
-            white-space: nowrap;
-            text-decoration: none;
-            color: var(--text-medium);
-            border: 1px solid transparent;
-            transition: all 0.3s ease;
-        }
-
-        .nav-item.active {
-            background: var(--primary-color);
-            color: white;
-            box-shadow: var(--shadow-sm);
-        }
-
-        /* 内容区域 */
-        .section {
-            margin-bottom: 50px;
-            scroll-margin-top: 20px;
-        }
-
-        .section-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 25px;
-            color: var(--text-dark);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .section-title i {
-            color: var(--primary-color);
-        }
-
-        .section-desc {
-            color: var(--text-medium);
-            margin-bottom: 25px;
-            line-height: 1.7;
-        }
-
-        /* 卡片样式 */
-        .card {
-            background: var(--bg-white);
-            border-radius: var(--radius-lg);
-            padding: 30px;
-            margin-bottom: 25px;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--border-color);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            overflow: hidden;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 40px;
             position: relative;
         }
 
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .card-title {
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 15px;
-            color: var(--text-dark);
-        }
-
-        .card-desc {
-            color: var(--text-medium);
-            margin-bottom: 20px;
-            line-height: 1.7;
-        }
-
-        /* 交互演示区域 */
-        .demo-area {
-            min-height: 200px;
+        .logo-section {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: var(--bg-light);
-            border-radius: var(--radius-md);
-            padding: 40px 20px;
-            margin-top: 20px;
-            position: relative;
-            overflow: hidden;
+            gap: 10px;
         }
 
-        .demo-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: var(--primary-color);
-            text-align: center;
-        }
-
-        .demo-controls {
-            display: flex;
-            gap: 12px;
-            margin-top: 20px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: var(--radius-sm);
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 2px solid var(--primary-color);
-            color: var(--primary-color);
-        }
-
-        .btn-outline:hover {
-            background: rgba(74, 111, 255, 0.1);
-        }
-
-        /* 线条元素样式 */
-        .line {
-            stroke-width: 2;
-            fill: none;
-            stroke-linecap: round;
-        }
-
-        .line-primary {
-            stroke: var(--primary-color);
-        }
-
-        .line-secondary {
-            stroke: var(--secondary-color);
-        }
-
-        .line-accent {
-            stroke: var(--accent-color);
-        }
-
-        /* 特定交互演示样式 */
-        .demo-hamburger {
-            width: 40px;
-            height: 30px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .demo-hamburger span {
-            display: block;
-            height: 4px;
-            width: 100%;
-            background: var(--primary-color);
-            border-radius: 2px;
-            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-        }
-
-        .demo-hamburger.active span:nth-child(1) {
-            transform: rotate(45deg) translate(8px, 8px);
-        }
-
-        .demo-hamburger.active span:nth-child(2) {
-            opacity: 0;
-        }
-
-        .demo-hamburger.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(8px, -8px);
-        }
-
-        .demo-progress {
-            width: 80%;
-            height: 8px;
-            background: var(--border-color);
-            border-radius: 4px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .demo-progress-bar {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            border-radius: 4px;
-            transition: width 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .demo-progress-bar::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            animation: shimmer 1.5s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        .demo-like {
-            width: 60px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .demo-like i {
-            font-size: 32px;
-            color: #ddd;
-            transition: color 0.3s ease, transform 0.3s ease;
-        }
-
-        .demo-like.active i {
-            color: var(--accent-color);
-            transform: scale(1.2);
-        }
-
-        .demo-like-particles {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-
-        .demo-like-particle {
-            position: absolute;
-            width: 6px;
-            height: 6px;
-            background: var(--accent-color);
-            border-radius: 50%;
-            top: 50%;
-            left: 50%;
-            opacity: 0;
-        }
-
-        .demo-wave {
-            width: 200px;
-            height: 80px;
-            position: relative;
-            overflow: hidden;
-            border-radius: var(--radius-sm);
-        }
-
-        .demo-wave-line {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 40px;
-            background: var(--primary-color);
-            opacity: 0.7;
-            border-radius: 50% 50% 0 0;
-            animation: wave 3s infinite linear;
-        }
-
-        .demo-wave-line:nth-child(2) {
-            opacity: 0.5;
-            animation-delay: 0.5s;
-        }
-
-        .demo-wave-line:nth-child(3) {
-            opacity: 0.3;
-            animation-delay: 1s;
-        }
-
-        @keyframes wave {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        .demo-swipe {
-            width: 100%;
-            height: 80px;
-            background: var(--bg-light);
-            border-radius: var(--radius-md);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 20px;
-            position: relative;
-            overflow: hidden;
-            user-select: none;
-        }
-
-        .demo-swipe-content {
+        .logo {
             display: flex;
             align-items: center;
             gap: 15px;
-            transition: transform 0.3s ease;
         }
 
-        .demo-swipe-icon {
-            width: 40px;
-            height: 40px;
-            background: var(--primary-color);
+        .logo-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-icon::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: shine 3s infinite linear;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            font-size: 1.4rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+
+        .partner-section {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 15px;
+        }
+
+        .partner-title {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .okx-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .okx-logo::after {
+            content: 'Wallet';
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* 飞轮核心区域 */
+        .flywheel-section {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin: 40px 0;
+        }
+
+        .flywheel-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .flywheel-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+        }
+
+        /* 飞轮图形 */
+        .flywheel-container {
+            width: 600px;
+            height: 600px;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .flywheel-circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            animation: rotate 60s linear infinite;
+        }
+
+        .flywheel-circle.inner {
+            width: 400px;
+            height: 400px;
+            animation: rotate 40s linear infinite reverse;
+        }
+
+        .flywheel-circle.inner-2 {
+            width: 300px;
+            height: 300px;
+            animation: rotate 30s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* 飞轮节点 */
+        .flywheel-node {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transform-origin: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+
+        .flywheel-node:hover {
+            transform: scale(1.1);
+        }
+
+        .node-icon {
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            font-size: 24px;
+            margin-bottom: 10px;
+            background: rgba(16, 23, 41, 0.9);
+            border: 1px solid var(--primary-color);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+            transition: all 0.3s ease;
         }
 
-        .demo-swipe-text {
+        .node-text {
+            font-size: 0.9rem;
             font-weight: 600;
+            text-align: center;
+            color: var(--text-color);
+            max-width: 120px;
+            line-height: 1.2;
         }
 
-        .demo-swipe-actions {
-            display: flex;
-            gap: 10px;
+        .flywheel-node.active .node-icon {
+            background: var(--primary-color);
+            color: var(--bg-dark);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.8);
+        }
+
+        /* 连接线 */
+        .connection-line {
             position: absolute;
-            right: 0;
+            top: 0;
+            left: 0;
+            width: 100%;
             height: 100%;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            z-index: 1;
+            pointer-events: none;
         }
 
-        .demo-swipe-action {
-            width: 80px;
-            height: 100%;
+        .line-path {
+            fill: none;
+            stroke: var(--primary-color);
+            stroke-width: 1.5;
+            stroke-dasharray: 10;
+            stroke-dashoffset: 1000;
+            animation: dash 20s linear infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes dash {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        /* 中心区域 */
+        .center-circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: rgba(10, 14, 23, 0.9);
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.5), inset 0 0 30px rgba(0, 212, 255, 0.2);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-weight: 600;
+            flex-direction: column;
+            z-index: 3;
+            animation: pulse 4s infinite alternate;
         }
 
-        .demo-swipe-action.delete {
-            background: var(--accent-color);
+        @keyframes pulse {
+            0% { box-shadow: 0 0 30px rgba(0, 212, 255, 0.5), inset 0 0 30px rgba(0, 212, 255, 0.2); }
+            100% { box-shadow: 0 0 50px rgba(0, 212, 255, 0.8), inset 0 0 30px rgba(0, 212, 255, 0.3); }
         }
 
-        .demo-swipe-action.archive {
-            background: var(--secondary-color);
-        }
-
-        /* 响应式设计 */
-        @media (min-width: 768px) {
-            .container {
-                max-width: 900px;
-                margin: 0 auto;
-            }
-            
-            .demo-area {
-                min-height: 250px;
-            }
-            
-            .title {
-                font-size: 3rem;
-            }
-        }
-
-        /* 页脚 */
-        .footer {
+        .center-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-color);
             text-align: center;
-            padding: 40px 0;
-            color: var(--text-medium);
-            font-size: 0.9rem;
-            border-top: 1px solid var(--border-color);
-            margin-top: 40px;
         }
 
-        .footer-links {
+        .center-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-align: center;
+            margin-top: 5px;
+        }
+
+        /* 节点详情面板 */
+        .node-detail {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 300px;
+            background: rgba(16, 23, 41, 0.9);
+            border-radius: 12px;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            padding: 25px;
+            box-shadow: var(--shadow-glow);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+            z-index: 10;
+        }
+
+        .node-detail.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .detail-header {
             display: flex;
-            justify-content: center;
-            gap: 20px;
+            align-items: center;
+            gap: 15px;
             margin-bottom: 20px;
         }
 
-        .footer-links a {
+        .detail-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            background: var(--primary-light);
             color: var(--primary-color);
-            text-decoration: none;
+            border: 1px solid var(--primary-color);
         }
 
-        .footer-links a:hover {
-            text-decoration: underline;
+        .detail-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .detail-content {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-color);
+            margin-bottom: 20px;
+        }
+
+        .detail-step {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+
+        .detail-step i {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+
+        /* 底部区域 */
+        .poster-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(0, 212, 255, 0.2);
+        }
+
+        .slogan {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            max-width: 500px;
+            line-height: 1.3;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: var(--bg-dark);
+            box-shadow: 0 5px 15px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 212, 255, 0.5);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(0, 212, 255, 0.1);
+            transform: translateY(-3px);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 1100px) {
+            .poster-container {
+                padding: 30px;
+            }
+            
+            .flywheel-container {
+                width: 500px;
+                height: 500px;
+            }
+            
+            .flywheel-circle {
+                width: 400px;
+                height: 400px;
+            }
+            
+            .flywheel-circle.inner {
+                width: 320px;
+                height: 320px;
+            }
+            
+            .flywheel-circle.inner-2 {
+                width: 240px;
+                height: 240px;
+            }
+            
+            .node-text {
+                font-size: 0.8rem;
+                max-width: 100px;
+            }
+            
+            .slogan {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+                overflow: auto;
+            }
+            
+            .poster-container {
+                padding: 20px;
+                min-height: auto;
+            }
+            
+            .poster-header {
+                flex-direction: column;
+                gap: 20px;
+                margin-bottom: 30px;
+            }
+            
+            .partner-section {
+                align-items: flex-start;
+            }
+            
+            .main-title {
+                font-size: 2.2rem;
+            }
+            
+            .flywheel-container {
+                width: 350px;
+                height: 350px;
+            }
+            
+            .flywheel-circle {
+                width: 300px;
+                height: 300px;
+            }
+            
+            .flywheel-circle.inner {
+                width: 240px;
+                height: 240px;
+            }
+            
+            .flywheel-circle.inner-2 {
+                width: 180px;
+                height: 180px;
+            }
+            
+            .flywheel-node {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .node-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+            
+            .node-text {
+                font-size: 0.75rem;
+                max-width: 80px;
+            }
+            
+            .center-circle {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .center-title {
+                font-size: 1rem;
+            }
+            
+            .node-detail {
+                position: relative;
+                width: 100%;
+                margin-top: 30px;
+                right: auto;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+            }
+            
+            .poster-footer {
+                flex-direction: column;
+                gap: 25px;
+                align-items: flex-start;
+            }
+            
+            .slogan {
+                font-size: 1.4rem;
+            }
+            
+            .action-buttons {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-title {
+                font-size: 1.8rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .flywheel-container {
+                width: 280px;
+                height: 280px;
+            }
+            
+            .flywheel-circle {
+                width: 240px;
+                height: 240px;
+            }
+            
+            .flywheel-circle.inner {
+                width: 190px;
+                height: 190px;
+            }
+            
+            .flywheel-circle.inner-2 {
+                width: 140px;
+                height: 140px;
+            }
+            
+            .flywheel-node {
+                width: 70px;
+                height: 70px;
+            }
+            
+            .node-icon {
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
+                margin-bottom: 5px;
+            }
+            
+            .node-text {
+                font-size: 0.7rem;
+                max-width: 70px;
+            }
+            
+            .center-circle {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .center-title {
+                font-size: 0.9rem;
+            }
+            
+            .slogan {
+                font-size: 1.2rem;
+            }
+            
+            .btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- 头部区域 -->
-    <header class="header">
-        <div class="container">
-            <h1 class="title">移动端线条交互设计</h1>
-            <p class="subtitle">探索线条在移动界面中的多种交互应用方式，从变形动画到手势反馈，从进度指示到连接可视化。</p>
+    <!-- 背景线条 -->
+    <div class="background-lines">
+        <div class="line line-1"></div>
+        <div class="line line-2"></div>
+        <div class="line line-3"></div>
+        <div class="line line-4"></div>
+    </div>
+
+    <!-- 海报主容器 -->
+    <div class="poster-container">
+        <!-- 头部 -->
+        <div class="poster-header">
+            <div class="logo-section">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-dolphin"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1 class="main-title">链上赚币 | 智能质押</h1>
+                        <p class="subtitle">海豚模式创新社区协同策略</p>
+                    </div>
+                </div>
+            </div>
             
-            <!-- 导航菜单 -->
-            <nav class="nav-menu">
-                <a href="#demo1" class="nav-item active">汉堡菜单动画</a>
-                <a href="#demo2" class="nav-item">进度指示器</a>
-                <a href="#demo3" class="nav-item">点赞涟漪效果</a>
-                <a href="#demo4" class="nav-item">波形动画</a>
-                <a href="#demo5" class="nav-item">滑动操作</a>
-                <a href="#demo6" class="nav-item">路径绘制</a>
-                <a href="#demo7" class="nav-item">连接动画</a>
-            </nav>
+            <div class="partner-section">
+                <p class="partner-title">携手</p>
+                <div class="okx-logo">OKX</div>
+                <p class="partner-title">共同打造的增益活动</p>
+            </div>
         </div>
-    </header>
 
-    <main class="container">
-        <!-- 演示1: 汉堡菜单动画 -->
-        <section id="demo1" class="section">
-            <h2 class="section-title"><i class="fas fa-bars"></i> 线条变形：汉堡菜单 ↔ 关闭按钮</h2>
-            <p class="section-desc">最经典的线条交互，三条横线平滑变形为两条交叉线，直观表达"展开"与"收起"状态切换。</p>
+        <!-- 飞轮核心区域 -->
+        <div class="flywheel-section">
+            <h2 class="flywheel-title">正向收益飞轮</h2>
             
-            <div class="card">
-                <h3 class="card-title">交互演示</h3>
-                <p class="card-desc">点击下方的汉堡菜单图标，观察线条如何平滑变形为关闭图标。这种动画不仅提供视觉反馈，还暗示了两种状态之间的关联。</p>
+            <div class="flywheel-container">
+                <!-- 连接线 -->
+                <svg class="connection-line" viewBox="0 0 600 600">
+                    <!-- 外环连接线 -->
+                    <path class="line-path" d="M300,50 A250,250 0 1,1 300,550 A250,250 0 1,1 300,50" />
+                    <!-- 内环连接线 -->
+                    <path class="line-path" d="M300,100 A200,200 0 1,1 300,500 A200,200 0 1,1 300,100" />
+                </svg>
                 
-                <div class="demo-area">
-                    <div class="demo-title">点击汉堡菜单图标</div>
-                    <div class="demo-hamburger" id="hamburgerDemo">
-                        <span></span>
-                        <span></span>
-                        <span></span>
+                <!-- 飞轮圆环 -->
+                <div class="flywheel-circle"></div>
+                <div class="flywheel-circle inner"></div>
+                <div class="flywheel-circle inner-2"></div>
+                
+                <!-- 飞轮节点 -->
+                <div class="flywheel-node" style="top: 10%; left: 50%; transform: translateX(-50%);" data-node="1">
+                    <div class="node-icon">
+                        <i class="fas fa-lock"></i>
                     </div>
-                    
-                    <div class="demo-controls">
-                        <button class="btn" id="resetHamburger">重置</button>
-                        <button class="btn btn-outline" id="slowHamburger">慢速动画</button>
-                    </div>
+                    <div class="node-text">质押USDT</div>
                 </div>
                 
-                <div style="margin-top: 20px; padding: 20px; background: #f8f9ff; border-radius: 12px;">
-                    <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 10px; color: var(--primary-color);">应用场景</h4>
-                    <ul style="color: var(--text-medium); padding-left: 20px;">
-                        <li style="margin-bottom: 8px;">移动端导航菜单的展开/收起</li>
-                        <li style="margin-bottom: 8px;">底部导航栏图标的状态切换</li>
-                        <li style="margin-bottom: 8px;">播放/暂停按钮的变形</li>
-                        <li>添加/收藏按钮的形态转换</li>
-                    </ul>
+                <div class="flywheel-node" style="top: 20%; right: 15%;" data-node="2">
+                    <div class="node-icon">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <div class="node-text">获得H代币</div>
+                </div>
+                
+                <div class="flywheel-node" style="top: 40%; right: 5%;" data-node="3">
+                    <div class="node-icon">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <div class="node-text">交易H代币</div>
+                </div>
+                
+                <div class="flywheel-node" style="top: 60%; right: 15%;" data-node="4">
+                    <div class="node-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="node-text">获得交易量</div>
+                </div>
+                
+                <div class="flywheel-node" style="bottom: 10%; left: 50%; transform: translateX(-50%);" data-node="5">
+                    <div class="node-icon">
+                        <i class="fas fa-gift"></i>
+                    </div>
+                    <div class="node-text">OKX空投</div>
+                </div>
+                
+                <div class="flywheel-node" style="top: 60%; left: 15%;" data-node="6">
+                    <div class="node-icon">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <div class="node-text">无损收益到账</div>
+                </div>
+                
+                <div class="flywheel-node" style="top: 40%; left: 5%;" data-node="7">
+                    <div class="node-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="node-text">越来越多人质押</div>
+                </div>
+                
+                <div class="flywheel-node" style="top: 20%; left: 15%;" data-node="8">
+                    <div class="node-icon">
+                        <i class="fas fa-arrow-up"></i>
+                    </div>
+                    <div class="node-text">H升值</div>
+                </div>
+                
+                <div class="flywheel-node" style="top: 10%; left: 35%;" data-node="9">
+                    <div class="node-icon">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <div class="node-text">资本利得到账</div>
+                </div>
+                
+                <div class="flywheel-node" style="top: 10%; right: 35%;" data-node="10">
+                    <div class="node-icon">
+                        <i class="fas fa-redo"></i>
+                    </div>
+                    <div class="node-text">继续质押</div>
+                </div>
+                
+                <!-- 中心圆 -->
+                <div class="center-circle">
+                    <div class="center-title">正向循环</div>
+                    <div class="center-subtitle">飞轮效应</div>
                 </div>
             </div>
-        </section>
-
-        <!-- 演示2: 进度指示器 -->
-        <section id="demo2" class="section">
-            <h2 class="section-title"><i class="fas fa-spinner"></i> 路径与进度指示</h2>
-            <p class="section-desc">线条的延伸、绘制和填充用来可视化过程，比静态色块更轻量、更具科技感。</p>
             
-            <div class="card">
-                <h3 class="card-title">线性进度条与绘制动画</h3>
-                <p class="card-desc">进度条通常用于表示加载、上传或完成多步骤流程。线条版本带有动态头部，提供明确的进度反馈。</p>
-                
-                <div class="demo-area">
-                    <div class="demo-title">模拟进度加载</div>
-                    <div class="demo-progress">
-                        <div class="demo-progress-bar" id="progressBar"></div>
+            <!-- 节点详情面板 -->
+            <div class="node-detail" id="nodeDetail">
+                <div class="detail-header">
+                    <div class="detail-icon" id="detailIcon">
+                        <i class="fas fa-lock"></i>
                     </div>
-                    
-                    <div class="demo-controls">
-                        <button class="btn" id="startProgress">开始加载</button>
-                        <button class="btn btn-outline" id="resetProgress">重置</button>
-                    </div>
+                    <h3 class="detail-title" id="detailTitle">质押USDT</h3>
                 </div>
-                
-                <div style="margin-top: 20px; padding: 20px; background: #f8f9ff; border-radius: 12px;">
-                    <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 10px; color: var(--primary-color);">实现要点</h4>
-                    <p style="color: var(--text-medium);">使用CSS动画控制线条宽度，配合SVG路径绘制动画。关键帧控制绘制速度和缓动函数，使动画更自然。</p>
+                <div class="detail-content" id="detailContent">
+                    <p>通过OKX Wallet质押USDT，开启海豚模式的收益飞轮。质押过程安全透明，享受智能合约保障。</p>
+                </div>
+                <div class="detail-steps" id="detailSteps">
+                    <!-- 步骤内容将通过JavaScript动态填充 -->
                 </div>
             </div>
-        </section>
-
-        <!-- 演示3: 点赞涟漪效果 -->
-        <section id="demo3" class="section">
-            <h2 class="section-title"><i class="fas fa-heart"></i> 连接与关系可视化</h2>
-            <p class="section-desc">线条动态连接元素，表达关系或操作结果。如点赞时的涟漪效应，提供生动的正向反馈。</p>
-            
-            <div class="card">
-                <h3 class="card-title">点赞涟漪效果</h3>
-                <p class="card-desc">点击心形图标，观察从点击点迸发出的放射状线条如何被"吸入"图标，图标随之由线条变为填充。</p>
-                
-                <div class="demo-area">
-                    <div class="demo-title">点击心形图标体验涟漪效果</div>
-                    <div class="demo-like" id="likeDemo">
-                        <i class="far fa-heart"></i>
-                        <div class="demo-like-particles" id="likeParticles"></div>
-                    </div>
-                    
-                    <div class="demo-controls">
-                        <button class="btn" id="resetLike">重置</button>
-                        <button class="btn btn-outline" id="autoLike">自动演示</button>
-                    </div>
-                </div>
-                
-                <div style="margin-top: 20px; padding: 20px; background: #f8f9ff; border-radius: 12px;">
-                    <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 10px; color: var(--primary-color);">技术实现</h4>
-                    <p style="color: var(--text-medium);">使用JavaScript创建粒子元素，设置随机位置和速度，通过CSS动画控制粒子的发散和收缩。配合图标的状态变化，创造完整的交互体验。</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- 演示4: 波形动画 -->
-        <section id="demo4" class="section">
-            <h2 class="section-title"><i class="fas fa-wave-square"></i> 波形与律动效果</h2>
-            <p class="section-desc">用线条的波动模拟声音、心跳或网络活动，将抽象数据转化为视觉上可见的律动。</p>
-            
-            <div class="card">
-                <h3 class="card-title">音频波形与脉动效果</h3>
-                <p class="card-desc">这种效果常用于音乐播放器、语音消息或表示活跃状态。线条的波动幅度和频率可以反映数据强度。</p>
-                
-                <div class="demo-area">
-                    <div class="demo-title">模拟音频波形</div>
-                    <div class="demo-wave">
-                        <div class="demo-wave-line"></div>
-                        <div class="demo-wave-line"></div>
-                        <div class="demo-wave-line"></div>
-                    </div>
-                    
-                    <div class="demo-controls">
-                        <button class="btn" id="startWave">开始波动</button>
-                        <button class="btn btn-outline" id="stopWave">停止</button>
-                    </div>
-                </div>
-                
-                <div style="margin-top: 20px; padding: 20px; background: #f8f9ff; border-radius: 12px;">
-                    <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 10px; color: var(--primary-color);">应用案例</h4>
-                    <ul style="color: var(--text-medium); padding-left: 20px;">
-                        <li style="margin-bottom: 8px;">音乐播放器的可视化波形</li>
-                        <li style="margin-bottom: 8px;">语音消息的播放动画</li>
-                        <li style="margin-bottom: 8px;">网络连接状态指示器</li>
-                        <li>活跃用户的脉动标识</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- 演示5: 滑动操作 -->
-        <section id="demo5" class="section">
-            <h2 class="section-title"><i class="fas fa-arrows-alt-h"></i> 手势操作视觉线索</h2>
-            <p class="section-desc">线条实时响应用户手势，增强操作的直接操控感，如滑动删除的弹性效果。</p>
-            
-            <div class="card">
-                <h3 class="card-title">滑动删除/归档</h3>
-                <p class="card-desc">在列表项上滑动，观察下方的操作按钮如何露出，以及列表项与边缘之间的弹性线条效果。</p>
-                
-                <div class="demo-area">
-                    <div class="demo-title">尝试向左滑动下面的卡片</div>
-                    <div class="demo-swipe" id="swipeDemo">
-                        <div class="demo-swipe-content" id="swipeContent">
-                            <div class="demo-swipe-icon">
-                                <i class="fas fa-envelope"></i>
-                            </div>
-                            <div class="demo-swipe-text">新消息通知</div>
-                        </div>
-                        <div class="demo-swipe-actions" id="swipeActions">
-                            <div class="demo-swipe-action archive">归档</div>
-                            <div class="demo-swipe-action delete">删除</div>
-                        </div>
-                    </div>
-                    
-                    <div class="demo-controls">
-                        <button class="btn" id="resetSwipe">重置位置</button>
-                        <button class="btn btn-outline" id="autoSwipe">自动演示</button>
-                    </div>
-                </div>
-                
-                <div style="margin-top: 20px; padding: 20px; background: #f8f9ff; border-radius: 12px;">
-                    <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 10px; color: var(--primary-color);">设计要点</h4>
-                    <p style="color: var(--text-medium);">模拟物理世界的弹性效果，使用缓动函数实现自然的拉伸和回弹。提供足够的视觉反馈，让用户理解滑动手势的结果和可撤销性。</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- 演示6: 路径绘制 -->
-        <section id="demo6" class="section">
-            <h2 class="section-title"><i class="fas fa-draw-polygon"></i> 路径绘制动画</h2>
-            <p class="section-desc">线条像手绘一样逐渐绘制出来，用于引导用户视线、表示加载过程或创建视觉焦点。</p>
-            
-            <div class="card">
-                <h3 class="card-title">SVG路径绘制</h3>
-                <p class="card-desc">观察海豚轮廓如何像手绘一样逐渐出现，这种效果常用于应用启动页、教程引导或加载动画。</p>
-                
-                <div class="demo-area">
-                    <div class="demo-title">海豚轮廓绘制动画</div>
-                    <svg width="200" height="150" viewBox="0 0 200 150" id="svgDemo">
-                        <path id="dolphinPath" class="line line-primary" d="M40,75 Q60,40 80,75 T120,75 Q140,40 160,75" stroke-width="3" stroke-dasharray="300" stroke-dashoffset="300"/>
-                        <circle id="dolphinEye" cx="150" cy="70" r="3" fill="transparent" stroke-width="2" stroke="var(--primary-color)"/>
-                    </svg>
-                    
-                    <div class="demo-controls">
-                        <button class="btn" id="startDrawing">开始绘制</button>
-                        <button class="btn btn-outline" id="resetDrawing">重置</button>
-                    </div>
-                </div>
-                
-                <div style="margin-top: 20px; padding: 20px; background: #f8f9ff; border-radius: 12px;">
-                    <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 10px; color: var(--primary-color);">技术实现</h4>
-                    <p style="color: var(--text-medium);">利用SVG的stroke-dasharray和stroke-dashoffset属性，通过CSS或JavaScript动画控制线条的绘制过程。这是创建复杂路径动画的经典方法。</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- 演示7: 连接动画 -->
-        <section id="demo7" class="section">
-            <h2 class="section-title"><i class="fas fa-link"></i> 连接与引导线</h2>
-            <p class="section-desc">线条动态连接两个元素，清晰地表达它们之间的关系或操作流程，如分享、发送或配对过程。</p>
-            
-            <div class="card">
-                <h3 class="card-title">元素连接动画</h3>
-                <p class="card-desc">点击"发送"按钮，观察消息如何转化为一条线，从发送者飞向接收者，可视化数据传输过程。</p>
-                
-                <div class="demo-area">
-                    <div class="demo-title">模拟消息发送过程</div>
-                    <div style="display: flex; justify-content: space-between; width: 100%; max-width: 400px; margin-bottom: 20px;">
-                        <div class="demo-sender" style="width: 60px; height: 60px; background: var(--primary-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white;">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div class="demo-receiver" style="width: 60px; height: 60px; background: var(--secondary-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white;">
-                            <i class="fas fa-user-friends"></i>
-                        </div>
-                    </div>
-                    
-                    <div id="connectionLine" style="width: 100%; height: 2px; background: transparent; position: relative; margin: 20px 0;">
-                        <!-- 连接线将在这里动态生成 -->
-                    </div>
-                    
-                    <div class="demo-controls">
-                        <button class="btn" id="sendMessage">发送消息</button>
-                        <button class="btn btn-outline" id="resetConnection">重置</button>
-                    </div>
-                </div>
-                
-                <div style="margin-top: 20px; padding: 20px; background: #f8f9ff; border-radius: 12px;">
-                    <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 10px; color: var(--primary-color);">应用场景</h4>
-                    <ul style="color: var(--text-medium); padding-left: 20px;">
-                        <li style="margin-bottom: 8px;">分享内容到其他应用</li>
-                        <li style="margin-bottom: 8px;">文件上传/下载过程</li>
-                        <li style="margin-bottom: 8px;">设备配对连接动画</li>
-                        <li>支付/转账过程可视化</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-links">
-                <a href="#">设计原理</a>
-                <a href="#">实现指南</a>
-                <a href="#">更多案例</a>
-                <a href="#">关于我们</a>
-            </div>
-            <p>移动端线条交互设计案例合集 © 2023 | 探索现代移动界面中的线条美学</p>
         </div>
-    </footer>
+
+        <!-- 底部 -->
+        <div class="poster-footer">
+            <div class="slogan">海豚模式：让收益在链上自由流动，构建可持续增长生态</div>
+            <div class="action-buttons">
+                <button class="btn btn-primary" id="joinBtn">立即参与</button>
+                <button class="btn btn-secondary" id="learnBtn">了解更多</button>
+            </div>
+        </div>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // 导航菜单交互
-            const navItems = document.querySelectorAll('.nav-item');
-            navItems.forEach(item => {
-                item.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    navItems.forEach(i => i.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    // 滚动到对应区域
-                    const targetId = this.getAttribute('href');
-                    document.querySelector(targetId).scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                });
-            });
-            
-            // 演示1: 汉堡菜单动画
-            const hamburgerDemo = document.getElementById('hamburgerDemo');
-            const resetHamburger = document.getElementById('resetHamburger');
-            const slowHamburger = document.getElementById('slowHamburger');
-            
-            let hamburgerSpeed = 0.4;
-            
-            hamburgerDemo.addEventListener('click', function() {
-                this.classList.toggle('active');
-                
-                // 调整动画速度
-                const spans = this.querySelectorAll('span');
-                spans.forEach(span => {
-                    span.style.transitionDuration = `${hamburgerSpeed}s`;
-                });
-            });
-            
-            resetHamburger.addEventListener('click', function() {
-                hamburgerDemo.classList.remove('active');
-            });
-            
-            slowHamburger.addEventListener('click', function() {
-                hamburgerSpeed = hamburgerSpeed === 0.4 ? 1.0 : 0.4;
-                this.textContent = hamburgerSpeed === 0.4 ? '慢速动画' : '正常速度';
-                
-                const spans = hamburgerDemo.querySelectorAll('span');
-                spans.forEach(span => {
-                    span.style.transitionDuration = `${hamburgerSpeed}s`;
-                });
-            });
-            
-            // 演示2: 进度指示器
-            const progressBar = document.getElementById('progressBar');
-            const startProgress = document.getElementById('startProgress');
-            const resetProgress = document.getElementById('resetProgress');
-            
-            startProgress.addEventListener('click', function() {
-                progressBar.style.width = '0%';
-                
-                // 强制重绘
-                progressBar.offsetHeight;
-                
-                // 开始动画
-                setTimeout(() => {
-                    progressBar.style.width = '100%';
-                }, 50);
-            });
-            
-            resetProgress.addEventListener('click', function() {
-                progressBar.style.width = '0%';
-            });
-            
-            // 演示3: 点赞涟漪效果
-            const likeDemo = document.getElementById('likeDemo');
-            const likeParticles = document.getElementById('likeParticles');
-            const resetLike = document.getElementById('resetLike');
-            const autoLike = document.getElementById('autoLike');
-            
-            let likeActive = false;
-            let autoLikeInterval;
-            
-            function createLikeParticles() {
-                // 清空现有粒子
-                likeParticles.innerHTML = '';
-                
-                // 创建粒子
-                for (let i = 0; i < 12; i++) {
-                    const particle = document.createElement('div');
-                    particle.className = 'demo-like-particle';
-                    
-                    // 随机角度
-                    const angle = (i / 12) * Math.PI * 2;
-                    const distance = 30;
-                    
-                    // 初始位置（中心）
-                    particle.style.left = '50%';
-                    particle.style.top = '50%';
-                    
-                    // 设置动画
-                    particle.style.animation = `likeParticle 0.8s ease-out forwards`;
-                    
-                    // 自定义属性
-                    particle.setAttribute('data-angle', angle);
-                    particle.setAttribute('data-distance', distance);
-                    
-                    likeParticles.appendChild(particle);
+            // 节点数据
+            const nodeData = {
+                1: {
+                    title: "质押USDT",
+                    icon: "fas fa-lock",
+                    content: "通过OKX Wallet质押USDT，开启海豚模式的收益飞轮。质押过程安全透明，享受智能合约保障。",
+                    steps: [
+                        "连接OKX Wallet钱包",
+                        "选择质押USDT数量",
+                        "确认智能合约交易",
+                        "开始获得H代币奖励"
+                    ]
+                },
+                2: {
+                    title: "获得H代币",
+                    icon: "fas fa-coins",
+                    content: "质押USDT后，系统将自动分配H代币奖励。H代币是海豚生态的核心治理与权益代币。",
+                    steps: [
+                        "实时计算质押奖励",
+                        "自动发放H代币到钱包",
+                        "查看H代币余额",
+                        "了解H代币权益"
+                    ]
+                },
+                3: {
+                    title: "交易H代币",
+                    icon: "fas fa-exchange-alt",
+                    content: "在去中心化交易所交易H代币，增加流动性，为生态贡献交易量，获得额外奖励。",
+                    steps: [
+                        "进入DEX交易界面",
+                        "选择H代币交易对",
+                        "执行买入/卖出操作",
+                        "确认交易完成"
+                    ]
+                },
+                4: {
+                    title: "获得交易量",
+                    icon: "fas fa-chart-line",
+                    content: "通过交易H代币产生的手续费将部分返还给质押者，交易量越大，奖励越丰厚。",
+                    steps: [
+                        "系统自动统计交易量",
+                        "计算交易手续费返还",
+                        "分配额外奖励到钱包",
+                        "查看交易量排行榜"
+                    ]
+                },
+                5: {
+                    title: "OKX空投",
+                    icon: "fas fa-gift",
+                    content: "OKX Wallet为活跃用户提供额外空投奖励，质押和交易行为都将增加空投权重。",
+                    steps: [
+                        "符合空投资格条件",
+                        "系统计算空投权重",
+                        "发放空投奖励到钱包",
+                        "查看空投历史记录"
+                    ]
+                },
+                6: {
+                    title: "无损收益到账",
+                    icon: "fas fa-wallet",
+                    content: "所有奖励（H代币、交易手续费返还、空投）将自动转入您的钱包，实现真正的无损收益。",
+                    steps: [
+                        "自动计算总收益",
+                        "智能合约执行分发",
+                        "收益实时到账钱包",
+                        "查看收益明细报表"
+                    ]
+                },
+                7: {
+                    title: "越来越多人质押",
+                    icon: "fas fa-users",
+                    content: "良好的收益效应吸引更多用户参与质押，形成网络效应，生态规模持续扩大。",
+                    steps: [
+                        "社区口碑传播效应",
+                        "质押用户持续增长",
+                        "生态资金池扩大",
+                        "增强系统稳定性"
+                    ]
+                },
+                8: {
+                    title: "H升值",
+                    icon: "fas fa-arrow-up",
+                    content: "随着生态发展，H代币需求增加，价值自然上升，为早期参与者带来资本利得。",
+                    steps: [
+                        "H代币应用场景扩展",
+                        "市场需求持续增长",
+                        "价值发现与重估",
+                        "价格稳步上升"
+                    ]
+                },
+                9: {
+                    title: "资本利得到账",
+                    icon: "fas fa-money-bill-wave",
+                    content: "H代币升值带来的资本利得，加上质押收益，实现双重收益叠加效应。",
+                    steps: [
+                        "计算H代币增值收益",
+                        "资本利得自动到账",
+                        "总收益复合增长",
+                        "查看资产增长曲线"
+                    ]
+                },
+                10: {
+                    title: "继续质押",
+                    icon: "fas fa-redo",
+                    content: "将收益重新质押，进入下一轮收益循环，享受复利效应，加速财富积累。",
+                    steps: [
+                        "选择复投模式",
+                        "自动将收益重新质押",
+                        "进入新一轮飞轮循环",
+                        "享受复利增长效应"
+                    ]
                 }
+            };
+
+            // 获取DOM元素
+            const flywheelNodes = document.querySelectorAll('.flywheel-node');
+            const nodeDetail = document.getElementById('nodeDetail');
+            const detailIcon = document.getElementById('detailIcon');
+            const detailTitle = document.getElementById('detailTitle');
+            const detailContent = document.getElementById('detailContent');
+            const detailSteps = document.getElementById('detailSteps');
+            const joinBtn = document.getElementById('joinBtn');
+            const learnBtn = document.getElementById('learnBtn');
+
+            // 当前激活的节点
+            let activeNode = null;
+
+            // 初始化第一个节点为激活状态
+            activateNode(1);
+
+            // 节点点击事件
+            flywheelNodes.forEach(node => {
+                node.addEventListener('click', function() {
+                    const nodeId = parseInt(this.getAttribute('data-node'));
+                    activateNode(nodeId);
+                });
                 
-                // 添加CSS动画
-                const style = document.createElement('style');
-                style.textContent = `
-                    @keyframes likeParticle {
-                        0% {
-                            opacity: 1;
-                            transform: translate(-50%, -50%) scale(1);
-                        }
-                        50% {
-                            opacity: 1;
-                            transform: translate(
-                                calc(-50% + ${Math.cos(0)} * 30px),
-                                calc(-50% + ${Math.sin(0)} * 30px)
-                            ) scale(0.8);
-                        }
-                        100% {
-                            opacity: 0;
-                            transform: translate(
-                                calc(-50% + ${Math.cos(0)} * 60px),
-                                calc(-50% + ${Math.sin(0)} * 60px)
-                            ) scale(0);
-                        }
+                // 鼠标悬停效果
+                node.addEventListener('mouseenter', function() {
+                    if (!this.classList.contains('active')) {
+                        this.style.transform = 'scale(1.05)';
+                        this.querySelector('.node-icon').style.boxShadow = '0 0 20px rgba(0, 212, 255, 0.7)';
                     }
+                });
+                
+                node.addEventListener('mouseleave', function() {
+                    if (!this.classList.contains('active')) {
+                        this.style.transform = '';
+                        this.querySelector('.node-icon').style.boxShadow = '';
+                    }
+                });
+            });
+
+            // 激活节点函数
+            function activateNode(nodeId) {
+                // 移除所有节点的激活状态
+                flywheelNodes.forEach(node => {
+                    node.classList.remove('active');
+                    node.querySelector('.node-icon').style.boxShadow = '';
+                });
+                
+                // 添加当前节点的激活状态
+                const currentNode = document.querySelector(`.flywheel-node[data-node="${nodeId}"]`);
+                currentNode.classList.add('active');
+                currentNode.querySelector('.node-icon').style.boxShadow = '0 0 25px rgba(0, 212, 255, 0.9)';
+                
+                // 更新详情面板
+                const data = nodeData[nodeId];
+                detailIcon.innerHTML = `<i class="${data.icon}"></i>`;
+                detailTitle.textContent = data.title;
+                detailContent.textContent = data.content;
+                
+                // 更新步骤
+                detailSteps.innerHTML = '';
+                data.steps.forEach(step => {
+                    const stepElement = document.createElement('div');
+                    stepElement.className = 'detail-step';
+                    stepElement.innerHTML = `
+                        <i class="fas fa-chevron-right"></i>
+                        <span>${step}</span>
+                    `;
+                    detailSteps.appendChild(stepElement);
+                });
+                
+                // 显示详情面板
+                nodeDetail.classList.add('active');
+                
+                // 更新当前激活节点
+                activeNode = nodeId;
+                
+                // 如果是移动端，滚动到详情面板
+                if (window.innerWidth <= 768) {
+                    nodeDetail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            }
+
+            // 自动循环切换节点（每5秒切换一个）
+            let autoCycleInterval = setInterval(() => {
+                let nextNode = activeNode + 1;
+                if (nextNode > 10) nextNode = 1;
+                activateNode(nextNode);
+            }, 5000);
+
+            // 鼠标悬停时停止自动循环
+            flywheelNodes.forEach(node => {
+                node.addEventListener('mouseenter', () => {
+                    clearInterval(autoCycleInterval);
+                });
+                
+                node.addEventListener('mouseleave', () => {
+                    autoCycleInterval = setInterval(() => {
+                        let nextNode = activeNode + 1;
+                        if (nextNode > 10) nextNode = 1;
+                        activateNode(nextNode);
+                    }, 5000);
+                });
+            });
+
+            // 按钮交互
+            joinBtn.addEventListener('click', function() {
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 连接中...';
+                this.style.opacity = '0.8';
+                
+                setTimeout(() => {
+                    this.innerHTML = '<i class="fas fa-check"></i> 已连接';
+                    this.style.opacity = '1';
+                    
+                    // 模拟连接成功效果
+                    document.querySelectorAll('.flywheel-node').forEach(node => {
+                        node.querySelector('.node-icon').style.animation = 'pulse 1s';
+                    });
+                    
+                    // 3秒后恢复原状
+                    setTimeout(() => {
+                        this.innerHTML = '立即参与';
+                        document.querySelectorAll('.flywheel-node').forEach(node => {
+                            node.querySelector('.node-icon').style.animation = '';
+                        });
+                    }, 3000);
+                }, 1500);
+            });
+
+            learnBtn.addEventListener('click', function() {
+                // 显示所有节点详情
+                const detailContainer = document.createElement('div');
+                detailContainer.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(10, 14, 23, 0.95);
+                    z-index: 1000;
+                    padding: 40px;
+                    overflow-y: auto;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
                 `;
                 
-                // 为每个粒子设置不同的动画
-                const particles = likeParticles.querySelectorAll('.demo-like-particle');
-                particles.forEach((particle, index) => {
-                    const angle = (index / 12) * Math.PI * 2;
-                    const distance = 60;
-                    
-                    const keyframes = `
-                        @keyframes likeParticle${index} {
-                            0% {
-                                opacity: 1;
-                                transform: translate(-50%, -50%) scale(1);
-                            }
-                            50% {
-                                opacity: 1;
-                                transform: translate(
-                                    calc(-50% + ${Math.cos(angle)} * 30px),
-                                    calc(-50% + ${Math.sin(angle)} * 30px)
-                                ) scale(0.8);
-                            }
-                            100% {
-                                opacity: 0;
-                                transform: translate(
-                                    calc(-50% + ${Math.cos(angle)} * ${distance}px),
-                                    calc(-50% + ${Math.sin(angle)} * ${distance}px)
-                                ) scale(0);
-                            }
-                        }
+                const closeBtn = document.createElement('button');
+                closeBtn.innerHTML = '<i class="fas fa-times"></i>';
+                closeBtn.style.cssText = `
+                    position: absolute;
+                    top: 20px;
+                    right: 20px;
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                    background: var(--primary-color);
+                    color: var(--bg-dark);
+                    border: none;
+                    font-size: 24px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                `;
+                
+                const title = document.createElement('h2');
+                title.textContent = '海豚模式完整流程';
+                title.style.cssText = `
+                    font-family: 'Orbitron', sans-serif;
+                    font-size: 2.5rem;
+                    color: var(--primary-color);
+                    margin-bottom: 40px;
+                    text-align: center;
+                `;
+                
+                detailContainer.appendChild(closeBtn);
+                detailContainer.appendChild(title);
+                
+                // 添加所有节点详情
+                for (let i = 1; i <= 10; i++) {
+                    const data = nodeData[i];
+                    const nodeCard = document.createElement('div');
+                    nodeCard.style.cssText = `
+                        background: rgba(16, 23, 41, 0.8);
+                        border-radius: 12px;
+                        padding: 25px;
+                        margin-bottom: 20px;
+                        width: 100%;
+                        max-width: 800px;
+                        border: 1px solid rgba(0, 212, 255, 0.3);
+                        box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
                     `;
                     
-                    style.textContent += keyframes;
-                    particle.style.animation = `likeParticle${index} 0.8s ease-out forwards`;
+                    nodeCard.innerHTML = `
+                        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                            <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--primary-light); color: var(--primary-color); display: flex; align-items: center; justify-content: center; font-size: 22px;">
+                                <i class="${data.icon}"></i>
+                            </div>
+                            <h3 style="font-size: 1.5rem; color: var(--primary-color);">${i}. ${data.title}</h3>
+                        </div>
+                        <p style="color: var(--text-color); margin-bottom: 15px; line-height: 1.6;">${data.content}</p>
+                        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                            ${data.steps.map(step => `
+                                <div style="background: rgba(255, 255, 255, 0.05); padding: 8px 15px; border-radius: 20px; color: var(--text-secondary); font-size: 0.9rem;">
+                                    <i class="fas fa-check" style="color: var(--primary-color); margin-right: 5px;"></i>${step}
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                    
+                    detailContainer.appendChild(nodeCard);
+                }
+                
+                document.body.appendChild(detailContainer);
+                
+                // 关闭按钮事件
+                closeBtn.addEventListener('click', function() {
+                    document.body.removeChild(detailContainer);
                 });
                 
-                document.head.appendChild(style);
-                
-                // 动画结束后移除样式
-                setTimeout(() => {
-                    document.head.removeChild(style);
-                }, 800);
-            }
-            
-            likeDemo.addEventListener('click', function() {
-                if (likeActive) return;
-                
-                likeActive = true;
-                this.classList.add('active');
-                this.querySelector('i').className = 'fas fa-heart';
-                
-                // 创建粒子效果
-                createLikeParticles();
-                
-                // 重置状态
-                setTimeout(() => {
-                    likeActive = false;
-                }, 800);
-            });
-            
-            resetLike.addEventListener('click', function() {
-                likeDemo.classList.remove('active');
-                likeDemo.querySelector('i').className = 'far fa-heart';
-                likeParticles.innerHTML = '';
-            });
-            
-            autoLike.addEventListener('click', function() {
-                if (autoLikeInterval) {
-                    clearInterval(autoLikeInterval);
-                    autoLikeInterval = null;
-                    this.textContent = '自动演示';
-                } else {
-                    autoLikeInterval = setInterval(() => {
-                        if (!likeActive) {
-                            likeDemo.click();
-                        }
-                    }, 1500);
-                    this.textContent = '停止演示';
-                }
-            });
-            
-            // 演示4: 波形动画
-            const startWave = document.getElementById('startWave');
-            const stopWave = document.getElementById('stopWave');
-            const waveLines = document.querySelectorAll('.demo-wave-line');
-            
-            let waveAnimation;
-            
-            startWave.addEventListener('click', function() {
-                waveLines.forEach(line => {
-                    line.style.animationPlayState = 'running';
+                // 点击背景关闭
+                detailContainer.addEventListener('click', function(e) {
+                    if (e.target === detailContainer) {
+                        document.body.removeChild(detailContainer);
+                    }
                 });
             });
-            
-            stopWave.addEventListener('click', function() {
-                waveLines.forEach(line => {
-                    line.style.animationPlayState = 'paused';
-                });
-            });
-            
-            // 演示5: 滑动操作
-            const swipeDemo = document.getElementById('swipeDemo');
-            const swipeContent = document.getElementById('swipeContent');
-            const swipeActions = document.getElementById('swipeActions');
-            const resetSwipe = document.getElementById('resetSwipe');
-            const autoSwipe = document.getElementById('autoSwipe');
-            
-            let isSwiping = false;
-            let startX = 0;
-            let currentX = 0;
-            let swipeThreshold = 80;
-            
-            swipeDemo.addEventListener('touchstart', function(e) {
-                isSwiping = true;
-                startX = e.touches[0].clientX;
-                swipeContent.style.transition = 'none';
-            }, { passive: true });
-            
-            swipeDemo.addEventListener('touchmove', function(e) {
-                if (!isSwiping) return;
-                
-                currentX = e.touches[0].clientX;
-                const diff = startX - currentX;
-                
-                if (diff > 0) {
-                    const translateX = Math.min(diff, 160);
-                    swipeContent.style.transform = `translateX(-${translateX}px)`;
-                    
-                    // 显示操作按钮
-                    const opacity = Math.min(diff / 160, 1);
-                    swipeActions.style.opacity = opacity;
-                }
-            }, { passive: true });
-            
-            swipeDemo.addEventListener('touchend', function() {
-                if (!isSwiping) return;
-                
-                isSwiping = false;
-                const diff = startX - currentX;
-                
-                swipeContent.style.transition = 'transform 0.3s ease';
-                
-                if (diff > swipeThreshold) {
-                    swipeContent.style.transform = 'translateX(-160px)';
-                    swipeActions.style.opacity = '1';
+
+            // 响应式调整
+            window.addEventListener('resize', function() {
+                // 在移动端隐藏自动循环
+                if (window.innerWidth <= 768) {
+                    clearInterval(autoCycleInterval);
                 } else {
-                    swipeContent.style.transform = 'translateX(0)';
-                    swipeActions.style.opacity = '0';
+                    // 重新启动自动循环
+                    autoCycleInterval = setInterval(() => {
+                        let nextNode = activeNode + 1;
+                        if (nextNode > 10) nextNode = 1;
+                        activateNode(nextNode);
+                    }, 5000);
                 }
-            }, { passive: true });
-            
-            // 鼠标支持（用于桌面端测试）
-            swipeDemo.addEventListener('mousedown', function(e) {
-                isSwiping = true;
-                startX = e.clientX;
-                swipeContent.style.transition = 'none';
-                e.preventDefault();
-            });
-            
-            document.addEventListener('mousemove', function(e) {
-                if (!isSwiping) return;
-                
-                currentX = e.clientX;
-                const diff = startX - currentX;
-                
-                if (diff > 0) {
-                    const translateX = Math.min(diff, 160);
-                    swipeContent.style.transform = `translateX(-${translateX}px)`;
-                    
-                    // 显示操作按钮
-                    const opacity = Math.min(diff / 160, 1);
-                    swipeActions.style.opacity = opacity;
-                }
-            });
-            
-            document.addEventListener('mouseup', function() {
-                if (!isSwiping) return;
-                
-                isSwiping = false;
-                const diff = startX - currentX;
-                
-                swipeContent.style.transition = 'transform 0.3s ease';
-                
-                if (diff > swipeThreshold) {
-                    swipeContent.style.transform = 'translateX(-160px)';
-                    swipeActions.style.opacity = '1';
-                } else {
-                    swipeContent.style.transform = 'translateX(0)';
-                    swipeActions.style.opacity = '0';
-                }
-            });
-            
-            resetSwipe.addEventListener('click', function() {
-                swipeContent.style.transform = 'translateX(0)';
-                swipeActions.style.opacity = '0';
-            });
-            
-            autoSwipe.addEventListener('click', function() {
-                swipeContent.style.transition = 'transform 0.5s ease';
-                swipeContent.style.transform = 'translateX(-160px)';
-                swipeActions.style.opacity = '1';
-                
-                setTimeout(() => {
-                    swipeContent.style.transform = 'translateX(0)';
-                    swipeActions.style.opacity = '0';
-                }, 1500);
-            });
-            
-            // 演示6: 路径绘制
-            const startDrawing = document.getElementById('startDrawing');
-            const resetDrawing = document.getElementById('resetDrawing');
-            const dolphinPath = document.getElementById('dolphinPath');
-            const dolphinEye = document.getElementById('dolphinEye');
-            
-            startDrawing.addEventListener('click', function() {
-                // 重置路径
-                dolphinPath.style.strokeDashoffset = '300';
-                dolphinEye.style.opacity = '0';
-                
-                // 强制重绘
-                dolphinPath.offsetHeight;
-                
-                // 开始绘制动画
-                dolphinPath.style.transition = 'stroke-dashoffset 2s ease-in-out';
-                dolphinPath.style.strokeDashoffset = '0';
-                
-                // 眼睛出现
-                setTimeout(() => {
-                    dolphinEye.style.transition = 'opacity 0.5s ease';
-                    dolphinEye.style.opacity = '1';
-                }, 1500);
-            });
-            
-            resetDrawing.addEventListener('click', function() {
-                dolphinPath.style.transition = 'stroke-dashoffset 0.5s ease';
-                dolphinPath.style.strokeDashoffset = '300';
-                dolphinEye.style.opacity = '0';
-            });
-            
-            // 演示7: 连接动画
-            const sendMessage = document.getElementById('sendMessage');
-            const resetConnection = document.getElementById('resetConnection');
-            const connectionLine = document.getElementById('connectionLine');
-            
-            sendMessage.addEventListener('click', function() {
-                // 清空现有线条
-                connectionLine.innerHTML = '';
-                
-                // 创建连接线
-                const line = document.createElement('div');
-                line.style.position = 'absolute';
-                line.style.left = '0';
-                line.style.top = '50%';
-                line.style.width = '0%';
-                line.style.height = '3px';
-                line.style.background = 'linear-gradient(90deg, var(--primary-color), var(--secondary-color))';
-                line.style.borderRadius = '2px';
-                line.style.transform = 'translateY(-50%)';
-                
-                connectionLine.appendChild(line);
-                
-                // 强制重绘
-                line.offsetHeight;
-                
-                // 动画绘制线条
-                line.style.transition = 'width 1s ease';
-                line.style.width = '100%';
-                
-                // 创建消息气泡
-                const message = document.createElement('div');
-                message.style.position = 'absolute';
-                message.style.left = '0';
-                message.style.top = '50%';
-                message.style.width = '40px';
-                message.style.height = '30px';
-                message.style.background = 'var(--primary-color)';
-                message.style.borderRadius = '15px 15px 15px 5px';
-                message.style.transform = 'translateY(-50%) translateX(-20px)';
-                message.style.display = 'flex';
-                message.style.alignItems = 'center';
-                message.style.justifyContent = 'center';
-                message.style.color = 'white';
-                message.innerHTML = '<i class="fas fa-paper-plane"></i>';
-                
-                connectionLine.appendChild(message);
-                
-                // 动画发送消息
-                setTimeout(() => {
-                    message.style.transition = 'left 1s ease';
-                    message.style.left = '100%';
-                }, 300);
-                
-                // 完成后清理
-                setTimeout(() => {
-                    line.style.opacity = '0';
-                    message.style.opacity = '0';
-                    
-                    setTimeout(() => {
-                        connectionLine.innerHTML = '';
-                    }, 500);
-                }, 1500);
-            });
-            
-            resetConnection.addEventListener('click', function() {
-                connectionLine.innerHTML = '';
             });
         });
     </script>
