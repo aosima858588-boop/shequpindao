@@ -2,126 +2,533 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>带波纹的下载页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>丝滑数据卡片 · 带波纹</title>
     <style>
-        /* 基础样式 */
+        /* ----- 全局样式 & 设计变量 ----- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            text-align: center;
-            padding: 50px 20px;
-            background-color: #f5f5f7;
+            background: #f5f5f7;
+            padding: 24px 16px 40px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            -webkit-font-smoothing: antialiased;
+            -webkit-overflow-scrolling: touch;
         }
-        .card {
+        .container {
             max-width: 600px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 18px;
-            padding: 40px 30px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            width: 100%;
         }
-        h1 { font-weight: 600; font-size: 2em; color: #1d1d1f; }
-        p { color: #6e6e73; margin-bottom: 30px; }
 
-        /* 下载按钮样式（同时作为波纹容器） */
+        /* ----- 卡片基础样式 ----- */
+        .card {
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 28px;
+            box-shadow: 0 8px 28px rgba(0,0,0,0.06), 0 2px 8px rgba(0,0,0,0.03);
+            padding: 24px 20px;
+            margin-bottom: 20px;
+            transition: box-shadow 0.2s ease;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+        .card:last-child {
+            margin-bottom: 0;
+        }
+
+        /* ----- 按压 / 波纹公用类 ----- */
+        .press {
+            transition: transform 0.15s ease, opacity 0.15s ease;
+            transform: scale(1);
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .press:active {
+            transform: scale(0.97);
+            opacity: 0.9;
+        }
+        .ripple {
+            position: relative;
+            overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .ripple-effect {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.7);
+            width: 120px;
+            height: 120px;
+            margin-left: -60px;
+            margin-top: -60px;
+            transform: scale(0);
+            animation: ripple-animation 0.5s ease-out;
+            pointer-events: none;
+            z-index: 2;
+        }
+        @keyframes ripple-animation {
+            from { transform: scale(0); opacity: 0.5; }
+            to { transform: scale(4); opacity: 0; }
+        }
+
+        /* ----- 下载卡片（复用之前的设计）----- */
+        .download-card {
+            text-align: center;
+            background: white;
+            border: none;
+            backdrop-filter: none;
+        }
+        .download-card h1 {
+            font-weight: 600;
+            font-size: 2em;
+            margin-bottom: 8px;
+            color: #1d1d1f;
+        }
+        .download-card p {
+            color: #6e6e73;
+            margin-bottom: 24px;
+        }
         .download-btn {
             display: inline-block;
             background: #0071e3;
             color: white;
             text-decoration: none;
-            padding: 15px 50px;
+            padding: 14px 40px;
             border-radius: 40px;
             font-size: 1.2em;
             font-weight: 500;
-            transition: background 0.2s;
             border: none;
             cursor: pointer;
-            /* 波纹所需 */
-            position: relative;
-            overflow: hidden;
-            -webkit-tap-highlight-color: transparent; /* 去掉移动端默认高亮 */
+            transition: background 0.2s;
+            margin-bottom: 8px;
         }
         .download-btn:hover {
             background: #0077ed;
         }
-
-        /* 按压缩放效果（与波纹并存） */
-        .press {
-            transition: transform 0.15s ease;
-            transform: scale(1);
-        }
-        .press:active {
-            transform: scale(0.97);
+        .note {
+            font-size: 0.9em;
+            color: #86868b;
         }
 
-        /* 波纹样式 */
-        .ripple {
-            position: relative;
-            overflow: hidden;
+        /* ----- 数据卡片内部样式 ----- */
+        .asset-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 20px;
         }
-        .ripple-effect {
-            position: absolute;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.6);
-            width: 100px; height: 100px;
-            margin-left: -50px; margin-top: -50px; /* 中心定位 */
-            transform: scale(0);
-            animation: ripple-animation 0.5s ease-out;
-            pointer-events: none; /* 让波纹不干扰点击 */
+        .asset-total {
+            font-size: 28px;
+            font-weight: 600;
+            color: #1d1d1f;
         }
-        @keyframes ripple-animation {
-            from {
-                transform: scale(0);
-                opacity: 0.6;
-            }
-            to {
-                transform: scale(4);
-                opacity: 0;
-            }
+        .asset-change {
+            font-size: 16px;
+            font-weight: 500;
+            color: #34c759;
+            background: rgba(52,199,89,0.1);
+            padding: 4px 10px;
+            border-radius: 40px;
+        }
+        .asset-change.negative {
+            color: #ff3b30;
+            background: rgba(255,59,48,0.1);
+        }
+        .asset-period {
+            font-size: 14px;
+            color: #8e8e93;
+            margin-left: 8px;
+        }
+
+        /* 双按钮行 */
+        .action-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .action-btn {
+            flex: 1;
+            background: #f2f2f5;
+            border: none;
+            padding: 14px 0;
+            border-radius: 60px;
+            font-size: 16px;
+            font-weight: 500;
+            color: #1d1d1f;
+            transition: background 0.2s;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+        .action-btn:hover {
+            background: #e9e9ed;
+        }
+
+        /* 切换标签 */
+        .tab-bar {
+            display: flex;
+            background: #f2f2f5;
+            border-radius: 40px;
+            padding: 4px;
+            margin-bottom: 24px;
+        }
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px 0;
+            border-radius: 40px;
+            font-size: 15px;
+            font-weight: 500;
+            color: #6e6e73;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+        }
+        .tab.active {
+            background: white;
+            color: #1d1d1f;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+        }
+
+        /* 币种列表 */
+        .coin-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .coin-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .coin-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 22px;
+            background: #f0f0f3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 20px;
+            color: #1d1d1f;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .coin-info {
+            flex: 2;
+        }
+        .coin-name {
+            font-weight: 600;
+            font-size: 17px;
+            color: #1d1d1f;
+            margin-bottom: 4px;
+        }
+        .coin-balance {
+            font-size: 14px;
+            color: #8e8e93;
+        }
+        .coin-value {
+            text-align: right;
+        }
+        .coin-total {
+            font-weight: 600;
+            font-size: 17px;
+            color: #1d1d1f;
+            margin-bottom: 4px;
+        }
+        .coin-detail {
+            font-size: 14px;
+            color: #8e8e93;
+        }
+        .coin-detail span {
+            color: #34c759;
+            margin-left: 4px;
+        }
+        .coin-detail.negative span {
+            color: #ff3b30;
+        }
+
+        /* 分隔线 */
+        .divider {
+            height: 1px;
+            background: rgba(0,0,0,0.05);
+            margin: 20px 0;
+        }
+
+        /* 简化卡片（后四个） */
+        .compact-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .compact-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .compact-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 20px;
+            background: #e6e6ea;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        .compact-info h4 {
+            font-weight: 600;
+            font-size: 16px;
+            color: #1d1d1f;
+        }
+        .compact-info p {
+            font-size: 14px;
+            color: #8e8e93;
+        }
+        .compact-value {
+            text-align: right;
+        }
+        .compact-value .total {
+            font-weight: 600;
+            font-size: 18px;
+            color: #1d1d1f;
+        }
+        .compact-value .change {
+            font-size: 14px;
+            color: #34c759;
         }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h1>下载 我的应用</h1>
-        <p>点击按钮体验水波纹反馈</p>
-        <!-- 同时使用 press 类获得按压缩小，ripple 类获得波纹 -->
-        <a href="https://github.com/你的用户名/你的仓库/releases/download/v1.0.0/你的文件名.dmg" 
-           class="download-btn press ripple" 
-           target="_blank">
-            下载 App
-        </a>
-        <p class="note">版本 v1.0.0 ｜ 2025年2月发布</p>
+    <div class="container">
+        <!-- 原有的下载卡片 (上半部分) -->
+        <div class="card download-card">
+            <h1>下载 我的应用</h1>
+            <p>点击下方按钮下载最新版本（.dmg 格式）</p>
+            <a href="#" class="download-btn press ripple" target="_blank">下载 App</a>
+            <p class="note">版本 v1.0.0 ｜ 2025年2月发布</p>
+        </div>
+
+        <!-- 数据卡片区域：共5个卡片 -->
+        <!-- 卡片1：完整资产卡片 -->
+        <div class="card">
+            <!-- 头部总资产 + 涨跌 -->
+            <div class="asset-header">
+                <span class="asset-total">$1,098</span>
+                <span>
+                    <span class="asset-change">+$11 (+1.9%)</span>
+                    <span class="asset-period">1日</span>
+                </span>
+            </div>
+
+            <!-- 发送/接收 按钮行 (添加 ripple 和 press 类) -->
+            <div class="action-row">
+                <button class="action-btn press ripple">发送</button>
+                <button class="action-btn press ripple">接收</button>
+            </div>
+
+            <!-- 三个切换标签 (点击切换演示，简单用JS切换active) -->
+            <div class="tab-bar">
+                <button class="tab active" data-tab="coins">币种</button>
+                <button class="tab" data-tab="defi">DeFi</button>
+                <button class="tab" data-tab="position">仓位</button>
+            </div>
+
+            <!-- 币种列表容器 (默认显示) -->
+            <div id="coins-tab" class="coin-list">
+                <!-- USDT 行 -->
+                <div class="coin-item">
+                    <div class="coin-icon">₮</div>
+                    <div class="coin-info">
+                        <div class="coin-name">USDT</div>
+                        <div class="coin-balance">100 USDT</div>
+                    </div>
+                    <div class="coin-value">
+                        <div class="coin-total">$100.00</div>
+                        <div class="coin-detail">$99.9 <span>+1.3%</span></div>
+                    </div>
+                </div>
+                <!-- BTC 行 -->
+                <div class="coin-item">
+                    <div class="coin-icon">₿</div>
+                    <div class="coin-info">
+                        <div class="coin-name">Bitcoin</div>
+                        <div class="coin-balance">0.0012 BTC</div>
+                    </div>
+                    <div class="coin-value">
+                        <div class="coin-total">$48.32</div>
+                        <div class="coin-detail">$40,267 <span>-0.8%</span></div>
+                    </div>
+                </div>
+                <!-- 可以再加一个示例 -->
+                <div class="coin-item">
+                    <div class="coin-icon">Ξ</div>
+                    <div class="coin-info">
+                        <div class="coin-name">Ethereum</div>
+                        <div class="coin-balance">0.05 ETH</div>
+                    </div>
+                    <div class="coin-value">
+                        <div class="coin-total">$89.50</div>
+                        <div class="coin-detail">$1,790 <span>+2.1%</span></div>
+                    </div>
+                </div>
+            </div>
+            <!-- DeFi 占位内容 (初始隐藏) -->
+            <div id="defi-tab" style="display: none; color:#8e8e93; text-align:center; padding:20px;">DeFi 数据加载中…</div>
+            <!-- 仓位占位内容 -->
+            <div id="position-tab" style="display: none; color:#8e8e93; text-align:center; padding:20px;">仓位数据加载中…</div>
+        </div>
+
+        <!-- 卡片2：简化卡片 - 比特币持仓 -->
+        <div class="card compact-card press ripple">
+            <div class="compact-left">
+                <div class="compact-icon">₿</div>
+                <div class="compact-info">
+                    <h4>Bitcoin</h4>
+                    <p>0.012 BTC</p>
+                </div>
+            </div>
+            <div class="compact-value">
+                <div class="total">$483.20</div>
+                <div class="change positive">+2.4%</div>
+            </div>
+        </div>
+
+        <!-- 卡片3：简化卡片 - 以太坊持仓 -->
+        <div class="card compact-card press ripple">
+            <div class="compact-left">
+                <div class="compact-icon">Ξ</div>
+                <div class="compact-info">
+                    <h4>Ethereum</h4>
+                    <p>0.32 ETH</p>
+                </div>
+            </div>
+            <div class="compact-value">
+                <div class="total">$572.80</div>
+                <div class="change negative">-1.2%</div>
+            </div>
+        </div>
+
+        <!-- 卡片4：简化卡片 - 稳定币 -->
+        <div class="card compact-card press ripple">
+            <div class="compact-left">
+                <div class="compact-icon">💵</div>
+                <div class="compact-info">
+                    <h4>USDC</h4>
+                    <p>500 USDC</p>
+                </div>
+            </div>
+            <div class="compact-value">
+                <div class="total">$500.00</div>
+                <div class="change">0.0%</div>
+            </div>
+        </div>
+
+        <!-- 卡片5：简化卡片 - 其他资产 -->
+        <div class="card compact-card press ripple">
+            <div class="compact-left">
+                <div class="compact-icon">⚡</div>
+                <div class="compact-info">
+                    <h4>LTC</h4>
+                    <p>2.5 LTC</p>
+                </div>
+            </div>
+            <div class="compact-value">
+                <div class="total">$187.50</div>
+                <div class="change positive">+5.3%</div>
+            </div>
+        </div>
     </div>
 
+    <!-- 波纹效果 JS -->
     <script>
-        // 波纹效果实现
-        document.addEventListener('click', function(e) {
-            // 找到触发点击的元素，如果它或它的祖先有 ripple 类，则创建波纹
-            let target = e.target.closest('.ripple');
-            if (!target) return;
+        (function() {
+            // 波纹效果：监听所有 .ripple 元素的点击
+            document.addEventListener('click', function(e) {
+                const target = e.target.closest('.ripple');
+                if (!target) return;
 
-            // 创建波纹元素
-            const ripple = document.createElement('span');
-            ripple.classList.add('ripple-effect');
+                // 创建波纹元素
+                const ripple = document.createElement('span');
+                ripple.classList.add('ripple-effect');
 
-            // 计算点击位置相对于目标元素的坐标
-            const rect = target.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
+                // 计算点击坐标相对于目标元素
+                const rect = target.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
 
-            // 设置波纹的初始位置（中心对准点击点）
-            ripple.style.left = x + 'px';
-            ripple.style.top = y + 'px';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
 
-            // 将波纹添加到目标元素中
-            target.appendChild(ripple);
+                target.appendChild(ripple);
 
-            // 动画结束后移除波纹
-            ripple.addEventListener('animationend', function() {
-                ripple.remove();
+                // 动画结束后移除
+                ripple.addEventListener('animationend', function() {
+                    ripple.remove();
+                });
             });
-        });
+
+            // 简单切换标签功能 (仅演示 "币种" "DeFi" "仓位")
+            const tabs = document.querySelectorAll('.tab');
+            const coinsTab = document.getElementById('coins-tab');
+            const defiTab = document.getElementById('defi-tab');
+            const positionTab = document.getElementById('position-tab');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // 移除所有active
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // 根据data-tab显示对应内容
+                    const tabName = this.getAttribute('data-tab');
+                    if (tabName === 'coins') {
+                        coinsTab.style.display = 'block';
+                        defiTab.style.display = 'none';
+                        positionTab.style.display = 'none';
+                    } else if (tabName === 'defi') {
+                        coinsTab.style.display = 'none';
+                        defiTab.style.display = 'block';
+                        positionTab.style.display = 'none';
+                    } else if (tabName === 'position') {
+                        coinsTab.style.display = 'none';
+                        defiTab.style.display = 'none';
+                        positionTab.style.display = 'block';
+                    }
+                });
+            });
+        })();
     </script>
+
+    <!-- 确保 coin-list 默认显示为flex，但上面用block控制，稍作调整 -->
+    <style>
+        #coins-tab {
+            display: block; /* 切换时会覆盖 */
+        }
+        .coin-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        #defi-tab, #position-tab {
+            min-height: 100px;
+        }
+        .compact-card {
+            transition: all 0.15s;
+        }
+        /* 负涨跌颜色 */
+        .negative {
+            color: #ff3b30 !important;
+        }
+        .positive {
+            color: #34c759 !important;
+        }
+    </style>
 </body>
 </html>
