@@ -2,8 +2,8 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>海豚模式 · 经济模型独立解析</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>海豚模式 · 经济模型解析（手机优化版）</title>
     <style>
         * {
             margin: 0;
@@ -13,26 +13,31 @@
         body {
             background: #f5f7fc;
             font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-            line-height: 1.6;
-            padding: 2rem 1rem;
+            line-height: 1.5;
+            padding: 1rem 0.75rem;
             color: #1a2639;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         .model-container {
             max-width: 1100px;
+            width: 100%;
             margin: 0 auto;
             background: white;
-            border-radius: 32px;
-            box-shadow: 0 20px 40px -10px rgba(0, 20, 50, 0.15);
+            border-radius: 28px;
+            box-shadow: 0 20px 40px -10px rgba(0, 20, 50, 0.12);
             overflow: hidden;
             border: 1px solid #e9ecf3;
         }
         .header-section {
-            padding: 2rem 2.5rem 1rem 2.5rem;
+            padding: 1.5rem 1.2rem 1rem 1.2rem;
             background: linear-gradient(145deg, #ffffff 0%, #f8faff 100%);
             border-bottom: 1px solid #dce3f0;
         }
         .header-section h1 {
-            font-size: 2.4rem;
+            font-size: 2rem;
             font-weight: 600;
             letter-spacing: -0.02em;
             background: linear-gradient(135deg, #1d267d, #0f4c81);
@@ -40,24 +45,25 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
             margin-bottom: 0.25rem;
+            line-height: 1.2;
         }
         .subhead {
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: #4a5b7a;
             border-left: 4px solid #3b82f6;
-            padding-left: 1.2rem;
-            margin-top: 0.5rem;
+            padding-left: 1rem;
+            margin-top: 0.4rem;
         }
         .card-grid {
-            padding: 2rem 2.5rem;
+            padding: 1.5rem 1.2rem;
             display: flex;
             flex-direction: column;
-            gap: 2rem;
+            gap: 1.5rem;
         }
         .core-math {
             background: #f0f4fe;
-            border-radius: 28px;
-            padding: 1.8rem 2rem;
+            border-radius: 24px;
+            padding: 1.5rem 1.2rem;
             border: 1px solid #cdddfd;
         }
         .math-badge {
@@ -65,76 +71,80 @@
             background: #1e3a8a;
             color: white;
             font-weight: 600;
-            font-size: 0.85rem;
-            padding: 0.3rem 1rem;
+            font-size: 0.8rem;
+            padding: 0.25rem 0.9rem;
             border-radius: 40px;
             letter-spacing: 0.3px;
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
         }
         .formula-block {
             background: white;
             border-radius: 20px;
-            padding: 1.4rem 2rem;
+            padding: 1.2rem 1rem;
             font-family: 'JetBrains Mono', 'Fira Code', monospace;
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             font-weight: 500;
             color: #022b42;
             border: 1px solid #bdd3ff;
             box-shadow: inset 0 2px 6px rgba(0,55,120,0.05);
-            margin: 1rem 0 0.2rem 0;
+            margin: 0.8rem 0 0.2rem 0;
             text-align: center;
+            word-break: break-word;
         }
         .formula-note {
             color: #2c3e6d;
-            margin-top: 0.8rem;
+            margin-top: 0.6rem;
             font-style: italic;
+            font-size: 0.92rem;
         }
         .token-econ {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-            gap: 1rem;
-            margin: 1.5rem 0 1rem 0;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 0.75rem;
+            margin: 1.2rem 0 0.8rem 0;
         }
         .stat-pill {
             background: white;
-            border-radius: 60px;
-            padding: 0.8rem 1.5rem;
+            border-radius: 40px;
+            padding: 0.6rem 1rem;
             border: 1px solid #e2e8f0;
             box-shadow: 0 2px 6px rgba(0,0,0,0.02);
             display: flex;
             align-items: center;
             justify-content: space-between;
             font-weight: 500;
+            font-size: 0.9rem;
         }
         .stat-label {
             color: #4a5b7a;
         }
         .stat-number {
             font-family: monospace;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 600;
             color: #0b3550;
         }
         .mining-table {
             background: #ffffff;
-            border-radius: 24px;
+            border-radius: 22px;
             border: 1px solid #dde3ed;
             overflow: hidden;
-            margin: 1.8rem 0;
+            margin: 1.2rem 0;
         }
         .mining-header {
             background: #13294b;
             color: white;
-            padding: 1rem 2rem;
+            padding: 0.9rem 1.2rem;
             font-weight: 600;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
         }
         .mining-row {
             display: flex;
             justify-content: space-between;
-            padding: 1rem 2rem;
+            padding: 0.85rem 1.2rem;
             border-bottom: 1px solid #eaeef4;
             background: white;
+            font-size: 0.95rem;
         }
         .mining-row:last-child {
             border-bottom: none;
@@ -146,102 +156,113 @@
         .mining-rate {
             font-weight: 600;
             background: #e6eeff;
-            padding: 0.2rem 1rem;
+            padding: 0.2rem 0.9rem;
             border-radius: 40px;
         }
         .flywheel {
             background: linear-gradient(120deg, #f1f5f9, #e6ecf7);
-            border-radius: 24px;
-            padding: 2rem;
-            margin: 1.8rem 0;
+            border-radius: 22px;
+            padding: 1.5rem 1.2rem;
+            margin: 1.2rem 0;
             border-left: 6px solid #2563eb;
         }
         .flywheel-step {
             display: flex;
-            gap: 1.5rem;
-            align-items: center;
-            margin: 1.2rem 0;
+            gap: 1rem;
+            align-items: flex-start;
+            margin: 1rem 0;
             flex-wrap: wrap;
         }
         .step-emoji {
-            font-size: 2rem;
+            font-size: 1.8rem;
             background: white;
-            width: 60px;
-            height: 60px;
-            border-radius: 60px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50px;
             display: flex;
             align-items: center;
             justify-content: center;
             box-shadow: 0 4px 10px rgba(0,60,130,0.1);
+            flex-shrink: 0;
         }
         .step-desc {
             flex: 1;
-            font-size: 1.05rem;
+            font-size: 0.98rem;
+            min-width: 180px;
         }
         .price-evolution {
             display: flex;
             flex-wrap: wrap;
             background: #0a2540;
             color: white;
-            border-radius: 28px;
-            padding: 1.8rem;
+            border-radius: 24px;
+            padding: 1.5rem 1rem;
             justify-content: space-around;
-            margin: 2rem 0;
+            margin: 1.5rem 0;
+            gap: 1rem;
         }
         .price-point {
             text-align: center;
+            flex: 1 1 auto;
         }
         .price-point .phase {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             opacity: 0.7;
         }
         .price-point .value {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 700;
             font-family: monospace;
         }
         .price-point .multiplier {
             background: rgba(255,255,255,0.15);
             border-radius: 30px;
-            padding: 0.2rem 0.8rem;
-            font-size: 0.85rem;
+            padding: 0.2rem 0.7rem;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-top: 0.2rem;
         }
         .split-panel {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            margin: 2rem 0;
+            gap: 1rem;
+            margin: 1.5rem 0;
         }
         .strategy-card {
             background: #f6f9ff;
-            border-radius: 24px;
-            padding: 1.6rem;
+            border-radius: 22px;
+            padding: 1.3rem 1rem;
             border: 1px solid #cbd6f0;
         }
         .strategy-card h4 {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
             color: #13294b;
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
+        }
+        .strategy-card ul {
+            list-style: none;
+            line-height: 1.8;
+            font-size: 0.92rem;
         }
         .risk-box {
             background: #fff7ed;
-            border-radius: 24px;
-            padding: 1.8rem;
+            border-radius: 22px;
+            padding: 1.4rem 1.2rem;
             border: 1px solid #ffd8b0;
-            margin-top: 1rem;
+            margin-top: 0.8rem;
         }
         .footer-note {
             background: #e9effa;
-            padding: 1.5rem 2.5rem;
-            font-size: 0.95rem;
+            padding: 1.2rem 1.2rem;
+            font-size: 0.88rem;
             color: #2e405b;
             border-top: 1px solid #d0ddef;
             display: flex;
             flex-wrap: wrap;
-            gap: 1.5rem;
+            gap: 1rem;
             justify-content: space-between;
         }
         .highlight {
@@ -255,15 +276,111 @@
             background: #f9fbfe;
             border-radius: 40px;
             border: 1px dashed #7b9fe0;
-            padding: 1rem 2rem;
-            margin: 2rem 0 0.5rem;
+            padding: 0.8rem 1.2rem;
+            margin: 1.5rem 0 0.5rem;
             font-weight: 450;
+            font-size: 0.92rem;
         }
+
+        /* 手机专用优化 */
         @media (max-width: 600px) {
-            .header-section { padding: 1.5rem; }
-            .card-grid { padding: 1.5rem; }
-            .split-panel { grid-template-columns: 1fr; }
-            .price-evolution { flex-direction: column; gap: 1.2rem; }
+            body {
+                padding: 0.5rem 0.4rem;
+            }
+            .header-section h1 {
+                font-size: 1.8rem;
+            }
+            .subhead {
+                font-size: 0.9rem;
+                padding-left: 0.8rem;
+            }
+            .card-grid {
+                padding: 1.2rem 0.8rem;
+                gap: 1.2rem;
+            }
+            .core-math {
+                padding: 1.2rem 0.9rem;
+            }
+            .formula-block {
+                font-size: 1.3rem;
+                padding: 1rem 0.5rem;
+            }
+            .token-econ {
+                grid-template-columns: 1fr 1fr; /* 两列 */
+                gap: 0.5rem;
+            }
+            .stat-pill {
+                padding: 0.5rem 0.8rem;
+                font-size: 0.85rem;
+            }
+            .stat-number {
+                font-size: 1rem;
+            }
+            .mining-header {
+                font-size: 1rem;
+                padding: 0.8rem 1rem;
+            }
+            .mining-row {
+                padding: 0.7rem 1rem;
+                font-size: 0.9rem;
+            }
+            .mining-rate {
+                padding: 0.2rem 0.7rem;
+            }
+            .flywheel {
+                padding: 1.2rem 0.9rem;
+            }
+            .flywheel-step {
+                gap: 0.8rem;
+            }
+            .step-emoji {
+                width: 42px;
+                height: 42px;
+                font-size: 1.5rem;
+            }
+            .price-evolution {
+                flex-direction: column;
+                align-items: center;
+                padding: 1.2rem 0.8rem;
+            }
+            .price-point {
+                width: 100%;
+            }
+            .price-point .value {
+                font-size: 1.4rem;
+            }
+            .split-panel {
+                grid-template-columns: 1fr;
+                gap: 0.8rem;
+            }
+            .strategy-card {
+                padding: 1rem 0.9rem;
+            }
+            .strategy-card h4 {
+                font-size: 1rem;
+            }
+            .risk-box {
+                padding: 1.2rem 1rem;
+            }
+            .footer-note {
+                flex-direction: column;
+                gap: 0.5rem;
+                padding: 1rem 0.8rem;
+            }
+            .simulate-bar {
+                padding: 0.7rem 1rem;
+                font-size: 0.88rem;
+            }
+        }
+
+        /* 超小屏 (小于380px) 额外处理 */
+        @media (max-width: 380px) {
+            .token-econ {
+                grid-template-columns: 1fr; /* 单列 */
+            }
+            .header-section h1 {
+                font-size: 1.6rem;
+            }
         }
     </style>
 </head>
@@ -288,14 +405,14 @@
 
             <!-- 基础代币经济 -->
             <div>
-                <h3 style="color: #0b2b4a; margin-bottom: 1rem;">🔷 H 代币核心参数</h3>
+                <h3 style="color: #0b2b4a; margin-bottom: 0.8rem; font-size: 1.3rem;">🔷 H 代币核心参数</h3>
                 <div class="token-econ">
                     <div class="stat-pill"><span class="stat-label">总发行量</span><span class="stat-number">10亿</span></div>
                     <div class="stat-pill"><span class="stat-label">交易税费</span><span class="stat-number">5%</span></div>
                     <div class="stat-pill"><span class="stat-label">OKX返佣</span><span class="stat-number">0.34%</span></div>
                     <div class="stat-pill"><span class="stat-label">初始价格</span><span class="stat-number">$0.00005</span></div>
                 </div>
-                <p style="background: #f2f6fc; padding: 1rem 1.5rem; border-radius: 50px; margin: 0.8rem 0;">
+                <p style="background: #f2f6fc; padding: 0.8rem 1.2rem; border-radius: 50px; margin: 0.8rem 0; font-size: 0.92rem;">
                     💧 初始流动性构建：社区轮 <span class="highlight">1万 USDT 购入 8亿 H</span>；剩余 2亿 H + 1万 USDT 组成 Uniswap 池，奠定价格基础。
                 </p>
             </div>
@@ -311,14 +428,14 @@
             </div>
 
             <!-- 额外福利：分红代币 -->
-            <div style="background: #e7efff; border-radius: 20px; padding: 1.5rem 2rem;">
-                <span style="background: #8b5cf6; color: white; padding: 0.2rem 1.2rem; border-radius: 30px; font-size: 0.9rem;">🌟 永久性分红权</span>
-                <p style="margin-top: 0.8rem;"><strong>10万枚分红代币</strong> — 代表投票权与分红权。池满前每日收益以分红代币发放，满池后按权重分发，永久享受自动分红。可出售，早期建设者权益。</p>
+            <div style="background: #e7efff; border-radius: 20px; padding: 1.2rem 1.2rem;">
+                <span style="background: #8b5cf6; color: white; padding: 0.2rem 1.2rem; border-radius: 30px; font-size: 0.85rem;">🌟 永久性分红权</span>
+                <p style="margin-top: 0.7rem; font-size: 0.95rem;"><strong>10万枚分红代币</strong> — 代表投票权与分红权。池满前每日收益以分红代币发放，满池后按权重分发，永久享受自动分红。可出售，早期建设者权益。</p>
             </div>
 
             <!-- OKX Boost 价格跃升 -->
             <div>
-                <h3 style="margin: 0.5rem 0 0.8rem;">🚀 OKX Boost 交易赛 · 价格突变（基于x·y=k）</h3>
+                <h3 style="margin: 0.3rem 0 0.8rem; font-size: 1.2rem;">🚀 OKX Boost 交易赛 · 价格突变（基于x·y=k）</h3>
                 <div class="price-evolution">
                     <div class="price-point"><span class="phase">第一次买入 (1万U)</span><div class="value">$0.00005</div><span class="multiplier">基线</span></div>
                     <div class="price-point"><span class="phase">二次买入 (10万U)</span><div class="value">$0.0063</div><span class="multiplier">↑125倍</span></div>
@@ -329,7 +446,7 @@
 
             <!-- 飞轮效应 + 国库数据 -->
             <div class="flywheel">
-                <h3 style="display: flex; gap: 0.5rem; color: #13294b;">🌀 飞轮效应 · 双向循环</h3>
+                <h3 style="display: flex; gap: 0.5rem; color: #13294b; font-size: 1.2rem;">🌀 飞轮效应 · 双向循环</h3>
                 <div class="flywheel-step">
                     <div class="step-emoji">💰</div>
                     <div class="step-desc"><strong>买盘10万U</strong> → 每日收益1000U (43103 H)  + 国库收入：交易税1万U + 返佣680U = 10680U</div>
@@ -342,7 +459,7 @@
                     <div class="step-emoji">🔄</div>
                     <div class="step-desc"><strong>用户行为</strong> : 质押 → 卖出 → 复投 → 推动交易量 → 更多返佣/税 → 国库增长 → 回购</div>
                 </div>
-                <div style="background: #ffffff70; border-radius: 16px; padding: 1.2rem; margin-top: 1rem;">
+                <div style="background: #ffffff70; border-radius: 16px; padding: 1rem; margin-top: 1rem; font-size: 0.92rem;">
                     ✅ 早期用户滋养社区，社区通过国库回购反哺用户，欧易、社区、用户三方受益。
                 </div>
             </div>
@@ -351,7 +468,7 @@
             <div class="split-panel">
                 <div class="strategy-card">
                     <h4>📊 资产分布 (示例)</h4>
-                    <ul style="list-style: none; line-height: 2;">
+                    <ul>
                         <li>• 社区持币：<strong>6.826亿 H</strong></li>
                         <li>• 成员持币：<strong>7900万 H</strong></li>
                         <li>• Uniswap池：<strong>949.9万 H</strong></li>
@@ -360,7 +477,7 @@
                 </div>
                 <div class="strategy-card">
                     <h4>🛡️ 内置抛压对策</h4>
-                    <ul style="list-style: none; line-height: 2;">
+                    <ul>
                         <li>✔ 国库 >1000U 即自动回购 <span class="highlight">300U等值H</span> 并销毁 (合约强制)</li>
                         <li>✔ 早期筹码集中 (多签、质押、国库)</li>
                         <li>✔ 每日质押释放被时间稀释 (可支付24年+)</li>
@@ -369,23 +486,23 @@
             </div>
 
             <!-- 天然协调策略 关键补充 -->
-            <div style="display: flex; flex-wrap: wrap; gap: 1.2rem; background: #f2f0fe; border-radius: 28px; padding: 1.8rem;">
+            <div style="display: flex; flex-wrap: wrap; gap: 1rem; background: #f2f0fe; border-radius: 24px; padding: 1.5rem 1.2rem;">
                 <div style="flex: 1; min-width: 200px;">
-                    <span style="font-weight: 700;">🤝 协调策略 · 互相增益</span>
-                    <p style="margin-top: 0.5rem;">H交易(5%税) → 国库<br>Boost返佣(0.34%) → 国库<br>用户质押/复投 → 推动交易量 → 更多税/返佣 → 回购飞轮</p>
+                    <span style="font-weight: 700; font-size: 1.05rem;">🤝 协调策略 · 互相增益</span>
+                    <p style="margin-top: 0.5rem; font-size: 0.93rem;">H交易(5%税) → 国库<br>Boost返佣(0.34%) → 国库<br>用户质押/复投 → 推动交易量 → 更多税/返佣 → 回购飞轮</p>
                 </div>
                 <div style="flex: 1; min-width: 200px;">
-                    <span style="font-weight: 700;">🔐 关键补充</span>
-                    <p>✅ 多签国库 + 社区持币多签，杜绝单点作恶。<br>
+                    <span style="font-weight: 700; font-size: 1.05rem;">🔐 关键补充</span>
+                    <p style="margin-top: 0.5rem; font-size: 0.93rem;">✅ 多签国库 + 社区持币多签，杜绝单点作恶。<br>
                     ✅ 通缩阀门：国库超1000U自动回购销毁300U H，永久写死。<br>
                     ✅ 分红代币永久有效，可出售，早期建设者权益。</p>
                 </div>
             </div>
 
             <!-- 实时看板模拟 (精简版) 取自原文最下方 -->
-            <div style="border: 1px solid #bed0f0; border-radius: 30px; padding: 1.5rem; background: #ffffff;">
-                <h4 style="margin-bottom: 1rem;">📈 实时持仓状态 (示例) — 基于模型计算器</h4>
-                <div style="display: grid; grid-template-columns: repeat(3,1fr); gap: 0.8rem; font-size: 0.95rem;">
+            <div style="border: 1px solid #bed0f0; border-radius: 24px; padding: 1.2rem 1rem; background: #ffffff;">
+                <h4 style="margin-bottom: 0.8rem; font-size: 1.1rem;">📈 实时持仓状态 (示例) — 基于模型计算器</h4>
+                <div style="display: grid; grid-template-columns: repeat(3,1fr); gap: 0.6rem; font-size: 0.88rem;">
                     <div><span style="color:#4a5b7a;">H价格</span><br><span style="font-weight:700;">0.00633 USDT</span></div>
                     <div><span style="color:#4a5b7a;">LP池H</span><br><span style="font-weight:700;">17.35M</span></div>
                     <div><span style="color:#4a5b7a;">LP池U</span><br><span style="font-weight:700;">109,836</span></div>
@@ -393,30 +510,30 @@
                     <div><span style="color:#4a5b7a;">质押池</span><br><span style="font-weight:700;">300M H</span></div>
                     <div><span style="color:#4a5b7a;">国库U</span><br><span style="font-weight:700;">0.00</span></div>
                 </div>
-                <div style="margin-top: 1.2rem; background: #eef3fd; border-radius: 40px; padding: 1rem; display: flex; gap: 1.5rem; flex-wrap: wrap;">
+                <div style="margin-top: 1rem; background: #eef3fd; border-radius: 40px; padding: 0.8rem 1rem; display: flex; gap: 1.2rem; flex-wrap: wrap; font-size: 0.88rem;">
                     <span>📥 买入模拟 (税5%)</span>
                     <span>🔒 质押阶梯 0.5%~1.2%</span>
                     <span>📤 卖出税5% (U)</span>
                 </div>
-                <p style="font-size:0.85rem; color:#666; margin-top:1rem;">⚡ 买入机制：投入U扣5%税入国库 → 剩余U加LP → 恒定乘积 x·y=k → H减少归外部 → 价格上升。所有操作公开可模拟。</p>
+                <p style="font-size:0.82rem; color:#666; margin-top:0.8rem;">⚡ 买入机制：投入U扣5%税入国库 → 剩余U加LP → 恒定乘积 x·y=k → H减少归外部 → 价格上升。所有操作公开可模拟。</p>
             </div>
 
             <!-- KOL 评价 + 风险区域 (保持客观) -->
             <div class="risk-box">
-                <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1.5rem;">
-                    <span style="background: #d9b48f; color: black; padding: 0.3rem 1.2rem; border-radius: 40px;">👁️ 独立观察员 · 加密经济分析师</span>
-                    <span style="font-style: italic; color: #3a2c1b;">“用数学公式当裁判，高收益吸引，外部资源助推”</span>
+                <div style="display: flex; gap: 0.8rem; align-items: center; margin-bottom: 1.2rem; flex-wrap: wrap;">
+                    <span style="background: #d9b48f; color: black; padding: 0.2rem 1rem; border-radius: 40px; font-size: 0.85rem;">👁️ 独立观察员 · 加密经济分析师</span>
+                    <span style="font-style: italic; color: #3a2c1b; font-size: 0.93rem;">“用数学公式当裁判，高收益吸引，外部资源助推”</span>
                 </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                     <div><span style="font-weight: 600;">⚙️ 飞轮动力分析</span><br>早期玩家、交易所、项目方、投机者利益绑定，形成循环逻辑。</div>
                     <div><span style="font-weight: 600; color: #b45309;">⚠️ 潜在风险</span><br>• 高收益需新资金流支撑<br>• 依赖OKX Boost等外部资源<br>• 模型复杂，认知门槛高</div>
                 </div>
-                <p style="margin-top: 1rem; border-top: 1px dashed #eab67b; padding-top: 1rem; font-size: 0.9rem;">总结：算法稳定币+流动性挖矿的变种，前期参与者激励强，机器维持秩序。一切规则上链可验证。</p>
+                <p style="margin-top: 1rem; border-top: 1px dashed #eab67b; padding-top: 0.8rem; font-size: 0.88rem;">总结：算法稳定币+流动性挖矿的变种，前期参与者激励强，机器维持秩序。一切规则上链可验证。</p>
             </div>
 
             <!-- 附：模型计算器说明 -->
-            <div style="background: #e3eaf3; border-radius: 24px; padding: 1.2rem 2rem;">
-                <span>🧮 模型计算器 — 恒定乘积公开验证：任何人都可输入任意金额 (1U 或 10万U)，实时模拟新价格、供应量变化。数据完全透明，无后台操纵。</span>
+            <div style="background: #e3eaf3; border-radius: 22px; padding: 1rem 1.2rem;">
+                <span style="font-size:0.95rem;">🧮 模型计算器 — 恒定乘积公开验证：任何人都可输入任意金额 (1U 或 10万U)，实时模拟新价格、供应量变化。数据完全透明，无后台操纵。</span>
             </div>
         </div>
 
